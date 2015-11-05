@@ -72,7 +72,6 @@ public class JsonHelper {
 		gsonBuilder.registerTypeAdapter(Date.class, ser);
 		gsonBuilder.registerTypeAdapter(BigDecimal.class, bigDecimalSer);
 		gsonBuilder.registerTypeAdapter(BigDecimal.class, bigDecimalDeser);
-
 		return gsonBuilder.create();
 	}
 
