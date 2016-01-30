@@ -1,4 +1,4 @@
-package lv.nixx.poc.camel;
+package lv.nixx.poc.camel.simple;
 
 import java.util.Date;
 

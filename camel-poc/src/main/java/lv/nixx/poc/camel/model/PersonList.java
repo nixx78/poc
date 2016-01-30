@@ -18,6 +18,10 @@ public class PersonList {
 	public void setPersons(List<Person> persons) {
 		this.persons = persons;
 	}
+	
+	public int getSize() {
+		return persons.size();
+	}
 
 	@Override
 	public String toString() {

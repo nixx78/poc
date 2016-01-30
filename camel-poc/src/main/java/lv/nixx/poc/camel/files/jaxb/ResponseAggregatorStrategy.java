@@ -16,18 +16,28 @@ public class ResponseAggregatorStrategy implements AggregationStrategy {
     public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
         Message newIn = newExchange.getIn();
         
-        Response newBody = newIn.getBody(Response.class);
+        Response body = newIn.getBody(Response.class);
         List<Response> list = null;
+        
+        updateHeaders(oldExchange == null ? newIn: oldExchange.getIn(), body.isSuccess() );
+
         if (oldExchange == null) {
                 list = new ArrayList<>();
-                list.add(newBody);
+                list.add(body);
                 newIn.setBody(list);
                 return newExchange;
         } else {
                 Message in = oldExchange.getIn();
                 list = in.getBody(ArrayList.class);
-                list.add(newBody);
+                list.add(body);
                 return oldExchange;
         }
+       
     }
+	
+	private void updateHeaders(Message message, boolean isSuccess){
+		String header = isSuccess ? "success" : "fail";
+		Integer val = message.getHeader(header, 0, Integer.class);
+		message.setHeader(header, Integer.valueOf(val + 1));
+	}
 }

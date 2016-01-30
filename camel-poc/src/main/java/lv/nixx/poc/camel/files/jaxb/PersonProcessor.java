@@ -19,8 +19,15 @@ public class PersonProcessor implements Processor {
 		resp.setId(person.getId());
 		resp.setSuccess(person.getId() == 101 ? false: true );
 		
-		in.setBody(resp, Response.class);
-		in.setHeader("CamelFileName", "person." + fileName );
-		in.setHeader("id", fileName);
+		try {
+			if(person.getId() == 103)
+				throw new Exception("Person id: 103 not valid");
+			
+			in.setBody(resp, Response.class);
+
+		} finally {
+			in.setHeader("id", fileName);	
+		}
+
 	}
 }
