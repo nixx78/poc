@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="
          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		 http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-  <!-- first, define your individual @Configuration classes as beans -->
-  <bean class="lv.nixx.poc.camel.simple.spring.SimpleConfig"/>
+	<!-- first, define your individual @Configuration classes as beans -->
+	<!-- <bean class="lv.nixx.poc.camel.simple.spring.SpringSample" /> -->
+	
+	<bean class="lv.nixx.poc.camel.jdbc.File2DBSample"/>
+	
 
-  <!-- be sure the configure class to be processed -->
-  <context:annotation-config/>
+	<!-- be sure the configure class to be processed -->
+	<context:annotation-config />
+
+    <jdbc:embedded-database id="dataSource" type="DERBY">
+        <jdbc:script location="classpath:sql/init.sql"/>
+    </jdbc:embedded-database>
 
 </beans>
   

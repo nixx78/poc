@@ -7,9 +7,8 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.converter.jaxb.JaxbDataFormat;
 
 public class FilesProcessingWithJAXBSample {
-
+	
 	public static void main(String args[]) throws Exception {
-		
 		CamelRunner runner = new CamelRunner();
 		runner.main().bind("model", new JaxbDataFormat("lv.nixx.poc.camel.model"));
 		runner.main().bind("personProcessor", new PersonProcessor());
@@ -19,9 +18,8 @@ public class FilesProcessingWithJAXBSample {
 		runner.main().addRouteBuilder(new FileFlowRouteBuilder());
 		runner.run();
 	}
-
+	
 }
-
 
 class FileFlowRouteBuilder extends RouteBuilder{
 

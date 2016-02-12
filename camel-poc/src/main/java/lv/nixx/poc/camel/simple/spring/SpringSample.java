@@ -5,17 +5,17 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.spring.Main;
 import org.apache.camel.spring.SpringCamelContext;
 import org.apache.camel.spring.javaconfig.SingleRouteCamelConfiguration;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 @Configuration
-public class SimpleConfig extends SingleRouteCamelConfiguration implements InitializingBean  {
+@ComponentScan(basePackages = {"lv.nixx.poc.camel.simple.spring"})
+public class SpringSample extends SingleRouteCamelConfiguration {
 	
 	public static void main(String[] args) throws Exception {
 		new Main().run();
 	}
-	
 	
 	@Bean
 	public MessageBean messageABean(){
@@ -44,6 +44,7 @@ public class SimpleConfig extends SingleRouteCamelConfiguration implements Initi
 			@Override
 			public void configure() throws Exception {
 				from("timer://myTimer?period=2000")
+				.routeId("MainRoute")
 				.log("Message")
 				.bean("messageABean")
 				.bean("messageBBean")
@@ -54,11 +55,6 @@ public class SimpleConfig extends SingleRouteCamelConfiguration implements Initi
 		};
 		
 		return routeBuilder;
-	}
-	
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		System.out.println("call afterPropertiesSet()");
 	}
 
 	

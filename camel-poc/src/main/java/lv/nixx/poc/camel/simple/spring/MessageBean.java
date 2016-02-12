@@ -1,5 +1,6 @@
 package lv.nixx.poc.camel.simple.spring;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
@@ -7,6 +8,9 @@ import org.springframework.stereotype.Component;
 public class MessageBean {
 
 	private String message;
+	
+	@Autowired
+	private MessagePrinter printer;
 
 	public MessageBean(){
 	}
@@ -16,7 +20,7 @@ public class MessageBean {
 	}
 	
 	public void sayMessage() {
-		System.out.println("Say: " + message);
+		printer.print("Say: " + message);
 	}
 
 }
