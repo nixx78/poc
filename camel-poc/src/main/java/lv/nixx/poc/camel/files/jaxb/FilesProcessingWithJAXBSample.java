@@ -30,7 +30,7 @@ class FileFlowRouteBuilder extends RouteBuilder{
 		from("file:data/inbox?move=../done/")
 		.unmarshal("model")
 		.setHeader("personCount", simple("${body.size}"))
-		.log("Total person count [${header.personCount}] in file [${header.CamelFileName}]")
+		.log("Total person count [${header.personCount}] in file [${file:name}]")
 		.split(simple("${body.persons}"))
 		.parallelProcessing()
 		.process("personProcessor")
