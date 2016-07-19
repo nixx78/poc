@@ -1,0 +1,21 @@
+<transactions>
+
+	<transaction>
+		<id>100</id>
+		<date>01.12.2016</date>
+		<source>SystemA</source>
+		<amount>10.56</amount>
+		<source>SourceAccount1</source>
+		<target>TargetAccount1</target>
+	</transaction>
+
+	<transaction>
+		<id>200</id>
+		<date>02.12.2016</date>
+		<source>SystemA</source>
+		<amount>30.00</amount>
+		<source>SourceAccount2</source>
+		<target>TargetAccount2</target>
+	</transaction>
+	
+</transactions>
