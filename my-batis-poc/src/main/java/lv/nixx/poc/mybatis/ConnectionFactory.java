@@ -13,7 +13,7 @@ public class ConnectionFactory {
 	static{
 		try{
 			reader = Resources.getResourceAsReader("configuration.xml");
-			sqlMapper = new SqlSessionFactoryBuilder().build(reader);
+			sqlMapper = new SqlSessionFactoryBuilder().build(reader, "development");
 		}catch(Exception e){
 			e.printStackTrace();
 		}

@@ -1,4 +1,4 @@
-package lv.nixx.poc.mybatis;
+package lv.nixx.poc.mybatispoc;
 
 import static org.junit.Assert.*;
 
@@ -13,7 +13,11 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class MyBatisPOS_Test {
+import lv.nixx.poc.mybatis.ConnectionFactory;
+import lv.nixx.poc.mybatis.User;
+import lv.nixx.poc.mybatis.UserDAO;
+
+public class MyBatisPOC_Test {
 
 	static SqlSession session = null;
 
