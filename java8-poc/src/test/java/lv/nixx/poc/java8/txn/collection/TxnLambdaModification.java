@@ -67,6 +67,23 @@ public class TxnLambdaModification {
 	}
 	
 	@Test
+	public void getUniqueAccounts() {
+		Collection<Transaction> txnSet = new HashSet<>();
+		txnSet.add(new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"));
+		txnSet.add(new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD"));
+		txnSet.add(new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"));
+		txnSet.add(new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR"));
+		txnSet.add(new Transaction("id5", BigDecimal.valueOf(40.14), "ACC5", "EUR"));
+		
+		final Set<String> accounts = txnSet.stream()
+				.map(t->t.getAccount())
+				.collect(Collectors.toSet());
+		
+		assertEquals(4, accounts.size());
+		accounts.forEach(System.out::println);
+	}
+	
+	@Test
 	public void transformCollectionToMapIgnoreDuplicates() throws ParseException {
 
 		final String id1 = "id1";
@@ -129,18 +146,16 @@ public class TxnLambdaModification {
 				);
 	
 		// Счет, список валют
-		Map<String, List<String>> collect = 
+		Map<String, List<String>> c = 
 				txns.stream()
 			           .collect(Collectors.groupingBy(
 			        		   Transaction::getAccount,
 			               Collectors.mapping(Transaction::getCurrency, Collectors.toList()))
 			           );
 		
-		for (Entry<String, List<String>> e : collect.entrySet()) {
-			System.out.println(e.getKey() + ":" + e.getValue());
-		}
+		c.entrySet().forEach(System.out::println);
 		
-		assertEquals(3, collect.size());
+		assertEquals(3, c.size());
 	}
 	
 	@Test
@@ -159,9 +174,7 @@ public class TxnLambdaModification {
 				Collectors.reducing(BigDecimal.ZERO, Transaction::getAmount, BigDecimal::add))
 				);
 		
-		for (Entry<String, BigDecimal> e : c.entrySet()) {
-			System.out.println(e.getKey() + ":" + e.getValue());
-		}
+		c.entrySet().forEach(System.out::println);
 		
 		assertEquals(2, c.size());
 	}
@@ -176,18 +189,35 @@ public class TxnLambdaModification {
 				new Transaction("id5", BigDecimal.valueOf(40.14), "ACC3", "EUR")
 				);
 	
-		Map<String, List<Amount>> collect = 
+		Map<String, List<Amount>> c = 
 				txns.stream()
 			           .collect(Collectors.groupingBy(Transaction::getAccount,
 			               Collectors.mapping(Amount::new, Collectors.toList())
 			               )
 			           );
 			
-		for (Entry<String, List<Amount>> e : collect.entrySet()) {
-			System.out.println(e.getKey() + ":" + e.getValue());
-		}
+		c.entrySet().forEach(System.out::println);
 
-		assertEquals(3, collect.size());
+		assertEquals(3, c.size());
+	}
+	
+	@Test
+	public void mapAndGroup() {
+		List<Transaction> txns = Arrays.asList(
+				new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"),
+				new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD"),
+				new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"),
+				new Transaction("id4", BigDecimal.valueOf(20.00), "ACC2", "EUR"),
+				new Transaction("id5", BigDecimal.valueOf(40.14), "ACC3", "EUR")
+				);
+	
+		Collection<Amount> c = 
+				txns.stream()
+				.map(Amount::new).collect(Collectors.toSet());
+			      
+		c.forEach(System.out::println);
+
+		assertEquals(5, c.size());
 	}
 	
 	@Test
@@ -205,9 +235,8 @@ public class TxnLambdaModification {
 						Collectors.reducing(Amount::increase))
 						);
 						
-		for (Entry<String, Optional<Amount>> e : r.entrySet()) {
-			System.out.println(e.getKey() + ":" + e.getValue());
-		}
+		r.entrySet().forEach(System.out::println);
+
 		assertEquals(3,r.size());
 	}
 
