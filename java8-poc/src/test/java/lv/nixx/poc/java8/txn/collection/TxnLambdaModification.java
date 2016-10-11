@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -62,8 +61,8 @@ public class TxnLambdaModification {
 		
 		AccountHolder ah = new AccountHolder();
 		txnSet.forEach(ah::process);
-		ah.accounts.entrySet().forEach(e-> {System.out.println(e.getKey() + ":" + e.getValue());});
 		
+		ah.accounts.entrySet().forEach(e-> {System.out.println(e.getKey() + ":" + e.getValue());});
 	}
 	
 	@Test
@@ -266,6 +265,18 @@ public class TxnLambdaModification {
 		public Account(String accId) {
 			this.id = accId;
 		}
+		
+		public Account increase(Transaction txn) {
+			final String currency = txn.getCurrency();
+			final BigDecimal amount = txn.getAmount();
+			if (amounts.containsKey(currency)) {
+				amounts.get(currency).increase(amount);
+			} else {
+				amounts.put(currency, new Amount(currency, amount));
+			}
+			return this;
+		}
+
 
 		public void increase(String currency, BigDecimal amount) {
 			if (amounts.containsKey(currency)) {
