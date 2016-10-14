@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
@@ -23,6 +24,21 @@ public class CollectionPlayground {
 		// Коллекции должны быть отсортированы
 		// Возврашает true - если нет общих элементов
 		assertTrue("Collections are equals", Collections.disjoint(c1, c2));
+	}
+	
+	@Test
+	public void arrayStreamProcessing() {
+		int[] intArray = new int[]{5, 99, 60, 12, 7, 5, 100, 777};
+		
+		final int[] res = Arrays.stream(intArray)
+				.filter(t-> !(t<10))
+				.sorted()
+				.toArray();
+		
+		for (int i : res) {
+			System.out.println(i);
+		}
+				
 	}
 	
 	@Test
