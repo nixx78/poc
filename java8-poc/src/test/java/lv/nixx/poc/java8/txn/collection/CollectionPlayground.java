@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
@@ -35,10 +34,8 @@ public class CollectionPlayground {
 				.sorted()
 				.toArray();
 		
-		for (int i : res) {
-			System.out.println(i);
-		}
-				
+		Arrays.stream(res).forEach(System.out::println);
+		assertTrue(Arrays.equals(new int[]{12, 60, 99, 100, 777}, res));
 	}
 	
 	@Test
