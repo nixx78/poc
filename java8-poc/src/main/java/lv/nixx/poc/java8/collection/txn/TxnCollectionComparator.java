@@ -1,4 +1,4 @@
-package lv.nixx.poc.java8.txn.collection;
+package lv.nixx.poc.java8.collection.txn;
 
 import java.util.Collection;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package lv.nixx.poc.java8.txn.collection;
+package lv.nixx.poc.java8.collection.txn;
 
 import static org.junit.Assert.*;
 
@@ -10,6 +10,10 @@ import java.util.Date;
 
 import org.junit.Ignore;
 import org.junit.Test;
+
+import lv.nixx.poc.java8.collection.txn.Transaction;
+import lv.nixx.poc.java8.collection.txn.TxnCollectionComparator;
+import lv.nixx.poc.java8.collection.txn.TxnHolder;
 
 public class TxnCollectionComparatorTest {
 	

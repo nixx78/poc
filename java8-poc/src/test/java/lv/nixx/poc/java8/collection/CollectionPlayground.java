@@ -1,4 +1,4 @@
-package lv.nixx.poc.java8.txn.collection;
+package lv.nixx.poc.java8.collection;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -7,12 +7,56 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
 
 public class CollectionPlayground {
+	
+	@Test(expected = NullPointerException.class)
+	public void nullToTreeSet() {
+		Set<String> set = new TreeSet<>();
+		set.add("s1");
+		set.add(null);
+	}
+	
+	@Test
+	public void nullToSet() {
+		Set<String> set = new LinkedHashSet<>();
+		set.add("s1");
+		set.add("s2");
+		set.add(null);
+		set.add("s4");
+		// Все хорошо, null можно добавлять в LinkedHashSet
+		set.forEach(System.out::println);
+	}
+	
+	@Test
+	public void linkedHashMap() {
+		Map<String, String> map = new HashMap<>();
+		map.put("key1", "value1");
+		map.put(null, null);
+		map.put(null, "nullValue");
+		map.put("key3", "value3");
+		map.put("key4", "value4");
+		// тут тоже все хорошо
+		assertEquals(4, map.size());
+		
+		map.entrySet().forEach(System.out::println);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void addNullToTreeMap() {
+		Map<String, String> map = new TreeMap<>();
+		map.put("key1", "value1");
+		map.put(null, "nullValue");
+	}
 	
 	@Test
 	public void collectionDisjoint() {
@@ -65,11 +109,12 @@ public class CollectionPlayground {
 	@Test
 	public void createCharacterStatistic() {
 		String text = "aaaBBbbCC11233546556";
+		
 		Collection<Character> collection = new ArrayList<>();
 		for (Character c : text.toCharArray()) {
 			collection.add(c);
 		}
-
+		
 		final Map<Character, Long> statistic = 
 				collection.stream()
 				.map(t->Character.toLowerCase(t))
@@ -94,7 +139,6 @@ public class CollectionPlayground {
 				Collectors.groupingBy(t->t.group, 
 				Collectors.counting())
 		);
-		
 		collect.entrySet().forEach(System.out::println);
 	}
 	
@@ -124,3 +168,4 @@ public class CollectionPlayground {
 	}
 
 }
+
