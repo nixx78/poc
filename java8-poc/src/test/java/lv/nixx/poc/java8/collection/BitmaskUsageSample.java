@@ -7,13 +7,13 @@ import static lv.nixx.poc.java8.collection.BitmaskUsageSample.Permissions.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.Set;
+
 import java.util.stream.Collectors;
 
 import org.junit.Test;
 
 public class BitmaskUsageSample {
-
+	
 	@Test
 	public void parseValueIntoPermissions() {
 		Collection<Permissions> p = getPermissions(1+ 8);
@@ -36,11 +36,9 @@ public class BitmaskUsageSample {
 	}
 	
 	private Collection<Permissions> getPermissions(int value) {
-		final Set<Permissions> permissions = Arrays.stream(Permissions.values())
-				.filter(p -> (p.bit & value) > 0)
-				.collect(Collectors.toSet());
-		
-		return permissions;
+		return Arrays.stream(Permissions.values())
+					.filter(p -> (p.bit & value) > 0)
+					.collect(Collectors.toSet());
 	}
 
 	enum Permissions {

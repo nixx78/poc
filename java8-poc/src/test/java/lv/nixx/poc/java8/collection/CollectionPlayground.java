@@ -3,17 +3,8 @@ package lv.nixx.poc.java8.collection;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.stream.*;
 
 import org.junit.Test;
 
@@ -57,6 +48,13 @@ public class CollectionPlayground {
 		map.put("key1", "value1");
 		map.put(null, "nullValue");
 	}
+	
+	@Test
+	public void sumOfElement() {
+		Collection<Integer> c = Arrays.asList(1, 2, 3, 4, 5, 6, 7);
+		final Optional<Integer> sum = c.stream().reduce((t1, t2) -> t1 + t2);
+		assertEquals(Integer.valueOf(28), sum.get());
+	}	
 	
 	@Test
 	public void collectionDisjoint() {
