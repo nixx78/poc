@@ -12,15 +12,16 @@ public class CollectionPlayground {
 	
 	@Test
 	public void listTraverse() {
-		List<String> lst = new ArrayList<>(Arrays.asList("10", "20", "30", "40"));
+		List<String> lst = new ArrayList<>(Arrays.asList("10", "20",null,"30","40"));
+		
 		ListIterator<String> iterator = lst.listIterator();
 		while(iterator.hasNext()) {
 			String s = iterator.next();
-			if (s.equals("30")) {
-				lst.remove(s);
+			if (s != null && s.equals("30")) {
+				iterator.remove();
 			}
 		}
-		assertEquals(Arrays.asList("10", "20", "40"), lst);
+		assertEquals(Arrays.asList("10", "20", null, "40"), lst);
 	}
 	
 	@Test
