@@ -10,6 +10,57 @@ import org.junit.Test;
 
 public class CollectionPlayground {
 	
+	@Test
+	public void listTraverse() {
+		List<String> lst = new ArrayList<>(Arrays.asList("10", "20", "30", "40"));
+		ListIterator<String> iterator = lst.listIterator();
+		while(iterator.hasNext()) {
+			String s = iterator.next();
+			if (s.equals("30")) {
+				lst.remove(s);
+			}
+		}
+		assertEquals(Arrays.asList("10", "20", "40"), lst);
+	}
+	
+	@Test
+	public void linkedListVsArrayList() {
+		long st = System.currentTimeMillis();
+		final int iterationCount = 100;
+		
+		List<String> c1 = new ArrayList<>();
+		for (int i = 0; i < iterationCount; i++) {
+			c1.add(0,String.valueOf(i));
+		}
+		
+		System.out.println("ArrayList time: " + (System.currentTimeMillis() - st));
+		st = System.currentTimeMillis();
+		
+		List<String> c2 = new LinkedList<>();
+		for (int i = 0; i < iterationCount; i++) {
+			c2.add(0, String.valueOf(i));
+		}
+		System.out.println("LinkedList time: " + (System.currentTimeMillis() - st));
+
+		st = System.currentTimeMillis();
+		LinkedHashSet<String> s1 = new LinkedHashSet<>();
+		for (int i = 0; i < iterationCount; i++) {
+			s1.add(String.valueOf(i));
+		}
+		System.out.println("HashSet time: " + (System.currentTimeMillis() - st));
+	}
+	
+	@Test
+	public void linkedHashSet() {
+		Set<String> s1 = new LinkedHashSet<>();
+		s1.add("1");
+		s1.add("8");
+		s1.add("2");
+		s1.add(null);
+		s1.add("10");
+		s1.forEach(System.out::println);
+	}
+	
 	@Test(expected = NullPointerException.class)
 	public void nullToTreeSet() {
 		Set<String> set = new TreeSet<>();
@@ -18,8 +69,9 @@ public class CollectionPlayground {
 	}
 	
 	@Test
-	public void nullToSet() {
-		Set<String> set = new LinkedHashSet<>();
+	public void nullToLinkedHashSet() {
+		// Тоже самое будет работать с HashSet
+		Set<String> set = new LinkedHashSet<>();  
 		set.add("s1");
 		set.add("s2");
 		set.add(null);
@@ -30,7 +82,7 @@ public class CollectionPlayground {
 	
 	@Test
 	public void linkedHashMap() {
-		Map<String, String> map = new HashMap<>();
+		Map<String, String> map = new LinkedHashMap<>();
 		map.put("key1", "value1");
 		map.put(null, null);
 		map.put(null, "nullValue");
@@ -166,4 +218,5 @@ public class CollectionPlayground {
 	}
 
 }
+
 
