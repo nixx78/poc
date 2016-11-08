@@ -11,6 +11,18 @@ import org.junit.Test;
 public class CollectionPlayground {
 	
 	@Test
+	public void effectiveFinal() {
+		int[] numbers = { 1, 2, 20, 40, 77 };
+		int threshold = 10;
+		/* If we try to set: threshold = 20; 
+		We get compilation error: 
+		"Local variable threshold defined in an enclosing scope must be final or effectively final"
+		*/
+		final long count = Arrays.stream(numbers).filter(t -> t > threshold).count();
+		assertEquals(3, count);
+	}
+	
+	@Test
 	public void listTraverse() {
 		List<String> lst = new ArrayList<>(Arrays.asList("10", "20",null,"30","40"));
 		
@@ -27,9 +39,9 @@ public class CollectionPlayground {
 	@Test
 	public void linkedListVsArrayList() {
 		long st = System.currentTimeMillis();
-		final int iterationCount = 100;
+		final int iterationCount = 100000;
 		
-		List<String> c1 = new ArrayList<>();
+		ArrayList<String> c1 = new ArrayList<>();
 		for (int i = 0; i < iterationCount; i++) {
 			c1.add(0,String.valueOf(i));
 		}
@@ -37,7 +49,7 @@ public class CollectionPlayground {
 		System.out.println("ArrayList time: " + (System.currentTimeMillis() - st));
 		st = System.currentTimeMillis();
 		
-		List<String> c2 = new LinkedList<>();
+		LinkedList<String> c2 = new LinkedList<>();
 		for (int i = 0; i < iterationCount; i++) {
 			c2.add(0, String.valueOf(i));
 		}
