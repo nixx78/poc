@@ -1,0 +1,1 @@
+﻿mvn exec:java -Dexec.mainClass="lv.nixx.poc.aop.aspect.Application"
