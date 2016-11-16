@@ -4,13 +4,13 @@ import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
 
-import lv.nixx.poc.domain.*;
-import lv.nixx.poc.exception.IntegrationException;
-import lv.nixx.poc.exception.UpdateException;
+import lv.nixx.poc.mockito.domain.*;
+import lv.nixx.poc.mockito.exception.IntegrationException;
+import lv.nixx.poc.mockito.exception.UpdateException;
 
-import lv.nixx.poc.integration.*;
-import lv.nixx.poc.service.*;
-import lv.nixx.poc.service.dao.BankSystemDAO;
+import lv.nixx.poc.mockito.dao.BankSystemDAO;
+import lv.nixx.poc.mockito.integration.IntegratorImpl;
+import lv.nixx.poc.mockito.service.BWService;
 
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -33,7 +33,7 @@ public class Integrator_ConnectCustomer_MockTest {
 	BankSystemDAO daoMock;
 
 	@InjectMocks
-	private ConcreteIntegrator manager;
+	private IntegratorImpl manager;
 
 	@Test
 	public void connectCustomerSuccess() throws Exception {

@@ -5,9 +5,11 @@ import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
 
-import lv.nixx.poc.domain.Payment;
-import lv.nixx.poc.integration.*;
-import lv.nixx.poc.service.dao.BankSystemDAO;
+import lv.nixx.poc.mockito.domain.Payment;
+import lv.nixx.poc.mockito.integration.*;
+import lv.nixx.poc.mockito.dao.BankSystemDAO;
+import lv.nixx.poc.mockito.service.BWService;
+import lv.nixx.poc.mockito.service.BWServiceImpl;
 
 import org.junit.*;
 import org.mockito.invocation.InvocationOnMock;
@@ -43,11 +45,11 @@ public class Integrator_PaymentCreate_MockTest {
 		// describe expected behavior for mock objects
 		when(daoMock.getPaymentReferenceNumber("9999")).thenReturn("pmt9999Reference");
 		
-		Integrator manager = new ConcreteIntegrator();
+		Integrator manager = new IntegratorImpl();
 		
 		// inject mock objects into Integration Manager instance
-		((ConcreteIntegrator)manager).setBwService(bwServiceMock);
-		((ConcreteIntegrator)manager).setDao(daoMock);
+		((IntegratorImpl)manager).setBwService(bwServiceMock);
+		((IntegratorImpl)manager).setDao(daoMock);
 		
 		// create payment instance
 		Payment payment = new Payment();
@@ -78,8 +80,8 @@ public class Integrator_PaymentCreate_MockTest {
 		// create instance to real implementation. Also, we create "spy" to this instance 
 		BWServiceImpl bwServceSpy = spy(new BWServiceImpl());
 		
-		Integrator manager = new ConcreteIntegrator();
-		((ConcreteIntegrator)manager).setBwService(bwServceSpy);
+		Integrator manager = new IntegratorImpl();
+		((IntegratorImpl)manager).setBwService(bwServceSpy);
 		
 		Payment payment = new Payment();
 		payment.id = "1001";
