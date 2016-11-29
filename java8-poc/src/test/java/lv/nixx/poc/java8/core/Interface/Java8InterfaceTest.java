@@ -37,6 +37,7 @@ public class Java8InterfaceTest {
 		
 		assertTrue(ab instanceof InterfaceA);
 		assertTrue(ab instanceof InterfaceB);
+		assertTrue(ab instanceof ClassAB);
 
 		assertEquals("data:interfaceB", ab.getData());
 	}

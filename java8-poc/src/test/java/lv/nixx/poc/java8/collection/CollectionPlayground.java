@@ -205,6 +205,53 @@ public class CollectionPlayground {
 		collect.entrySet().forEach(System.out::println);
 	}
 	
+	@Test
+	public void theLongestWord_CollectMethod() {
+		List<String> str = Arrays.asList("123","1", "12", "12345");
+		
+		final Optional<String> collect =str.stream()
+				.collect(
+//						Collectors.maxBy( (t1, t2) -> t1.length() < t2.length() ? -1 : (t1.length() == t2.length() ? 0 : 1))
+						Collectors.maxBy((t1,t2) -> Integer.compare(t1.length(),t2.length()))
+				);
+
+		
+		
+		assertTrue(collect.isPresent());
+		assertEquals("12345", collect.get());
+	}
+	
+	@Test
+	public void listToString() {
+		Collection<String> lst = Arrays.asList("1","2","3");
+		final String c = lst.stream().collect(Collectors.joining(",", "<e>", "</e>"));
+		System.out.println(c);
+	}
+	
+	@Test
+	public void computeIfAbsent() {
+		
+		Map<String, String> map = new HashMap<>();
+		
+		map.computeIfAbsent("1", t -> System.currentTimeMillis() + t);
+		
+		map.forEach((k,v) -> System.out.println(k + ":" + v) );
+		
+	}
+
+	
+	@Test
+	public void theLongestWord_ReduceMethod() {
+		List<String> str = Arrays.asList("123", "1", "12", "12345");
+
+		final Optional<String> collect = str.stream()
+				.collect(Collectors.reducing((t, u) -> t.length() > u.length() ? t : u));
+		
+		assertTrue(collect.isPresent());
+		assertEquals("12345", collect.get());
+	}
+		
+	
 	class Holder {
 		Group group;
 		Character c;

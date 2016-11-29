@@ -240,6 +240,22 @@ public class TxnLambdaModification {
 
 		assertEquals(3,r.size());
 	}
+	
+	@Test
+	public void partitioningBy() {
+		List<Transaction> txns = Arrays.asList(
+				new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"),
+				new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD"),
+				new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"),
+				new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR")
+				);
+		
+		final Map<Boolean, List<Transaction>> c = txns.stream()
+				.collect(Collectors.partitioningBy(t -> t.getCurrency().equals("USD")));
+		
+		c.forEach((b, t) -> System.out.println(b + ":" + t));
+	}
+
 
 
 	class AccountHolder {
