@@ -214,11 +214,26 @@ public class CollectionPlayground {
 //						Collectors.maxBy( (t1, t2) -> t1.length() < t2.length() ? -1 : (t1.length() == t2.length() ? 0 : 1))
 						Collectors.maxBy((t1,t2) -> Integer.compare(t1.length(),t2.length()))
 				);
-
-		
 		
 		assertTrue(collect.isPresent());
 		assertEquals("12345", collect.get());
+	}
+	
+	@Test
+	public void peekTest() {
+		
+		List<String> str = Arrays.asList("10","1", "12", "22");
+		
+		final int sum = str.stream()
+			.sorted()
+			.peek(System.out::println)
+			.map(t->Integer.parseInt(t))
+			.filter(t->t>10)
+			.mapToInt(t->t).sum();
+
+		assertEquals(34, sum);
+		
+		System.out.println("Sum:" + sum);
 	}
 	
 	@Test
@@ -249,6 +264,14 @@ public class CollectionPlayground {
 		
 		assertTrue(collect.isPresent());
 		assertEquals("12345", collect.get());
+	}
+	
+	@Test
+	public void initArray() {
+		int[] a = new int[100];
+		Arrays.parallelSetAll(a, i->i);
+		
+		System.out.println(Arrays.toString(a));
 	}
 		
 	

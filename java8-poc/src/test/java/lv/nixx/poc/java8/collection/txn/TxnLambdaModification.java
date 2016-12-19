@@ -1,19 +1,25 @@
 package lv.nixx.poc.java8.collection.txn;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
-
-import lv.nixx.poc.java8.collection.txn.Transaction;
 
 public class TxnLambdaModification {
 
@@ -241,6 +247,7 @@ public class TxnLambdaModification {
 		assertEquals(3,r.size());
 	}
 	
+	
 	@Test
 	public void partitioningBy() {
 		List<Transaction> txns = Arrays.asList(
@@ -255,8 +262,6 @@ public class TxnLambdaModification {
 		
 		c.forEach((b, t) -> System.out.println(b + ":" + t));
 	}
-
-
 
 	class AccountHolder {
 
