@@ -35,11 +35,11 @@ public class MatrixMultiplication {
 
 		int[][] res = new int[aRows][bColumns];
 		
-		System.out.println("Res Matrix size: [" + res[0].length + "*" + res.length + "]");
+		System.out.println("Resulting matrix size: [" + res[0].length + "*" + res.length + "]");
 
-		for (int i = 0; i < aRows; i++) { // aRow
-			for (int j = 0; j < bColumns; j++) { // bColumn
-				for (int k = 0; k < aColumns; k++) { // aColumn
+		for (int i = 0; i < aRows; i++) { // For each A matrix Row
+			for (int j = 0; j < bColumns; j++) { // For each B matrix Column
+				for (int k = 0; k < aColumns; k++) { // A column and B row
 					res[i][j] += A[i][k] * B[k][j];
 				}
 			}
