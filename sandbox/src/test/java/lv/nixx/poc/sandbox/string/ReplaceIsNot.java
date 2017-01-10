@@ -59,13 +59,13 @@ public class ReplaceIsNot {
 				final String last2Chars = s.substring(i-2, i);
 
 				if (last2Chars.equals("is")) {
-					if ( i-2 == 0 && s.charAt(i) == ' ' ) {
+					if ( i-2 == 0 && isCharAtSpace(s,i) ) {
 						sb.append("not ");
 					} else {
 						final int prevElemIndex = i-3;
-						if (i==length && s.charAt(prevElemIndex) == ' ' ) {
+						if (i==length && isCharAtSpace(s,prevElemIndex)) {
 							sb.append(" not");	
-						} else if (prevElemIndex >= 0 && s.charAt(prevElemIndex) == ' ' && s.charAt(i) == ' '){
+						} else if (prevElemIndex >= 0 && isCharAtSpace(s,prevElemIndex) && isCharAtSpace(s, i)){
 							sb.append("not ");
 						}
 					}
@@ -74,6 +74,10 @@ public class ReplaceIsNot {
 			i++;
 		}
 		return sb.toString();
+	}
+	
+	private boolean isCharAtSpace(String s, int index) {
+		return s.charAt(index) == ' '; 
 	}
 
 }
