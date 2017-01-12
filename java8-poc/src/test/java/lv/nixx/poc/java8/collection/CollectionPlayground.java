@@ -24,7 +24,7 @@ public class CollectionPlayground {
 	
 	@Test
 	public void listTraverse() {
-		List<String> lst = new ArrayList<>(Arrays.asList("10", "20",null,"30","40"));
+		List<String> lst = Arrays.asList("10", "20",null,"30","40");
 		
 		ListIterator<String> iterator = lst.listIterator();
 		while(iterator.hasNext()) {
