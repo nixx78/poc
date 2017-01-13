@@ -35,9 +35,8 @@ public class LongestSequence {
 		for (int i = 0; i < in.length(); i++) {
 			char c = in.charAt(i);
 			if (seq.contains(c)) {
-				String currSeq = stringValue(seq);
-				if ( maxSequence.length() < currSeq.length() ) {
-					maxSequence = currSeq;
+				if ( maxSequence.length() < seq.size() ) {
+					maxSequence = stringValue(seq);
 				}
 				seq.clear();
 			} else {
