@@ -10,7 +10,7 @@ public class DelayQueueTest {
 		final BlockingQueue<Email> queue = new DelayQueue<>();
 
 		new DelayQueueProducer(queue).start();
-		new DelayQueueConsumer("Consumer Thread-1", queue).start();
+		new DelayQueueConsumer(queue).start();
 
 	}
 	

@@ -17,6 +17,7 @@ public class DelayQueueSandbox {
 		
 		System.out.println("DelayQueue filled");
 
+		// Сообщения извлекаются в порядке задержки
 		System.out.println(q.take());
 		System.out.println(q.take());
 		System.out.println(q.take());

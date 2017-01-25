@@ -4,32 +4,28 @@ import java.util.concurrent.BlockingQueue;
 
 public class DelayQueueConsumer {
 
-	private String name;
-	private final BlockingQueue<Email> queue;
+	private BlockingQueue<Email> queue;
 
-	public DelayQueueConsumer(String name, BlockingQueue<Email> queue) {
-		this.name = name;
+	public DelayQueueConsumer(BlockingQueue<Email> queue) {
 		this.queue = queue;
 	}
 
-	private Thread consumerThread = new Thread(new Runnable() {
-		@Override
-		public void run() {
+	public void start() {
+		
+		Thread consumerThread = new Thread(() -> {
+			String tname = Thread.currentThread().getName();
 			while (true) {
 				try {
 					Email email = queue.take();
-					System.out.printf("[%s] - Sending mail when delay is over = %s%n", name, email);
+					System.out.printf("[%s] - Sending mail when delay is over = %s%n", tname, email);
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
-		}
-	});
+		}, "Consumer Thread-1");
 
-	public void start() {
-		this.consumerThread.setName(name);
-		this.consumerThread.start();
+		consumerThread.start();
 	}
 
 }
