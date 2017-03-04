@@ -273,6 +273,15 @@ public class CollectionPlayground {
 		
 		System.out.println(Arrays.toString(a));
 	}
+	
+		
+	@Test
+	public void findMissing() {
+		int[] a = new int[]{1,2,5,3,2,1,3};
+		
+		final int r = Arrays.stream(a).reduce(0, (x,y)-> x^y);
+		assertEquals(5, r);
+	}
 		
 	
 	class Holder {
