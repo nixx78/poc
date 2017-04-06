@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -20,7 +22,7 @@ public class WordFinder {
 		if (word.length() < 12)
 			throw new IllegalArgumentException("Word length must be at least 12 chracters");
 
-		Set<Character> wordSet = new HashSet<>(word.length());
+		List<Character> wordSet = new LinkedList<>();
 		for (char c : word.toCharArray()) {
 			wordSet.add(c);
 		}
@@ -40,7 +42,7 @@ public class WordFinder {
 		return longestWord;
 	}
 
-	private boolean isBelongToCharset(String dWord, Set<Character> charset) {
+	private boolean isBelongToCharset(String dWord, List<Character> charset) {
 		Set<Character> localCharset = new HashSet<>(charset);
 		
 		boolean isBelongToCharset = true;
