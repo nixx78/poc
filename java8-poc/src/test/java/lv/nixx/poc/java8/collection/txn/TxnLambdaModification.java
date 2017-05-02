@@ -2,8 +2,13 @@ package lv.nixx.poc.java8.collection.txn;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
@@ -262,7 +267,47 @@ public class TxnLambdaModification {
 		
 		c.forEach((b, t) -> System.out.println(b + ":" + t));
 	}
-
+	
+	@Test
+	public void txnCreateFromString() throws Exception {
+		String txnString = 
+				"id1, 10.30, ACC1, USD\n" +
+				"id2, 20.40, ACC2, USD\n" +
+				"id3, 5.00,  ACC3, EUR\n" + 
+				"id4, 20.00, ACC3, EUR\n" +
+				"id5, 15.00, ACC4, EUR\n";
+		
+		try (BufferedReader br = new BufferedReader(new StringReader(txnString))) {
+			final List<Transaction> txnList = br.lines()
+			.map( t-> t.split("\\,"))
+			.filter( t-> t.length == 4)
+			.map(this::removeSpaces)
+			.map(t-> new Transaction( t[0], parse(t[1]), t[2], t[3]))
+			.collect(Collectors.toList());
+			
+			txnList.forEach(System.out::println);
+		}
+	}
+	
+	private String[] removeSpaces(String[] source){
+		for (int i = 0; i < source.length; i++) {
+			source[i] = source[i].trim();
+		}
+		return source;
+	}
+	
+	private BigDecimal parse(String amount) {
+		DecimalFormat df = new DecimalFormat();
+		df.setParseBigDecimal(true);
+		try {
+			return (BigDecimal)df.parse(amount.trim());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return BigDecimal.ZERO;
+	}
+	
 	class AccountHolder {
 
 		Map<String, Account> accounts = new HashMap<>();
