@@ -1,15 +1,10 @@
 package lv.nixx.poc.guice.service;
 
-import javax.inject.Singleton;
-
-import com.google.inject.Provider;
-
-@Singleton
-public class LoggerImpl implements Provider<ServiceLogger> {
+public class LoggerImpl implements ServiceLogger {
 
 	@Override
-	public ServiceLogger get() {
-		return null;
-	}
+	public void log(String message) {
+		System.out.println("log:" + message);
+	} 
 
 }

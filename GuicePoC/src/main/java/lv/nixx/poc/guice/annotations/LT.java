@@ -1,4 +1,4 @@
-package lv.nixx.poc.guice;
+package lv.nixx.poc.guice.annotations;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -11,6 +11,5 @@ import com.google.inject.BindingAnnotation;
 @BindingAnnotation
 @Retention(RUNTIME)
 @Target({ FIELD, PARAMETER, METHOD })
-public @interface LV {
-
+public @interface LT {
 }

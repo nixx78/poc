@@ -20,8 +20,10 @@ public class ApplicationWithGuiceInjection {
 		
 		System.out.println(app.requestFacade.processRequest("lv", "req1"));
 		System.out.println(app.requestFacade.processRequest("lt", "req2"));
+		
+		System.out.println(app.requestFacade.processRequest("lv", "req3"));
+		System.out.println(app.requestFacade.processRequest("lv", "req4"));
+		System.out.println(app.requestFacade.processRequest("lv", "req5"));
 	}
-
-
 
 }
