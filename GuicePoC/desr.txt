@@ -1,3 +1,4 @@
 File with project description: new data added
 Line added in 'feauture'
 Another line added in master
+Line added in 'feature'
