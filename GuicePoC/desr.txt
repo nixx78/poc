@@ -1,2 +1,6 @@
 File with project description: new data added
+<<<<<<< HEAD
 Line added in 'feauture'
+=======
+Another line added in master
+>>>>>>> master
