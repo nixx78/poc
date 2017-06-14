@@ -1,6 +1,6 @@
 package lv.nixx.poc.guice.service;
 
-public class LoggerImpl implements ServiceLogger {
+public class ServiceLoggerImpl implements ServiceLogger {
 
 	@Override
 	public void log(String message) {
