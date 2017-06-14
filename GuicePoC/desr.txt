@@ -4,3 +4,4 @@ Another line added in master
 Line added in 'feature'
 End line added
 $$$$$$$$$$$$$$$$$$$$$$$$$$
+another line
