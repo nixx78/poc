@@ -5,3 +5,4 @@ Line added in 'feature'
 End line added
 $$$$$$$$$$$$$$$$$$$$$$$$$$
 another line
+end line
