@@ -5,6 +5,10 @@ import javax.inject.Singleton;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
+import lv.nixx.poc.guice.service.LtBankCoreService;
+import lv.nixx.poc.guice.service.LvBankCoreService;
+import lv.nixx.poc.guice.service.ServiceInterface;
+
 public class CoreBankConfig extends AbstractModule {
 
 	@Override
@@ -12,12 +16,12 @@ public class CoreBankConfig extends AbstractModule {
 	}
 	
 	@Provides @LV @Singleton
-	public Service ltCoreService() {
+	public ServiceInterface ltCoreService() {
 		return new LtBankCoreService();
 	}
 
 	@Provides @LT @Singleton
-	public Service lvCoreService() {
+	public ServiceInterface lvCoreService() {
 		return new LvBankCoreService();
 	}
 	
