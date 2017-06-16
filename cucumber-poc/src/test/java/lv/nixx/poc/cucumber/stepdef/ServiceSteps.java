@@ -35,9 +35,9 @@ public class ServiceSteps {
 	
 	@Given("^Users with passwords exists:$")
 	public void usersWithPasswordsExists(DataTable dataTable) {
-		final TableConverter tableConverter = dataTable.getTableConverter();
-		final Map<String, String> map = tableConverter.toMap(dataTable, String.class, String.class);
-		map.entrySet().stream().forEach(System.out::println);
+//		final TableConverter tableConverter = dataTable.getTableConverter();
+//		final Map<String, String> map = tableConverter.toMap(dataTable, String.class, String.class);
+//		map.entrySet().stream().forEach(System.out::println);
 	}
 
 
