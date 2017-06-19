@@ -14,11 +14,8 @@ public class StaticMethodsTest {
 
 	@Test
 	public void test(){
-        PowerMockito.mockStatic(ClassWithStaticMethod.class);
-        PowerMockito.when(ClassWithStaticMethod.map("20")).thenReturn("mappedValueFor20");
-        
-        assertEquals("mappedValueFor20", ClassWithStaticMethod.map("20"));
-        assertNull(ClassWithStaticMethod.map("x"));
+        PowerMockito.stub(PowerMockito.method(ClassWithStaticMethod.class, "getValue")).toReturn("mappedValueFor20");
+        assertEquals("#mappedValueFor20#", ClassWithStaticMethod.map("20"));
 	}
 	
 
