@@ -8,12 +8,10 @@ import lv.nixx.poc.guice.service.ServiceInterface;
 
 public class RequestFacade {
 
-	@Inject
-	@LT
+	@Inject	@LT
 	ServiceInterface ltService;
 	
-	@Inject
-	@LV
+	@Inject @LV
 	ServiceInterface lvService;
 	
 	public String processRequest(String country, String request) {
