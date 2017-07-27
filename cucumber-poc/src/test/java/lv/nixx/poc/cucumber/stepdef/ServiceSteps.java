@@ -33,12 +33,4 @@ public class ServiceSteps {
 		assertEquals(r, service.calculate(a, b));
 	}
 	
-	@Given("^Users with passwords exists:$")
-	public void usersWithPasswordsExists(DataTable dataTable) {
-//		final TableConverter tableConverter = dataTable.getTableConverter();
-//		final Map<String, String> map = tableConverter.toMap(dataTable, String.class, String.class);
-//		map.entrySet().stream().forEach(System.out::println);
-	}
-
-
 }
