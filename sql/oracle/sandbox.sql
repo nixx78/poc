@@ -25,7 +25,7 @@ insert into bugs values (777, TO_DATE('06.12.2017', 'dd.mm.yyyy'),TO_DATE('06.12
 commit;
 
 define start_date = TO_DATE('01.09.2017','DD.MM.YYYY');
-define end_date = TO_DATE('30.09.2017','DD.MM.YYYY');
+define end_date = TO_DATE('10.09.2017','DD.MM.YYYY');
 
 select count(*), MONTH_DAY from 
 (SELECT * FROM  bugs T,
@@ -47,10 +47,16 @@ WHERE
 ORDER BY V.MONTH_DAY) group by month_day order by month_day;
 
 
-SELECT MONTH_DAY,count(id) from
+SELECT MONTH_DAY,count(id) count from
 (SELECT MONTH_DAY, T.* FROM (SELECT &start_date + ROWNUM-1 MONTH_DAY FROM DUAL CONNECT BY LEVEL<=(&end_date-&start_date)+1) V
 LEFT JOIN BUGS T ON V.MONTH_DAY BETWEEN OPEN_DATE AND CLOSE_DATE or (CLOSE_DATE IS NULL AND V.MONTH_DAY>=OPEN_DATE)
 )
 GROUP BY MONTH_DAY
 ORDER BY MONTH_DAY;
 
+SELECT MONTH_DAY,count(id) count, listagg(id,',') within group (order by id) ids  from
+(SELECT MONTH_DAY, T.* FROM (SELECT &start_date + ROWNUM-1 MONTH_DAY FROM DUAL CONNECT BY LEVEL<=(&end_date-&start_date)+1) V
+LEFT JOIN BUGS T ON V.MONTH_DAY BETWEEN OPEN_DATE AND CLOSE_DATE or (CLOSE_DATE IS NULL AND V.MONTH_DAY>=OPEN_DATE)
+)
+GROUP BY MONTH_DAY
+ORDER BY MONTH_DAY;
