@@ -3,9 +3,7 @@ package lv.nixx.poc.java9;
 import static java.util.Map.entry;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import org.junit.Test;
 
@@ -16,14 +14,14 @@ public class Java9Sandbox {
 	public void listOf() {
 		final List<String> lst = List.of("1","2","3","4");
 		lst.forEach(System.out::println);
-	}
+ 	}
 	
 	@Test
 	public void mapOf() {
 		Map<Integer, String> map = Map.of(1, "one", 2, "two", 3, "three");
 		map.entrySet().forEach(System.out::println);
 		
-		map =Map.ofEntries(entry(1,"one"), entry(2, "two"), entry(3, "three"), entry(4, "four"));
+		map = Map.ofEntries(entry(1,"one"), entry(2, "two"), entry(3, "three"), entry(4, "four"));
 
 		map.entrySet().forEach(System.out::println);
 	}

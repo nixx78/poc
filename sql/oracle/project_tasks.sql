@@ -17,6 +17,7 @@ INSERT INTO TASK VALUES(2, 10, 'TASK2_10');
 INSERT INTO TASK VALUES(3, 40, 'TASK3_40');
 INSERT INTO TASK VALUES(4, 60, 'TASK4_60');
 INSERT INTO TASK VALUES(5, NULL, 'TASK5_NO');
+INSERT INTO TASK VALUES(6, NULL, 'TASK6_NO');
 
 select * from project p left join task t on p.id = t.project_id order by p.id;
 select p.* from project p left join task t on p.id = t.project_id where t.project_id is null order by p.id;
