@@ -1,13 +1,5 @@
 package lv.nixx.poc.spring5poc;
 
-import reactor.ipc.netty.http.server.HttpServer;
-
-import org.springframework.http.HttpMethod;
-import org.springframework.http.server.reactive.HttpHandler;
-import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.ServerResponse;
-
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
@@ -19,10 +11,19 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.n
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.RouterFunctions.toHttpHandler;
 
+import org.springframework.http.HttpMethod;
+import org.springframework.http.server.reactive.HttpHandler;
+import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter;
+import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.ServerResponse;
+
+import reactor.ipc.netty.http.server.HttpServer;
+
 public class TransactionRestServer {
 
 	public static final String HOST = "localhost";
 	public static final int PORT = 8080;
+	
 
 	public static void main(String[] args) throws Exception {
 		TransactionRestServer server = new TransactionRestServer();
@@ -34,13 +35,17 @@ public class TransactionRestServer {
 
 	public RouterFunction<ServerResponse> routingFunction() {
 		TransactionRepository repository = new MockTransactionRepository();
-		TransactionHandler handler = new TransactionHandler(repository);
 
+		TransactionHandler handler = new TransactionHandler(repository);
+		RequestFilter filter = new RequestFilter();
+		
 		return nest(path("/transaction"),
 				nest(accept(APPLICATION_JSON),
 						route(GET("/{id}"), handler::getTransaction)
+						.filter(filter::filter)
 						.andRoute(method(HttpMethod.GET), handler::getTransactionList))
-						.andRoute(POST("/").and(contentType(APPLICATION_JSON)),handler::createTransaction));
+						.andRoute(POST("/")
+						.and(contentType(APPLICATION_JSON)),handler::createTransaction));
 	}
 
 	public void startReactorServer() throws InterruptedException {
