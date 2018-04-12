@@ -2,6 +2,7 @@ package lv.nixx.poc.java8.optional;
 
 import static org.junit.Assert.*;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -91,6 +92,25 @@ public class OptionalMapping {
 		collect.forEach(System.out::println);
 
 	}
+	
+	@Test
+	public void stringToBigDecimalMap() {
+		
+		assertEquals(BigDecimal.ZERO, getSalary(new Person("name1")));
+
+		Person person = new Person("name2");
+		person.setSalary("100.22");
+		
+		assertEquals(BigDecimal.valueOf(100.22), getSalary(person));
+		assertEquals(BigDecimal.ZERO, getSalary(null));
+	}
+	
+	private BigDecimal getSalary(Person person) {
+		return Optional.ofNullable(person)
+				.map(Person::getSalary)
+				.map(BigDecimal::new)
+				.orElse(BigDecimal.ZERO);
+	}
 
 	private String getElseValue() {
 		return "else.value";
@@ -112,6 +132,11 @@ public class OptionalMapping {
 	class Person {
 		String name;
 		Address address;
+		String salary;
+		
+		Person(String name) {
+			this.name = name;
+		}
 
 		Person(String name, Address address) {
 			this.name = name;
@@ -125,6 +150,15 @@ public class OptionalMapping {
 		Address getAddress() {
 			return address;
 		}
+
+		public String getSalary() {
+			return salary;
+		}
+
+		public void setSalary(String salary) {
+			this.salary = salary;
+		}
+		
 
 	}
 
