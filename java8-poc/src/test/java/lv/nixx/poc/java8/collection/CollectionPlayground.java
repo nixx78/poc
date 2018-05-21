@@ -171,6 +171,20 @@ public class CollectionPlayground {
 	}
 	
 	@Test
+	public void computeIfPresent() {
+		
+		Map<Integer, String> map = new HashMap<>();
+		map.put(1, "One");
+		map.put(2, "Two");
+		map.put(3, "Three");
+		map.put(4, "Four");
+		
+		System.out.println(map.computeIfPresent(2, (k, v) -> { return k + ":" + v + " mapped";}));
+		
+		assertEquals("2:Two mapped", map.get(2));
+	}
+	
+	@Test
 	public void createCharacterStatistic() {
 		String text = "aaaBBbbCC11233546556";
 		
