@@ -185,6 +185,7 @@ public class CollectionPlayground {
 		assertEquals("2:Two mapped", map.get(2));
 	}
 	
+	
 	@Test
 	public void createCharacterStatistic() {
 		String text = "aaaBBbbCC11233546556";
