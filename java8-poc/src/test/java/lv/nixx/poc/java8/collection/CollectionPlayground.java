@@ -132,6 +132,7 @@ public class CollectionPlayground {
 		assertTrue("Collections are equals", Collections.disjoint(c1, c2));
 	}
 	
+	
 	@Test
 	public void arrayStreamProcessing() {
 		int[] intArray = new int[]{5, 99, 60, 12, 7, 5, 100, 777};
