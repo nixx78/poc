@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.*;
 
 import org.junit.Test;
@@ -24,7 +25,7 @@ public class CollectionPlayground {
 	
 	@Test
 	public void listTraverse() {
-		List<String> lst = Arrays.asList("10", "20",null,"30","40");
+		List<String> lst = new ArrayList<>(Arrays.asList("10", "20",null,"30","40"));
 		
 		ListIterator<String> iterator = lst.listIterator();
 		while(iterator.hasNext()) {
@@ -296,6 +297,24 @@ public class CollectionPlayground {
 		
 		final int r = Arrays.stream(a).reduce(0, (x,y)-> x^y);
 		assertEquals(5, r);
+	}
+	
+	@Test
+	public void  hashedMapModification() {
+		
+		Map<String, String> map = new ConcurrentHashMap<>();
+		map.put("V1",  "V1");
+		map.put("V2",  "V2");
+		map.put("V3",  "V3");
+		map.put("V4",  "V4");
+		
+		Collection<String> values = map.values();
+		for (String v : values) {
+			map.remove(v);
+		}
+		
+		assertEquals(0, map.size());
+		
 	}
 		
 	

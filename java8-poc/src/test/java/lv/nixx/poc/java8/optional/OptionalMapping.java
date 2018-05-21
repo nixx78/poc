@@ -5,7 +5,10 @@ import static org.junit.Assert.*;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -90,7 +93,43 @@ public class OptionalMapping {
 				.collect(Collectors.toList());
 
 		collect.forEach(System.out::println);
+	}
+	
+	@Test
+	public void mapSample() {
+		Person person = new Person("name.value0", new Address("street.value0", 100));
+		Person personWithNullAddress = new Person("name.value0", null);
+		Person personWithNullNum = new Person("name.value0", new Address("street.value0", null)); 
+		
+		assertEquals("100mapped", Optional.ofNullable(person)
+				.map(Person::getAddress)
+				.map(Address::getHouseNum)
+				.map(this::mapName)
+				.orElse("NotValue"));
 
+		
+		assertEquals("NotValue", Optional.ofNullable(personWithNullAddress)
+				.map(Person::getAddress)
+				.map(Address::getHouseNum)
+				.map(this::mapName)
+				.orElse("NotValue"));
+
+		assertEquals("NotValue", Optional.ofNullable(personWithNullNum)
+				.map(Person::getAddress)
+				.map(Address::getHouseNum)
+				.map(this::mapName)
+				.orElse("NotValue"));
+
+		
+	}
+	
+	@Test
+	public void test() {
+		Map<String, String> map = new HashMap<>();
+		System.out.println(map.remove("12333"));
+		
+		System.out.println(map.put("100", "String"));
+		
 	}
 	
 	@Test
@@ -103,6 +142,11 @@ public class OptionalMapping {
 		
 		assertEquals(BigDecimal.valueOf(100.22), getSalary(person));
 		assertEquals(BigDecimal.ZERO, getSalary(null));
+	}
+	
+	
+	private String mapName(Integer n)  {
+		return n + "mapped";
 	}
 	
 	private BigDecimal getSalary(Person person) {
