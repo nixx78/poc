@@ -178,16 +178,21 @@ public class TxnLambdaModification {
 				new Transaction("id5", BigDecimal.valueOf(40.14), "ACC3", "EUR")
 				);
 	
+		
 		Map<String, BigDecimal> c = txns.stream()
 				.collect(
 				Collectors.groupingBy(Transaction::getCurrency,
-				Collectors.reducing(BigDecimal.ZERO, Transaction::getAmount, BigDecimal::add))
+						Collectors.reducing(BigDecimal.ZERO, Transaction::getAmount, BigDecimal::add))
 				);
 		
 		c.entrySet().forEach(System.out::println);
 		
 		assertEquals(2, c.size());
 	}
+	
+	
+	
+	
 	
 	@Test
 	public void groupByAccountAmountList() {
@@ -249,6 +254,27 @@ public class TxnLambdaModification {
 
 		assertEquals(3,r.size());
 	}
+	
+	@Test
+	public void txnCountByCurrency() {
+		Set<Amount> set = new HashSet<>();
+		set.add(new Amount("EUR", BigDecimal.valueOf(30.13)));
+		set.add(new Amount("EUR", BigDecimal.valueOf(20.0)));
+		set.add(new Amount("USD", BigDecimal.valueOf(20.12)));
+		set.add(new Amount("USD", BigDecimal.valueOf(50)));
+		set.add(new Amount("GBP", BigDecimal.valueOf(150)));
+		
+		Map<String, Long> r = set.stream()
+				.collect(
+						Collectors.groupingBy(Amount::getCurrency,
+								Collectors.counting())
+						);
+						
+		r.entrySet().forEach(System.out::println);
+
+		assertEquals(3,r.size());
+	}
+	
 	
 	
 	@Test
