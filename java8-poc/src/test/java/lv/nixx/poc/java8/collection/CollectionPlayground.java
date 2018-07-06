@@ -228,8 +228,7 @@ public class CollectionPlayground {
 		
 		final Optional<String> collect =str.stream()
 				.collect(
-//						Collectors.maxBy( (t1, t2) -> t1.length() < t2.length() ? -1 : (t1.length() == t2.length() ? 0 : 1))
-						Collectors.maxBy((t1,t2) -> Integer.compare(t1.length(),t2.length()))
+						Collectors.maxBy(Comparator.comparingInt( t-> t.length()))
 				);
 		
 		assertTrue(collect.isPresent());
@@ -317,6 +316,26 @@ public class CollectionPlayground {
 		assertEquals(0, map.size());
 		
 	}
+	
+	@Test
+	public void listMapping() {
+		
+		Collection<String> origs = Arrays.asList("1", "2", "3");
+		Map<String, String> map = new HashMap<>();
+		map.put("1", "One");
+		map.put("2", "Two");
+		
+		List<String> mappedList = origs.stream()
+				.map( t-> map.getOrDefault(t, null))
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
+		
+		mappedList.forEach(System.out::println);
+		
+		assertEquals(Arrays.asList("One", "Two"), mappedList);
+		
+	}
+	
 		
 	
 	class Holder {
