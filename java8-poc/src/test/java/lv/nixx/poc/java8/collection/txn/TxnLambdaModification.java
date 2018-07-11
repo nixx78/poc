@@ -217,6 +217,29 @@ public class TxnLambdaModification {
 	}
 	
 	@Test
+	public void groupByCurrencyStatistic() {
+		List<Transaction> txns = Arrays.asList(
+				new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"),
+				new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD"),
+				new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"),
+				new Transaction("id4", BigDecimal.valueOf(20.00), "ACC2", "EUR"),
+				new Transaction("id5", BigDecimal.valueOf(40.14), "ACC3", "EUR"),
+				new Transaction("id6", BigDecimal.valueOf(40.14), "ACC3", "RUR")
+
+				);
+	
+				Map<String, Map<String, Long>> c = txns.stream()
+			           .collect(Collectors.groupingBy(Transaction::getCurrency,
+			               Collectors.groupingBy(Transaction::getAccount, Collectors.counting())
+			               )
+			           );
+			
+		c.entrySet().forEach(System.out::println);
+
+		assertEquals(3, c.size());
+	}
+	
+	@Test
 	public void mapAndGroup() {
 		List<Transaction> txns = Arrays.asList(
 				new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"),
