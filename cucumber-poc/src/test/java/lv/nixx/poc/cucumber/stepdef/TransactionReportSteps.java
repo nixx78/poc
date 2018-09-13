@@ -1,6 +1,7 @@
-package lv.nixx.poc.cucumber.stepdef.transaction;
+package lv.nixx.poc.cucumber.stepdef;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.doReturn;
@@ -92,9 +93,10 @@ public class TransactionReportSteps {
 		assertThat(actualCounts.entrySet(), equalTo(expectedCounts.entrySet()));
 	}
 	
-	@Then("^expect total transaction count (\\\\d+)$\"")
+		   
+	@Then("^expect total transaction count (\\d+)$")
 	public void checkTotal(int count) {
-		
+		assertEquals(count, this.actualReport.getTotalOperationCount());
 	}
 	
 

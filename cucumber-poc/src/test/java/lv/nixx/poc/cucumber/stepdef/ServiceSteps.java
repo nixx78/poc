@@ -1,4 +1,4 @@
-package lv.nixx.poc.cucumber.stepdef.simple;
+package lv.nixx.poc.cucumber.stepdef;
 
 import static org.junit.Assert.assertEquals;
 
