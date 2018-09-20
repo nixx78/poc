@@ -1,20 +1,14 @@
 package lv.nixx.poc.cucumber.transaction;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class Transaction {
-	
-	private long id;
+public class MonthStatistic {
 	private String currency;
+	private int txnCount;
 	private BigDecimal amount;
-	private Date date;
-	
 }

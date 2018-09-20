@@ -1,4 +1,4 @@
-Feature: Transaction report service test count by Count
+Feature: Transaction report service test
 
   Background: 
   	  Given Transaction report service is available
