@@ -5,19 +5,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.any;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 import cucumber.api.DataTable;
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -29,48 +33,53 @@ import lv.nixx.poc.cucumber.transaction.TransactionReportService;
 
 public class TransactionReportSteps {
 	
-	private TransactionReport actualReport;
+	@Spy
+	@InjectMocks
+	private TransactionReportService service;
 	
 	@Mock
 	private TransactionDao dao;
 	
-	@Mock
-	private TransactionReportService service;
-
-	@Given("^Transactions exists:$")
-	public void transactionsExists(DataTable table) {
-		Collection<Transaction> c = new ArrayList<>();
-		for (Map<String, String> row : table.asMaps(String.class, String.class)) {
-	        Transaction t = new Transaction();
-	        t.setId(Long.valueOf(row.get("id")));
-	        t.setAmount(BigDecimal.valueOf(Double.valueOf(row.get("amount"))));
-	        t.setCurrency(row.get("currency"));
-	        try {
-				t.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(row.get("date")));
-			} catch (ParseException e) {
-			}
-	        c.add(t);
-	    }
-		doReturn(c).when(dao).getTransactions(null, null);
+	private TransactionTestContext transactionTestContext;
+	
+	public TransactionReportSteps(TransactionTestContext transactionTestContext) {
+		this.transactionTestContext = transactionTestContext;
+	}
+	
+	@Before
+	public void init() {
+		MockitoAnnotations.initMocks(this);
 	}
 
 	@Given("^Transaction report service is available$")
 	public void transactionServiceCreated() throws Throwable {
-		MockitoAnnotations.initMocks(this);
+		
+		System.out.println("Transaction report service is available$$$$$");
+
 		service = new TransactionReportService();
+		Collection<Transaction> txn = transactionTestContext.txns;
+		doReturn(txn).when(dao).getTransactions(any(Date.class), any(Date.class));
+		
 		service.setDao(dao);
 	}
 	
 	@When("^create report with date range: from \\\"([^\\\"]*)\\\" to \\\"([^\\\"]*)\\\" and count by field \\\"([^\\\"]*)\\\"$")
-	public void createReport(String dateFrom, String dateTo, String countBy) {
-		this.actualReport = service.createReport(null, null, CountBy.valueOf(countBy));
-		assertNotNull(this.actualReport);
+	public void createReport(String dateFrom, String dateTo, String countBy) throws ParseException {
+		
+		Date df = new SimpleDateFormat("dd/MM/yyyy").parse(dateFrom);
+		Date dt = new SimpleDateFormat("dd/MM/yyyy").parse(dateTo);
+		
+		TransactionReport report = service.createReport(df, dt, CountBy.valueOf(countBy));
+		assertNotNull(report);
+		
+		this.transactionTestContext.actualReport = report;
 	}
 	
 	@Then("^expect report with following data:$")
 	public void checkReportRows(DataTable table) {
 		
 		Map<String, BigDecimal> expectedCounts = new HashMap<>();
+		TransactionReport actualReport = this.transactionTestContext.actualReport;
 		
 		for (Map<String, String> row : table.asMaps(String.class, String.class)) {
 			final String curr = row.get("currency");
@@ -88,7 +97,7 @@ public class TransactionReportSteps {
 			expectedCounts.put(curr, bd);
 		}
 		
-		Map<String, BigDecimal> actualCounts = this.actualReport.getCurrency();
+		Map<String, BigDecimal> actualCounts = actualReport.getCurrency();
 		
 		assertThat(actualCounts.entrySet(), equalTo(expectedCounts.entrySet()));
 	}
@@ -96,8 +105,10 @@ public class TransactionReportSteps {
 		   
 	@Then("^expect total transaction count (\\d+)$")
 	public void checkTotal(int count) {
-		assertEquals(count, this.actualReport.getTotalOperationCount());
+		TransactionReport actualReport = this.transactionTestContext.actualReport;
+		assertEquals(count, actualReport.getTotalOperationCount());
 	}
 	
 
 }
+

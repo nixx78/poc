@@ -6,13 +6,13 @@ import static java.math.BigDecimal.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -58,7 +58,7 @@ public class TransactionReportService {
 		Collection<Transaction> txns = dao.getTransactions(dateFrom, dateTo);
 
 		return txns.stream().collect(
-				groupingBy(t -> getMonthFromDate(t.getDate()),
+				groupingBy(t -> getMonthFromDate(t.getDate()),   
 				groupingBy(Transaction::getCurrency, new StaticsticCollector()))
 				);
 	}
@@ -87,7 +87,7 @@ public class TransactionReportService {
 
 		@Override
 		public Set<Characteristics> characteristics() {
-			return new HashSet<>(Arrays.asList(Characteristics.IDENTITY_FINISH));
+			return Collections.emptySet();
 		}
 
 		@Override
