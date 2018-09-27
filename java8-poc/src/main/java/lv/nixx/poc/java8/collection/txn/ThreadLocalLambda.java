@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+
 public class ThreadLocalLambda {
 	
 	ThreadLocal<DateFormat> df = ThreadLocal.withInitial(() -> new SimpleDateFormat("ddMMyyyy"));
