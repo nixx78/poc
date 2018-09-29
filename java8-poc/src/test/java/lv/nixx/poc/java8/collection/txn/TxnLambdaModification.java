@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -335,6 +336,27 @@ public class TxnLambdaModification {
 			txnList.forEach(System.out::println);
 		}
 	}
+	
+	@Test
+	public void sortTxnBySeveralParams() {
+		List<Transaction> txns = Arrays.asList(
+				new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"),
+				new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD"),
+				new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"),
+				new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR"),
+				new Transaction("id4", BigDecimal.valueOf(1.00), "ACC3", "EUR")
+
+				);
+		
+		final Comparator<Transaction> c = 
+				Comparator.comparing(Transaction::getAccount).reversed()
+						  .thenComparing(Transaction::getCurrency)
+						  .thenComparing(Transaction::getAmount);
+				
+		List<Transaction> sorted = txns.stream().sorted(c).collect(Collectors.toList());
+		sorted.forEach(System.out::println);
+	}
+	
 	
 	private String[] removeSpaces(String[] source){
 		for (int i = 0; i < source.length; i++) {
