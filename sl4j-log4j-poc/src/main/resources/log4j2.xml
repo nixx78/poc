@@ -1,9 +1,10 @@
-<Configuration status="WARN">
+<Configuration status="WARN" packages="lv.nixx.poc">
 
 	<Properties>
 		<Property name="LOG_DIR" value="logs" />
 		<Property name="PATTERN_LAYOUT" value="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 	</Properties>
+	
 
 
 	<Appenders>
@@ -11,19 +12,23 @@
 			<PatternLayout>
 				<pattern>${PATTERN_LAYOUT}</pattern>
 			</PatternLayout>
+			<filters>
+				<CustomFilter excludeString = "EX1000" onMatch="DENY" onMismatch="ACCEPT"/>
+			</filters>
+	
 		</Console>
 
 		<RollingFile name="File1" fileName="${LOG_DIR}/app.log" filePattern="${LOG_DIR}/app-%d{MM-dd-yyyy}.log.gz">
 			<TimeBasedTriggeringPolicy />
-			<RegexFilter regex=".* SYSTEM_X .*" onMatch="DENY" onMismatch="ACCEPT" />
+			<RegexFilter regex="SYSTEM_X" onMatch="DENY" onMismatch="ACCEPT" />
 			<PatternLayout>
 				<pattern>${PATTERN_LAYOUT}</pattern>
 			</PatternLayout>
-		</RollingFile>
+			</RollingFile>
 
 		<RollingFile name="SystemXLog" fileName="${LOG_DIR}/system_x.log" filePattern="${LOG_DIR}/system_x-%d{MM-dd-yyyy}.log.gz">
 			<TimeBasedTriggeringPolicy />
-			<RegexFilter regex=".* SYSTEM_X .*" onMatch="ACCEPT" onMismatch="DENY" />
+			<RegexFilter regex="SYSTEM_X" onMatch="ACCEPT" onMismatch="DENY" />
 			<PatternLayout>
 				<pattern>${PATTERN_LAYOUT}</pattern>
 			</PatternLayout>

@@ -13,6 +13,9 @@ public class Application {
 		log.debug("Simple message SYSTEM_X DEBUG");
 		log.info("INFO message");
 		log.error("ERROR message");
+		log.error("Exclude string EX1000");
+		
+		log.error("SYSTEM_X", new Exception("Simple exception"));
 	}
 
 }
