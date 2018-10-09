@@ -1,0 +1,43 @@
+<Configuration status="WARN">
+
+	<Properties>
+		<Property name="LOG_DIR" value="logs" />
+		<Property name="PATTERN_LAYOUT" value="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+	</Properties>
+
+
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout>
+				<pattern>${PATTERN_LAYOUT}</pattern>
+			</PatternLayout>
+		</Console>
+
+		<RollingFile name="File1" fileName="${LOG_DIR}/app.log" filePattern="${LOG_DIR}/app-%d{MM-dd-yyyy}.log.gz">
+			<TimeBasedTriggeringPolicy />
+			<RegexFilter regex=".* SYSTEM_X .*" onMatch="DENY" onMismatch="ACCEPT" />
+			<PatternLayout>
+				<pattern>${PATTERN_LAYOUT}</pattern>
+			</PatternLayout>
+		</RollingFile>
+
+		<RollingFile name="SystemXLog" fileName="${LOG_DIR}/system_x.log" filePattern="${LOG_DIR}/system_x-%d{MM-dd-yyyy}.log.gz">
+			<TimeBasedTriggeringPolicy />
+			<RegexFilter regex=".* SYSTEM_X .*" onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout>
+				<pattern>${PATTERN_LAYOUT}</pattern>
+			</PatternLayout>
+		</RollingFile>
+
+	</Appenders>
+
+	<Loggers>
+		<Root level="DEBUG">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="File1" />
+			<AppenderRef ref="SystemXLog" />
+		</Root>
+	</Loggers>
+
+
+</Configuration>
