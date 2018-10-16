@@ -3,7 +3,7 @@ package lv.nixx.poc.java8.collection.txn;
 import java.math.BigDecimal;
 import java.util.Date;
 
-class Transaction implements Comparable<Transaction>{
+public class Transaction implements Comparable<Transaction>{
 
 	private String id;
 	private BigDecimal amount;

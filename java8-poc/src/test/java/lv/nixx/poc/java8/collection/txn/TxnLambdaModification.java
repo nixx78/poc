@@ -353,7 +353,8 @@ public class TxnLambdaModification {
 						  .thenComparing(Transaction::getCurrency)
 						  .thenComparing(Transaction::getAmount);
 				
-		List<Transaction> sorted = txns.stream().sorted(c).collect(Collectors.toList());
+		List<Transaction> sorted = 
+				txns.stream().sorted(c).collect(Collectors.toList());
 		sorted.forEach(System.out::println);
 	}
 	

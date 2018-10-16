@@ -3,9 +3,12 @@ package lv.nixx.poc.java8.collection;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.*;
+
+import lv.nixx.poc.java8.collection.txn.*;
 
 import org.junit.Test;
 
@@ -334,6 +337,36 @@ public class CollectionPlayground {
 		
 		assertEquals(Arrays.asList("One", "Two"), mappedList);
 		
+	}
+	
+	@Test
+	public void sortByList() {
+		
+		Map<String, Integer> positions = new HashMap<>();
+		positions.put("id1", 3);
+		positions.put("id2", 0);
+		positions.put("id3", 1);
+		positions.put("id4", 2);
+		
+		Collection<Transaction> txnSet = new HashSet<>();
+		txnSet.add(new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"));
+		txnSet.add(new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD"));
+		txnSet.add(new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"));
+		txnSet.add(new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR"));
+		
+		Transaction[] result = new Transaction[txnSet.size()];
+		
+		for (Transaction transaction : txnSet) {
+			Integer index = positions.get(transaction.getId());
+			result[index] = transaction;
+		}
+
+		System.out.println( Arrays.toString(result));
+
+		assertEquals("id2", result[0].getId());
+		assertEquals("id3", result[1].getId());
+		assertEquals("id4", result[2].getId());
+		assertEquals("id1", result[3].getId());
 	}
 	
 		
