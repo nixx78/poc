@@ -65,11 +65,29 @@ public class CompletableFutureSandbox {
 
 	@Test(expected = ExecutionException.class)
 	public void completeFutureWithException() throws Exception {
+
 		CompletableFuture<String> thenApply = CompletableFuture.supplyAsync(() -> getUserInfo("ERROR"))
 		.thenApply(this::convert)
 		.thenApply(this::convertResult);
 
 		thenApply.get();
+	}
+	
+	@Test
+	public void exceptionHandling() throws Exception {
+		
+		String name = null;
+		
+		CompletableFuture<String> completableFuture  
+		  =  CompletableFuture.supplyAsync(() -> {
+		      if (name == null) {
+		          throw new RuntimeException("Computation error!");
+		      }
+		      return "Hello, " + name;
+		  }).handle((s, t) -> s != null ? s : t.getMessage());
+		
+		assertEquals("java.lang.RuntimeException: Computation error!", completableFuture.get());
+		  
 	}
 
 	private String processException(Throwable e) {
