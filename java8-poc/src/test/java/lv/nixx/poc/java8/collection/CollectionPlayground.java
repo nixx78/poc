@@ -107,7 +107,7 @@ public class CollectionPlayground {
 		map.put("key4", "value4");
 		// тут тоже все хорошо
 		assertEquals(4, map.size());
-		
+
 		map.entrySet().forEach(System.out::println);
 	}
 	

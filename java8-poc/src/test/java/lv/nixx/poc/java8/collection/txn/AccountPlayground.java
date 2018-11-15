@@ -40,7 +40,7 @@ public class AccountPlayground {
 		Stream<Account> accs = Stream.of(acc1, acc2, acc3,acc4);
 
 		final Set<String> collect = accs
-				.filter( a-> a.getTxns().count()>2)
+				.filter( a-> a.getTxnsStream().count()>2)
 				.map(a->a.getId())
 				.collect(Collectors.toSet());
 
@@ -76,7 +76,7 @@ public class AccountPlayground {
 
 		
 		final DoubleSummaryStatistics stat = Stream.of(acc1, acc2, acc3,acc4)
-			.flatMap(a->a.getTxns())
+			.flatMap(a->a.getTxnsStream())
 			.collect(Collectors.summarizingDouble(t->t.getAmount().doubleValue()));
 		
 		System.out.println(stat);

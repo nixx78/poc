@@ -13,10 +13,14 @@ public class Account {
 		this.txn = txn;
 	}
 	
-	public Stream<Transaction> getTxns() {
+	public Stream<Transaction> getTxnsStream() {
 		return txn.stream();
 	}
-	
+
+	public Collection<Transaction> getTxns() {
+		return txn;
+	}
+
 	public String getId() {
 		return id;
 	}
