@@ -6,14 +6,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.hazelcast.config.Config;
+import com.hazelcast.config.EventJournalConfig;
 import com.hazelcast.config.MultiMapConfig;
+import com.hazelcast.core.DistributedObject;
 import com.hazelcast.core.EntryView;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
@@ -28,6 +28,7 @@ public class CollectionsSandbox {
 	
 	private HazelcastInstance hz;
 	private final DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+
 	private final String personsForCompanyIdMap = "personsByCompanyId";
 
 	@Before
@@ -35,13 +36,11 @@ public class CollectionsSandbox {
 		Config config = new Config();
 		
 		MultiMapConfig mmConfig = new MultiMapConfig();
+		mmConfig.setName(personsForCompanyIdMap);
 		mmConfig.setBinary(false);					//	Decrease performance, but compare objects using equals/hashCode
 		mmConfig.setValueCollectionType( "SET" );	//  No duplicates for one company 
 		
-		Map<String, MultiMapConfig> mmConfigMap = new HashMap<>();
-		mmConfigMap.put(personsForCompanyIdMap, mmConfig);
-		
-		config.setMultiMapConfigs(mmConfigMap);
+		config.addMultiMapConfig(mmConfig);
 		
 		hz = new TestHazelcastInstanceFactory().newHazelcastInstance(config);
 	}
@@ -129,7 +128,25 @@ public class CollectionsSandbox {
 		Collection<Person> persons = map.values(new SqlPredicate("name like N%"));
 		
 		assertEquals(4, persons.size());
-	}	
+	}
+	
+	
+	@Test
+	public void distributedObjectsListTest() throws ParseException {
+
+		hz.getMap("mapName1");
+		hz.getMap("mapName2");
+		hz.getMap("mapName3");
+		
+	    Collection<DistributedObject> distributedObjects = hz.getDistributedObjects();
+	    
+	    for (DistributedObject distributedObject : distributedObjects) {
+	      System.out.println(distributedObject.getName() +"#" + distributedObject.getServiceName());
+	    }
+		
+	}
+	
+	
 	
 
 }
