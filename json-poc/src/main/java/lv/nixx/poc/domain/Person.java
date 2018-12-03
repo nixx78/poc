@@ -9,6 +9,8 @@ public class Person {
 	private String name;
 	private Date dateOfBirth;
 	private BigDecimal salary;
+	
+	
 
 	public int getId() {
 		return id;
