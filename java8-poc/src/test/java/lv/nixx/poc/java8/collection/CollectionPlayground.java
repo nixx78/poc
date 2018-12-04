@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.*;
 
 import lv.nixx.poc.java8.collection.txn.*;
@@ -187,6 +188,19 @@ public class CollectionPlayground {
 		
 		assertEquals("2:Two mapped", map.get(2));
 	}
+	
+	@Test
+	public void computeAtomicInteger() {
+		
+		Map<String, AtomicInteger> map = new HashMap<>();
+		map.put("One", new AtomicInteger(1));
+		map.put("Two", new AtomicInteger(2));
+		
+		map.get("One").addAndGet(10);
+		
+		System.out.println(map);
+	}
+
 	
 	
 	@Test
@@ -397,5 +411,6 @@ public class CollectionPlayground {
 	}
 
 }
+
 
 
