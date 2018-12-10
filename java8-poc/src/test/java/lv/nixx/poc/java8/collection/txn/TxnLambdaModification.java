@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import org.junit.Test;
 
 public class TxnLambdaModification {
@@ -345,7 +345,6 @@ public class TxnLambdaModification {
 				new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"),
 				new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR"),
 				new Transaction("id4", BigDecimal.valueOf(1.00), "ACC3", "EUR")
-
 				);
 		
 		final Comparator<Transaction> c = 
@@ -358,6 +357,41 @@ public class TxnLambdaModification {
 		sorted.forEach(System.out::println);
 	}
 	
+	@Test
+	public void mapWithIncrementTest() {
+		
+		List<Transaction> txns = Arrays.asList(
+				new Transaction("id5", BigDecimal.valueOf(1.00), "ACC3", "EUR"),
+				new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"),
+				new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"),
+				new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD"),
+				new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR")
+				);
+
+		final AtomicInteger i = new AtomicInteger(0);
+		Map<Integer, Transaction> map = txns.stream()
+				.sorted(Comparator.comparing(Transaction::getId))
+				.collect(Collectors.toMap(t-> i.incrementAndGet(), Function.identity()));
+		
+		System.out.println(map);
+	}
+	
+	@Test
+	public void peekTest() {
+
+		List<Transaction> txns = Arrays.asList(
+				new Transaction("id5", BigDecimal.valueOf(1.00), "ACC3", "EUR"),
+				new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"),
+				new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"),
+				new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD"),
+				new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR")
+				);
+		
+		List<String> lst = txns.stream().map(Transaction::getId).peek(t -> System.out.println(t+"V")).collect(Collectors.toList());
+		System.out.println("========================");
+		
+		System.out.println(lst);
+	}
 	
 	private String[] removeSpaces(String[] source){
 		for (int i = 0; i < source.length; i++) {
