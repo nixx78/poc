@@ -6,23 +6,15 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
 import lv.nixx.poc.domain.*;
 
 public class JacksonTest {
 	
-	ObjectMapper objectMapper;
-	
-	public JacksonTest() {
-		objectMapper = new ObjectMapper();
-		objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-	}
+	private ObjectMapperService objectMapper = new ObjectMapperService();
 		
 	@Test
 	public void objectToStringSample() throws Exception {
-		Transaction p = new Transaction(10, BigDecimal.valueOf(10.00), Currency.EUR);
+		Transaction p = new Transaction(10, 1, BigDecimal.valueOf(10.00), Currency.EUR);
 		
 		String jsonString = objectMapper.writeValueAsString(p);
 		System.out.println(jsonString);

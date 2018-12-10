@@ -13,10 +13,11 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor 
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "id")
 public class Transaction {
 
 	private int id;
+	private int pos;
 	private BigDecimal amount;
 	
 	@JsonProperty(required=true)
