@@ -22,7 +22,7 @@ public class HazelcastListenerSanbox {
 		
 		IMap<String, String> map = hazelcastInstance.getMap("abc");
 		map.addEntryListener(new MyEntryListener(), true);
-		map.addInterceptor(new MapInterceptorImpl());		
+//		map.addInterceptor(new MapInterceptorImpl());		
 		
 		map.put("One", "One.value");
 		map.replace("One", "One.Replaced");
@@ -32,6 +32,8 @@ public class HazelcastListenerSanbox {
 		map.merge("Two", "UpdatedValue", (t1, t2) -> t1 + ":" + t2);
 		
 		map.computeIfAbsent("Three", t1 -> "Three.Value");
+		
+		map.delete("Two"); // oldValue will be null
 		
 	}
 	
