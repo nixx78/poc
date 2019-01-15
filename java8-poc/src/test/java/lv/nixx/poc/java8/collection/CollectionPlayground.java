@@ -137,7 +137,6 @@ public class CollectionPlayground {
 		assertTrue("Collections are equals", Collections.disjoint(c1, c2));
 	}
 	
-	
 	@Test
 	public void arrayStreamProcessing() {
 		int[] intArray = new int[]{5, 99, 60, 12, 7, 5, 100, 777};
@@ -166,13 +165,17 @@ public class CollectionPlayground {
 	public void findCommonElementInCollection() {
 		Collection<String> old = Arrays.asList("1","2","3");
 		Collection<String> changed = Arrays.asList("4","2","3");
+		final List<String> expectedCommonElements = Arrays.asList("2","3");
 
 		Collection<String> result = new ArrayList<>(old);
 		// common elements in two collections
 		result.retainAll(changed);
-		assertEquals(Arrays.asList("2","3"), result);
+		assertEquals(expectedCommonElements, result);
 		
-		result.forEach(System.out::println);
+		// try to find in different order
+		result = new ArrayList<>(changed);
+		result.retainAll(old);
+		assertEquals(expectedCommonElements, result);
 	}
 	
 	@Test
