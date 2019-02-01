@@ -1,4 +1,4 @@
-package lv.nixx.poc.hazelcast;
+package lv.nixx.poc.hazelcast.model;
 
 import java.io.Serializable;
 import java.util.Collection;

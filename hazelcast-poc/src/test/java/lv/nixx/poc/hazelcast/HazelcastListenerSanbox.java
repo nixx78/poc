@@ -35,6 +35,9 @@ public class HazelcastListenerSanbox {
 		
 		map.delete("Two"); // oldValue will be null
 		
+		map.put("Four", "Three.Initial.Value");
+		map.put("Four", "Three.NewValue.Value");
+		
 	}
 	
 	class MyEntryListener implements EntryAddedListener<String, String>, 

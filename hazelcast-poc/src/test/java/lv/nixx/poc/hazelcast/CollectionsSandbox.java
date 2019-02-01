@@ -30,6 +30,8 @@ import com.hazelcast.query.PredicateBuilder;
 import com.hazelcast.query.SqlPredicate;
 import com.hazelcast.test.TestHazelcastInstanceFactory;
 
+import lv.nixx.poc.hazelcast.model.Person;
+
 public class CollectionsSandbox {
 
 	private HazelcastInstance hz;
