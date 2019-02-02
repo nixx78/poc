@@ -1,4 +1,4 @@
-package lv.nixx.poc.hazelcast;
+package lv.nixx.poc.hazelcast.service;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
@@ -19,11 +19,11 @@ import com.hazelcast.test.TestHazelcastInstanceFactory;
 import lv.nixx.poc.hazelcast.model.Category;
 import lv.nixx.poc.hazelcast.model.Person;
 import lv.nixx.poc.hazelcast.model.PersonKey;
-import lv.nixx.poc.hazelcast.service.HazelcastService;
+import lv.nixx.poc.hazelcast.service.PersonCompositeKeyManager;
 
-public class HazelcastServiceTest {
+public class PersonCompositeKeyManagerTest {
 	
-	private HazelcastService service = new HazelcastService();
+	private PersonCompositeKeyManager service = new PersonCompositeKeyManager();
 	private final Date date = new Date();
 
 	@Before
@@ -34,25 +34,25 @@ public class HazelcastServiceTest {
 	
 	@Test
 	public void crudTest() {
-		service.addPerson(new PersonKey(10L, new Category(2L, false, "RED")), new Person(102, "Name2", date));
-		service.addPerson(new PersonKey(10L, new Category(3L, false, "RED")), new Person(103, "Name3", date));
+		service.add(new PersonKey(10L, new Category(2L, false, "RED")), new Person(102, "Name2", date));
+		service.add(new PersonKey(10L, new Category(3L, false, "RED")), new Person(103, "Name3", date));
 		
 		Person p1 = new Person(101, "Name1", date);
 		PersonKey key1 = new PersonKey(10L, new Category(1L, false, "RED"));
 		
-		service.addPerson(key1, p1);
+		service.add(key1, p1);
 		
 		assertEquals(3, service.getPersonsBySelection(10L).size());
 		
 		p1.setName("Name.Changed");
 		
-		service.updatePerson(key1, p1);
+		service.update(key1, p1);
 		
-		assertEquals("Name.Changed", service.getPerson(key1).getName());
+		assertEquals("Name.Changed", service.get(key1).getName());
 		
-		service.deletePerson(key1);
+		service.remove(key1);
 		
-		assertNull(service.getPerson(key1));
+		assertNull(service.get(key1));
 		assertEquals(2, service.getPersonsBySelection(10L).size());
 	}
 
@@ -60,14 +60,14 @@ public class HazelcastServiceTest {
 	public void getAllBySelectionIdTest() {
 		
 		
-		service.addPerson(new PersonKey(10L, new Category(1L, false, "RED")), new Person(101, "Name1", date));
-		service.addPerson(new PersonKey(10L, new Category(2L, false, "WHITE")), new Person(102, "Name2", date));
-		service.addPerson(new PersonKey(10L, new Category(3L, false, "RED")), new Person(103, "Name3", date));
+		service.add(new PersonKey(10L, new Category(1L, false, "RED")), new Person(101, "Name1", date));
+		service.add(new PersonKey(10L, new Category(2L, false, "WHITE")), new Person(102, "Name2", date));
+		service.add(new PersonKey(10L, new Category(3L, false, "RED")), new Person(103, "Name3", date));
 		
-		service.addPerson(new PersonKey(12L, new Category(4L, false, "BLUE")), new Person(104, "Name4", date));
-		service.addPerson(new PersonKey(12L, new Category(1L, false, "RED")), new Person(105, "Name5", date));
+		service.add(new PersonKey(12L, new Category(4L, false, "BLUE")), new Person(104, "Name4", date));
+		service.add(new PersonKey(12L, new Category(1L, false, "RED")), new Person(105, "Name5", date));
 		
-		service.addPerson(new PersonKey(1L,  new Category(5L, false, "RED")), new Person(106, "Name5", date));
+		service.add(new PersonKey(1L,  new Category(5L, false, "RED")), new Person(106, "Name5", date));
 
 		assertThat(getPersonsBySelection(10L), containsInAnyOrder(101, 102, 103));
 		assertThat(getPersonsBySelection(12L), containsInAnyOrder(104, 105));
