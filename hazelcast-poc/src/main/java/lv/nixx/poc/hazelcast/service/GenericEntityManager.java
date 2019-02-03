@@ -8,17 +8,21 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.hazelcast.query.Predicate;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Setter
+@RequiredArgsConstructor
 public abstract class GenericEntityManager<K, V> {
 
 	protected HazelcastInstance hazelcastInstance;
 	
-	abstract String getMapName();
-
+	@NonNull
+	private String mapName;
+	
 	protected IMap<K, V> getMap() {
-		return hazelcastInstance.getMap(getMapName());
+		return hazelcastInstance.getMap(mapName);
 	}
 	
 	public V get(K key) {

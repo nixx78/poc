@@ -9,9 +9,8 @@ import lv.nixx.poc.hazelcast.model.*;
 
 public class PersonStringKeyManager extends GenericEntityManager<String, Person> {
 	
-	@Override
-	String getMapName() {
-		return "person.map";
+	public PersonStringKeyManager() {
+		super("person.map");
 	}
 
 	public Collection<Person> getPersonsByAttributes(Integer id, String name) {
@@ -22,8 +21,5 @@ public class PersonStringKeyManager extends GenericEntityManager<String, Person>
 
 			return collectAndMap(p);
 	}
-	
-	
-	
 
 }

@@ -17,6 +17,7 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.test.TestHazelcastInstanceFactory;
 
 import lv.nixx.poc.hazelcast.model.Category;
+import lv.nixx.poc.hazelcast.model.CategoryPersonTuple;
 import lv.nixx.poc.hazelcast.model.Person;
 import lv.nixx.poc.hazelcast.model.PersonKey;
 import lv.nixx.poc.hazelcast.service.PersonCompositeKeyManager;
@@ -75,6 +76,31 @@ public class PersonCompositeKeyManagerTest {
 		
 		assertThat(getPersonsByCategory(new Category(1L, false, "RED")), containsInAnyOrder(101, 105));
 	
+	}
+	
+	@Test
+	public void bulkAddTest() {
+		CategoryPersonTuple[] tuples = new CategoryPersonTuple[] {
+				new CategoryPersonTuple(
+						new Category(1L, true, "RED"), 
+						new Person(100, "name0", date)
+						),
+				new CategoryPersonTuple(
+						new Category(2L, true, "RED"), 
+						new Person(101, "name1", date)
+						),
+				new CategoryPersonTuple(
+						new Category(3L, true, "WHITE"), 
+						new Person(102, "name2", date)
+						)
+		};
+		
+		long selectionId = 777L;
+		service.addBulkForSelection(selectionId, tuples);
+		
+		final Collection<Integer> personsBySelection = getPersonsBySelection(777L);
+		assertThat(personsBySelection, containsInAnyOrder(100, 101, 102));
+		
 	}
 	
 	private Collection<Integer> getPersonsBySelection(long selectionId) {
