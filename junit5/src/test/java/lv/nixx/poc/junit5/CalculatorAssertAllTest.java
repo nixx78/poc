@@ -4,8 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
+
+import lv.nixx.poc.junit5.service.Calculator;
 
 @DisplayName("Unit tests for Calculator class")
 @RunWith(JUnitPlatform.class)
@@ -23,11 +26,13 @@ public class CalculatorAssertAllTest {
 				() -> assertThrows(NullPointerException.class, () -> c.add(null, 1) )
 	    );
 		
-		assertAll("Calculator Subtract tests", 
+		Executable[] ex = new Executable[] {
 				() -> assertEquals((Integer) (-1), c.subtract(3, 4)),
 				() -> assertEquals((Integer) (-1), c.subtract(-2, -1)),
 				() -> assertEquals((Integer) 10, c.subtract(30, 20))
-	    );
+		}; 
+		
+		assertAll("Calculator Subtract tests", ex);
 
 	}
 	

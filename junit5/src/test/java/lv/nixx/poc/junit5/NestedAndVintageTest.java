@@ -40,14 +40,6 @@ public class NestedAndVintageTest {
 	}
 
 	@Nested
-	class RemoveElementTest {
-		@Test
-		public void removeShouldThrowException() {
-			expectThrows(NoSuchElementException.class, items::remove);
-		}
-	}
-
-	@Nested
 	class OperationsTest {
 		@Test
 		void addingOneElementShouldIncreaseSize() {

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
-import org.junit.jupiter.api.extension.TestExtensionContext;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 public class BenchmarkExtension implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
 	
@@ -15,12 +15,12 @@ public class BenchmarkExtension implements BeforeTestExecutionCallback, AfterTes
 	private Map<String, String> report = new HashMap<>();
 
 	@Override
-	public void beforeTestExecution(TestExtensionContext context) {
+	public void beforeTestExecution(ExtensionContext context) {
 		launchTime = System.currentTimeMillis();
 	}
 
 	@Override
-	public void afterTestExecution(TestExtensionContext context) {
+	public void afterTestExecution(ExtensionContext context) {
 		final Optional<Class<?>> testClass = context.getTestClass();
 		final Optional<Method> testMethod = context.getTestMethod();
 		
@@ -34,5 +34,6 @@ public class BenchmarkExtension implements BeforeTestExecutionCallback, AfterTes
 		
 		context.publishReportEntry(report);
 	}
+
 	
 }
