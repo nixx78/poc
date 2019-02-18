@@ -392,7 +392,7 @@ public class TxnLambdaModification {
 		
 		System.out.println(lst);
 	}
-	
+
 	private String[] removeSpaces(String[] source){
 		for (int i = 0; i < source.length; i++) {
 			source[i] = source[i].trim();
@@ -414,15 +414,15 @@ public class TxnLambdaModification {
 	
 	class AccountHolder {
 
-		Map<String, Account> accounts = new HashMap<>();
+		Map<String, LocalAccount> accounts = new HashMap<>();
 
 		public void process(Transaction txn) {
 			String accId = txn.getAccount();
-			Account account = null;
+			LocalAccount account = null;
 			if ( accounts.containsKey(accId)) {
 				account  = accounts.get(accId);
 			} else {
-				account  = new Account(accId);
+				account  = new LocalAccount(accId);
 			}
 			account.increase(txn.getCurrency(), txn.getAmount());
 			accounts.put(accId, account);
@@ -430,15 +430,15 @@ public class TxnLambdaModification {
 		
 	}
 	
-	class Account {
+	class LocalAccount {
 		private String id;
 		Map<String, Amount> amounts = new HashMap<>();
 		
-		public Account(String accId) {
+		public LocalAccount(String accId) {
 			this.id = accId;
 		}
 		
-		public Account increase(Transaction txn) {
+		public LocalAccount increase(Transaction txn) {
 			final String currency = txn.getCurrency();
 			final BigDecimal amount = txn.getAmount();
 			if (amounts.containsKey(currency)) {
