@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
@@ -135,6 +136,44 @@ public class AccountPlayground {
 		
 		assertThat(currencyList, containsInAnyOrder("EUR", "USD", "UAH", "RUB"));
 
+	}
+	
+	@Test
+	public void getFirstElementSample() {
+		
+		Account acc1 = new Account("AccountID1", Arrays.asList(
+				new Transaction("_1txn1", BigDecimal.valueOf(10.00), "AccountID1", "USD"),
+				new Transaction("_1txn2", BigDecimal.valueOf(20.00), "AccountID1", "USD"),
+				new Transaction("_1txn3", BigDecimal.valueOf(30.00), "AccountID1", "USD"),
+				new Transaction("_1txn4", BigDecimal.valueOf(40.00), "AccountID1", "USD")
+			));
+		
+		
+		Account acc2 = new Account("AccountID2", Arrays.asList(
+				new Transaction("_2txn1", BigDecimal.valueOf(10.00), "AccountID2", "EUR"),
+				new Transaction("_2txn2", BigDecimal.valueOf(20.00), "AccountID2", "EUR")
+			));
+		
+		Account acc3 = new Account("AccountID3", Arrays.asList(
+				new Transaction("_3txn1", BigDecimal.valueOf(10.00), "AccountID3", "RUB")
+			));
+		
+		Account acc4 = new Account("AccountID3", null);
+
+		
+		List<Account> accounts = Arrays.asList(acc1, acc2, acc3, acc4);
+		
+		Map<String, Transaction> collect = accounts.stream()
+				// For case, if getTxns() Collection can be casted to List
+				.filter(t-> t.getTxns() != null)
+				.collect(Collectors.toMap(Account::getId,  t-> ((List<Transaction>) t.getTxns()).get(0)));
+		
+	
+	// For case, if collection can't be casted to List
+	//			.collect(Collectors.toMap(Account::getId, t-> new ArrayList<Transaction>(t.getTxns()).get(0)));
+
+		assertEquals(3, collect.size());
+	
 	}
 	
 	public static <T> Predicate<T> distinctByKey(Function<? super T,Object> keyExtractor) {
