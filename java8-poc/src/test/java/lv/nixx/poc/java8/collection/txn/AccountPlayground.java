@@ -19,35 +19,11 @@ public class AccountPlayground {
 	@Test
 	public void getAccountsWithMoreThan3Txn() {
 		
-		Account acc1 = new Account("AccountID1", Arrays.asList(
-				new Transaction("_1txn1", BigDecimal.valueOf(10.00), "AccountID1", "USD"),
-				new Transaction("_1txn2", BigDecimal.valueOf(20.00), "AccountID1", "USD"),
-				new Transaction("_1txn3", BigDecimal.valueOf(30.00), "AccountID1", "USD"),
-				new Transaction("_1txn4", BigDecimal.valueOf(40.00), "AccountID1", "USD")
-			));
-		
-		
-		Account acc2 = new Account("AccountID2", Arrays.asList(
-				new Transaction("_2txn1", BigDecimal.valueOf(10.00), "AccountID2", "USD"),
-				new Transaction("_2txn2", BigDecimal.valueOf(20.00), "AccountID2", "USD")
-			));
-		
-		Account acc3 = new Account("AccountID3", Arrays.asList(
-				new Transaction("_3txn1", BigDecimal.valueOf(10.00), "AccountID3", "USD")
-			));
-
-		Account acc4 = new Account("AccountID4", Arrays.asList(
-				new Transaction("_4txn1", BigDecimal.valueOf(10.00), "AccountID4", "USD"),
-				new Transaction("_4txn1", BigDecimal.valueOf(10.00), "AccountID4", "USD"),
-				new Transaction("_4txn1", BigDecimal.valueOf(10.00), "AccountID4", "USD"),
-				new Transaction("_4txn1", BigDecimal.valueOf(10.00), "AccountID4", "USD"),
-				new Transaction("_4txn1", BigDecimal.valueOf(10.00), "AccountID4", "USD")
-			));
-
-		Stream<Account> accs = Stream.of(acc1, acc2, acc3,acc4);
+		Stream<Account> accs = createAccountsWithTransactions().stream();
 
 		final Set<String> collect = accs
-				.filter( a-> a.getTxnsStream().count()>2)
+				.filter( t-> t.getTxns()!= null)
+				.filter( a-> a.getTxns().stream().count()>2)
 				.map(a->a.getId())
 				.collect(Collectors.toSet());
 
@@ -56,34 +32,10 @@ public class AccountPlayground {
 	
 	@Test
 	public void doubleStatisticsAllTransactions() {
-		Account acc1 = new Account("AccountID1", Arrays.asList(
-				new Transaction("_1txn1", BigDecimal.valueOf(10.00), "AccountID1", "USD"),
-				new Transaction("_1txn2", BigDecimal.valueOf(20.00), "AccountID1", "USD"),
-				new Transaction("_1txn3", BigDecimal.valueOf(30.00), "AccountID1", "USD"),
-				new Transaction("_1txn4", BigDecimal.valueOf(40.00), "AccountID1", "USD")
-			));
-		
-		
-		Account acc2 = new Account("AccountID2", Arrays.asList(
-				new Transaction("_2txn1", BigDecimal.valueOf(10.00), "AccountID2", "USD"),
-				new Transaction("_2txn2", BigDecimal.valueOf(20.00), "AccountID2", "USD")
-			));
-		
-		Account acc3 = new Account("AccountID3", Arrays.asList(
-				new Transaction("_3txn1", BigDecimal.valueOf(10.00), "AccountID3", "USD")
-			));
 
-		Account acc4 = new Account("AccountID4", Arrays.asList(
-				new Transaction("_4txn1", BigDecimal.valueOf(10.00), "AccountID4", "USD"),
-				new Transaction("_4txn1", BigDecimal.valueOf(10.00), "AccountID4", "USD"),
-				new Transaction("_4txn1", BigDecimal.valueOf(10.00), "AccountID4", "USD"),
-				new Transaction("_4txn1", BigDecimal.valueOf(10.00), "AccountID4", "USD"),
-				new Transaction("_4txn1", BigDecimal.valueOf(777.00), "AccountID4", "USD")
-			));
-
-		
-		final DoubleSummaryStatistics stat = Stream.of(acc1, acc2, acc3,acc4)
-			.flatMap(a->a.getTxnsStream())
+		final DoubleSummaryStatistics stat = createAccountsWithTransactions().stream()
+			.filter( t-> t.getTxns()!= null)
+			.flatMap(a->a.getTxns().stream())
 			.collect(Collectors.summarizingDouble(t->t.getAmount().doubleValue()));
 		
 		System.out.println(stat);
@@ -91,77 +43,34 @@ public class AccountPlayground {
 	
 	@Test
 	public void processAllTransactions() {
-		Account acc1 = new Account("AccountID1", Arrays.asList(
-				new Transaction("_1txn1", BigDecimal.valueOf(10.00), "AccountID1", "USD"),
-				new Transaction("_1txn2", BigDecimal.valueOf(20.00), "AccountID1", "USD"),
-				new Transaction("_1txn3", BigDecimal.valueOf(30.00), "AccountID1", "USD"),
-				new Transaction("_1txn4", BigDecimal.valueOf(40.00), "AccountID1", "USD")
-			));
-		
-		
-		Account acc2 = new Account("AccountID2", Arrays.asList(
-				new Transaction("_2txn1", BigDecimal.valueOf(10.00), "AccountID2", "EUR"),
-				new Transaction("_2txn2", BigDecimal.valueOf(20.00), "AccountID2", "EUR")
-			));
-		
-		Account acc3 = new Account("AccountID3", Arrays.asList(
-				new Transaction("_3txn1", BigDecimal.valueOf(10.00), "AccountID3", "RUB")
-			));
 
-		Account acc4 = new Account("AccountID4", Arrays.asList(
-				new Transaction("_4txn1", BigDecimal.valueOf(10.00), "AccountID4", "UAH"),
-				new Transaction("_4txn1", BigDecimal.valueOf(10.00), "AccountID4", "UAH"),
-				new Transaction("_4txn1", BigDecimal.valueOf(10.00), "AccountID4", "UAH"),
-				new Transaction("_4txn1", BigDecimal.valueOf(10.00), "AccountID4", "UAH"),
-				new Transaction("_4txn1", BigDecimal.valueOf(777.00), "AccountID4", "UAH")
-			));
-		
-		
-		Collection<Account> accounts = Arrays.asList(acc1, acc2, acc3, acc4);
+		Collection<Account> accounts = createAccountsWithTransactions();
 		
 		// First approach
 		Set<String> currencyList = accounts.stream()
+			.filter( t-> t.getTxns()!= null)
 			.flatMap(t-> t.getTxns().stream())
 			.map(Transaction::getCurrency)
 			.collect(Collectors.toSet());
 		
-		assertThat(currencyList, containsInAnyOrder("EUR", "USD", "UAH", "RUB"));
+		assertThat(currencyList, containsInAnyOrder("EUR", "USD", "RUB"));
 		
 		// Second approach
 		currencyList = accounts.stream()
+			.filter( t-> t.getTxns()!= null)
 			.flatMap(t-> t.getTxns().stream())
 			.filter(distinctByKey(Transaction::getCurrency))
 			.map(Transaction::getCurrency)
 			.collect(Collectors.toSet());
 		
-		assertThat(currencyList, containsInAnyOrder("EUR", "USD", "UAH", "RUB"));
+		assertThat(currencyList, containsInAnyOrder("EUR", "USD", "RUB"));
 
 	}
 	
 	@Test
 	public void getFirstElementSample() {
 		
-		Account acc1 = new Account("AccountID1", Arrays.asList(
-				new Transaction("_1txn1", BigDecimal.valueOf(10.00), "AccountID1", "USD"),
-				new Transaction("_1txn2", BigDecimal.valueOf(20.00), "AccountID1", "USD"),
-				new Transaction("_1txn3", BigDecimal.valueOf(30.00), "AccountID1", "USD"),
-				new Transaction("_1txn4", BigDecimal.valueOf(40.00), "AccountID1", "USD")
-			));
-		
-		
-		Account acc2 = new Account("AccountID2", Arrays.asList(
-				new Transaction("_2txn1", BigDecimal.valueOf(10.00), "AccountID2", "EUR"),
-				new Transaction("_2txn2", BigDecimal.valueOf(20.00), "AccountID2", "EUR")
-			));
-		
-		Account acc3 = new Account("AccountID3", Arrays.asList(
-				new Transaction("_3txn1", BigDecimal.valueOf(10.00), "AccountID3", "RUB")
-			));
-		
-		Account acc4 = new Account("AccountID3", null);
-
-		
-		List<Account> accounts = Arrays.asList(acc1, acc2, acc3, acc4);
+		List<Account> accounts = createAccountsWithTransactions();
 		
 		Map<String, Transaction> collect = accounts.stream()
 				// For case, if getTxns() Collection can be casted to List
@@ -176,7 +85,57 @@ public class AccountPlayground {
 	
 	}
 	
-	public static <T> Predicate<T> distinctByKey(Function<? super T,Object> keyExtractor) {
+	@Test
+	public void getTop3TransactionsForEachAccount() {
+		
+		Map<String, Collection<Transaction>> accountsWithTop3Txns = createAccountsWithTransactions()
+			.stream()
+			.filter(t-> t.getTxns() != null)
+			.collect(Collectors.toMap(Account::getId,  t-> t.getTxns().stream()
+					.sorted(Comparator.comparing(Transaction::getAmount))
+					.limit(3)
+					.collect(Collectors.toList()))
+					);
+		
+		
+		
+		
+		accountsWithTop3Txns.entrySet().forEach(System.out::println);
+	}
+	
+
+
+	private List<Account> createAccountsWithTransactions() {
+		Account acc1 = new Account("AccountID1", Arrays.asList(
+				new Transaction("_1txn1", BigDecimal.valueOf(40.00), "AccountID1", "USD"),
+				new Transaction("_1txn2", BigDecimal.valueOf(10.00), "AccountID1", "USD"),
+				new Transaction("_1txn3", BigDecimal.valueOf(34.00), "AccountID1", "USD"),
+				new Transaction("_1txn4", BigDecimal.valueOf(5.00), "AccountID1", "USD")
+			));
+		
+		
+		Account acc2 = new Account("AccountID2", Arrays.asList(
+				new Transaction("_2txn1", BigDecimal.valueOf(100.00), "AccountID2", "EUR"),
+				new Transaction("_2txn2", BigDecimal.valueOf(20.00), "AccountID2", "EUR"),
+				new Transaction("_2txn2", BigDecimal.valueOf(30.00), "AccountID2", "EUR"),
+				new Transaction("_2txn2", BigDecimal.valueOf(10.00), "AccountID2", "EUR")
+
+			));
+		
+		
+		Account acc3 = new Account("AccountID3", Arrays.asList(
+				new Transaction("_3txn1", BigDecimal.valueOf(10.00), "AccountID3", "RUB")
+			));
+		
+		Account acc4 = new Account("AccountID3", null);
+
+		
+		List<Account> accounts = Arrays.asList(acc1, acc2, acc3, acc4);
+		return accounts;
+	}
+	
+	
+	private static <T> Predicate<T> distinctByKey(Function<? super T,Object> keyExtractor) {
 	    Map<Object,Boolean> seen = new ConcurrentHashMap<>();
 	    return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
 	}

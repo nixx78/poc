@@ -1,7 +1,6 @@
 package lv.nixx.poc.java8.collection.txn;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 public class Account {
 	
@@ -13,10 +12,6 @@ public class Account {
 		this.txn = txn;
 	}
 	
-	public Stream<Transaction> getTxnsStream() {
-		return txn.stream();
-	}
-
 	public Collection<Transaction> getTxns() {
 		return txn;
 	}

@@ -95,6 +95,23 @@ public class TxnLambdaModification {
 	}
 	
 	@Test
+	public void stringWithUniqueCurrencies() {
+		Collection<Transaction> txnSet = new HashSet<>();
+		txnSet.add(new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"));
+		txnSet.add(new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD"));
+		txnSet.add(new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"));
+		txnSet.add(new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR"));
+		txnSet.add(new Transaction("id5", BigDecimal.valueOf(40.14), "ACC5", "EUR"));
+		
+		String c = txnSet.stream()
+				.map(Transaction::getCurrency)
+				.distinct()
+				.collect(Collectors.joining(", "));
+		
+		assertEquals("EUR, USD", c);
+	}
+	
+	@Test
 	public void transformCollectionToMapIgnoreDuplicates() throws ParseException {
 
 		final String id1 = "id1";
@@ -374,6 +391,28 @@ public class TxnLambdaModification {
 				.collect(Collectors.toMap(t-> i.incrementAndGet(), Function.identity()));
 		
 		System.out.println(map);
+	}
+	
+	@Test
+	public void top3TransactionTest() {
+		
+		List<Transaction> txns = Arrays.asList(
+				new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"),
+				new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD"),
+				new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"),
+				new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR"),
+				new Transaction("id4", BigDecimal.valueOf(1.00), "ACC3", "EUR")
+				);
+		
+		List<Transaction> top3Txns = 
+				txns.stream()
+					.sorted(Comparator.comparing(Transaction::getAmount).reversed())
+					.limit(3)
+					.collect(Collectors.toList());
+		
+		top3Txns.forEach(System.out::println);
+		
+		assertEquals(3, top3Txns.size());
 	}
 	
 	@Test
