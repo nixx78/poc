@@ -21,12 +21,11 @@ public class ComparatorSandbox {
 		assertEquals(0, nullSafeBigDecimalComparator.compare(BigDecimal.valueOf(10.00), BigDecimal.valueOf(10.00)));
 		assertEquals(-1, nullSafeBigDecimalComparator.compare(null, BigDecimal.valueOf(10.00)));
 		assertEquals(1, nullSafeBigDecimalComparator.compare(BigDecimal.valueOf(10.00), null));
+		assertEquals(0, nullSafeBigDecimalComparator.compare(BigDecimal.valueOf(10), BigDecimal.valueOf(10)));
 	}
 	
 	@Test
 	public void compareTxn() {
-		
-
 		Transaction t1 = new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", null);
 		Transaction t2 = new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", null);
 		
