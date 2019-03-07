@@ -48,7 +48,6 @@ public class NumberStatisticSample {
 
 	@Test
 	public void secondApproach() {
-		
 		final Map<String, Long> statisic = Stream.of("1", "2", "3")
 				.collect(Collectors.toMap(c-> c, c-> input.stream().filter(t -> t.contains(c)).count()));
 
