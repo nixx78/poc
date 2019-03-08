@@ -1,4 +1,4 @@
-package lv.nixx.poc.hazelcast;
+package lv.nixx.poc.hazelcast.listener;
 
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ public class HazelcastListenerSanbox {
 		
 		IMap<String, String> map = hazelcastInstance.getMap("abc");
 		map.addEntryListener(new MyEntryListener(), true);
-//		map.addInterceptor(new MapInterceptorImpl());		
+		map.addInterceptor(new MapInterceptorImpl());		
 		
 		map.put("One", "One.value");
 		map.replace("One", "One.Replaced");
@@ -46,7 +46,7 @@ public class HazelcastListenerSanbox {
 		
 		@Override
 		public void entryAdded(EntryEvent<String, String> entryEvent) {
-			System.out.println(entryEvent);
+			System.out.println("Tread:" + Thread.currentThread() + ":" + entryEvent);
 		}
 
 		@Override
