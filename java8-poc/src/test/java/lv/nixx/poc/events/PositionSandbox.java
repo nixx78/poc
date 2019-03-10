@@ -49,15 +49,12 @@ public class PositionSandbox {
 		
 		PostingsModel postingModels = new PostingsModel(app);
 		
-		void postingChanged(Posting posting) {
+		void postingChanged(Posting posting, Balance balance) {
 			
-			Map<Tier, BigDecimal> balanceByTier = postingModels.getBalanceByTier();
-			BigDecimal totalBalance = balanceByTier.values().stream().reduce(BigDecimal.ZERO, (b1, b2) -> b1.add(b2));
-
 			System.out.println("Changed Posting: " + posting);
-			System.out.println("Balance by Tier (Posings): " + balanceByTier);
+			System.out.println("Balance by Tier (Posings): " + balance.getBalanceByTier());
 			
-			System.out.println("Total balance: " + totalBalance);
+			System.out.println("Total balance: " + balance.getTotal());
 		}
 		
 	}
@@ -87,19 +84,18 @@ public class PositionSandbox {
 				return v;
 			});
 			
-			app.postingChanged(p);
+			
+			Map<Tier, BigDecimal> balanceByTier = postings.values()
+						.stream()
+						.collect(
+								Collectors.groupingBy(Posting::getTier, 
+										Collectors.reducing(BigDecimal.ZERO, Posting::getBalance, BigDecimal::add)
+								)
+						);
+			
+			app.postingChanged(p, new Balance(balanceByTier));
 		}
-		
 	
-		Map<Tier, BigDecimal> getBalanceByTier() {
-			return postings.values()
-					.stream()
-					.collect(
-							Collectors.groupingBy(Posting::getTier, 
-									Collectors.reducing(BigDecimal.ZERO, Posting::getBalance, BigDecimal::add)
-							)
-					);
-		}
 		
 	}
 	
@@ -120,6 +116,20 @@ public class PositionSandbox {
 		void processEvent(PositionEvent event) {
 		}
 		
+		
+	}
+	
+	
+	@Data
+	@ToString
+	@AllArgsConstructor
+	class Balance {
+		
+		Map<Tier, BigDecimal> balanceByTier;
+		
+		BigDecimal getTotal() {
+			return balanceByTier.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+		}
 		
 	}
 	
