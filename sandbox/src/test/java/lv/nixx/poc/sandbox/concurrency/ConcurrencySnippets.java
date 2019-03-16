@@ -5,9 +5,40 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.IntStream;
+
 import org.junit.Test;
 
 public class ConcurrencySnippets {
+	
+	
+	@Test
+	public void countDownLatch() throws InterruptedException {
+		
+		CountDownLatch cd = new CountDownLatch(3);
+		
+		IntStream.of(1000, 100, 200).mapToObj( t-> { Runnable r = ()-> {
+				final String tn = Thread.currentThread().getName();
+				try {
+					System.out.println("Thread [" + tn + "] will sleep [" + t + "]");
+					Thread.sleep(t);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				cd.countDown();
+				System.out.println("Thread [" + tn + "] done");
+ 			};
+			return r;
+		}	
+	   ).map(Thread::new)
+		.forEach(Thread::start);
+	
+		System.out.println("Waiting for all treads..");
+		
+		cd.await(2, TimeUnit.SECONDS);
+		System.out.println("All threads are ready");
+		
+	}
 
 	@Test
 	public void executorSampleWithAwaitTermination() throws InterruptedException {
