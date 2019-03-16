@@ -3,7 +3,6 @@ package lv.nixx.poc.junit5;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 import java.util.Queue;
 
 import org.junit.jupiter.api.AfterAll;
