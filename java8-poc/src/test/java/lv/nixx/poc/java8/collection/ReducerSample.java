@@ -1,6 +1,5 @@
 package lv.nixx.poc.java8.collection;
 
-import javafx.geometry.Pos;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
@@ -10,6 +9,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 public class ReducerSample {
@@ -25,33 +25,33 @@ public class ReducerSample {
 
                 new Posting("post2", toDate("04/25/2019"), toTimestamp("04/26/2019 12:00:01"), BigDecimal.valueOf(30.03)),
 
-                new Posting("post3", toDate("04/25/2019"), toTimestamp("04/26/2019 12:00:01"), BigDecimal.valueOf(30.03))
+                new Posting("post3", toDate("04/25/2019"), toTimestamp("04/26/2019 12:00:01"), BigDecimal.valueOf(33.33))
         );
 
-        List<Posting> collect2 = postings.stream()
+        Collection<Collection<Optional<Posting>>> collect = postings.stream()
                 .collect(
                         Collectors.collectingAndThen(
                                 Collectors.groupingBy(Posting::getId,
-                                        Collectors.groupingBy(Posting::getSettleDate,
-                                                Collectors.maxBy(Comparator.comparing(Posting::getTimestamp))
+                                        Collectors.collectingAndThen(
+                                                Collectors.groupingBy(Posting::getSettleDate,
+                                                        Collectors.maxBy(Comparator.comparing(Posting::getTimestamp))
+                                                ), Map::values
                                         )
-                                ), t -> t.values().stream()
-                                        .map(Map::values)
-                                        .flatMap(Collection::stream)
-                                        .map(x -> x.orElse(null))
-                                        .collect(
-                                                Collectors.collectingAndThen(
-                                                        Collectors.groupingBy(Posting::getId, Collectors.reducing(this::calculateBalance))
-                                                        , t1 -> t1.values()
-                                                                .stream()
-                                                                .map(x1 -> x1.orElse(null))
-                                                                .collect(Collectors.toList())
-                                                )
-                                        )
+                                ), Map::values)
+                );
+
+
+        Collection<Optional<Posting>> result = collect.stream()
+                .flatMap(Collection::stream)
+                .map(x -> x.orElse(null))
+                .collect(
+                        Collectors.collectingAndThen(
+                                Collectors.groupingBy(Posting::getId, Collectors.reducing(this::calculateBalance))
+                                , Map::values
                         )
                 );
 
-        collect2.forEach(System.out::println);
+        result.forEach(System.out::println);
 
     }
 
