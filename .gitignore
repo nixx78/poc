@@ -17,6 +17,8 @@ hs_err_pid*
 /*/log/
 /*/logs/
 /*/target/
+/*/.idea
+/*/*.iml
 /Servers
 .classpath
 .project 
