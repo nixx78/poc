@@ -37,12 +37,14 @@ public class FindCoins {
             if (d1 > 0) {
                 s = s - (d * d1);
 //                System.out.println(d + ":" + d1 + "s:" + s );
-                response.add(d + ":" + d1);
+                response.add( d  + ":" + d1);
             }
             pos++;
         }
 
         return response;
     }
+
+
 
 }
