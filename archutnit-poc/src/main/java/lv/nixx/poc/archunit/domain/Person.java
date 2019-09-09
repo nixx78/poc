@@ -1,9 +1,13 @@
 package lv.nixx.poc.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class Person {
-    private String id;
+
+    private int id;
     private String name;
+
 }

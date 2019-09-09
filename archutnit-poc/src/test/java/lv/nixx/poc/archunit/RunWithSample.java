@@ -6,16 +6,10 @@ import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.junit.ArchUnitRunner;
 import com.tngtech.archunit.lang.ArchRule;
-import com.tngtech.archunit.lang.EvaluationResult;
-import com.tngtech.archunit.lang.FailureReport;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
-
-import com.tngtech.archunit.lang.syntax.elements.MethodsShouldConjunction;
 import org.junit.runner.RunWith;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
 
 @RunWith(ArchUnitRunner.class)
 @AnalyzeClasses(
