@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import org.junit.Test;
 
 import lv.nixx.poc.domain.*;
@@ -72,5 +74,30 @@ public class JacksonTest {
 
 		assertNotEquals(expectedNode, actualNode);
 	}
+
+	@Test
+	public void createJsonObjectOnFly() throws IOException {
+
+		ObjectNode personObject = objectMapper.createObjectNode();
+		personObject.put("name", "Name.Value");
+		personObject.put("surname", "Surname.Value");
+
+		personObject.set("value", new TextNode("Text.Value"));
+
+		JsonNode nameField = personObject.get("name");
+		System.out.println(nameField.asText());
+
+		assertTrue(personObject.has("surname"));
+
+		ObjectNode rootNode = objectMapper.createObjectNode();
+		rootNode.set("person", personObject);
+
+		System.out.println(rootNode);
+
+		JsonNode expectedNode = objectMapper.readTree("{\"person\":{\"name\":\"Name.Value\",\"surname\":\"Surname.Value\",\"value\":\"Text.Value\"}}");
+		assertEquals(expectedNode, rootNode);
+	}
+
+
 
 }
