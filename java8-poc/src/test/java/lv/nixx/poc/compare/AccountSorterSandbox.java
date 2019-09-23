@@ -2,6 +2,7 @@ package lv.nixx.poc.compare;
 
 import lv.nixx.poc.java8.collection.txn.Account;
 import lv.nixx.poc.java8.collection.txn.AccountType;
+import lv.nixx.poc.java8.collection.txn.AccountTypeComparator;
 import lv.nixx.poc.java8.collection.txn.Transaction;
 import org.junit.Test;
 
@@ -15,6 +16,20 @@ import static org.junit.Assert.assertThat;
 import static lv.nixx.poc.java8.collection.txn.AccountType.*;
 
 public class AccountSorterSandbox {
+
+    @Test
+    public void sortUsingComparable() {
+
+        List<Account> sortedList = createAccounts().stream()
+                .sorted() // There we use Comparable implementation inside Account class
+                .collect(Collectors.toList());
+
+        System.out.println(sortedList);
+
+        assertThat(sortedList.stream().map(Account::getId).collect(Collectors.toList()),
+                contains("AccountID4", "AccountID1", "AccountID3", "AccountID2"));
+
+    }
 
     @Test
     public void sortAccountsNaturalEnumOrder() {
@@ -34,7 +49,7 @@ public class AccountSorterSandbox {
                 .thenComparingInt(t -> t.getTxns().size());
 
         List<Account> sortedList = createAccounts().stream()
-                .sorted(comparator)
+                .sorted(comparator) // Outside created comparator
                 .collect(Collectors.toList());
 
         System.out.println(sortedList);
@@ -44,52 +59,27 @@ public class AccountSorterSandbox {
     }
 
     private Collection<Account> createAccounts() {
-        Account acc1 = new Account("AccountID1", Arrays.asList(
+        Account acc1 = new Account("AccountID1", Collections.singletonList(
                 new Transaction("_1txn1", BigDecimal.valueOf(40.00), "AccountID1", "USD")
-        ), AccountType.CURRENT);
+        ), CURRENT);
 
         Account acc2 = new Account("AccountID2", Arrays.asList(
                 new Transaction("_2txn4", BigDecimal.valueOf(5.00), "AccountID2", "USD"),
                 new Transaction("2txn2", BigDecimal.valueOf(10.00), "AccountID2", "USD"),
                 new Transaction("_2txn4", BigDecimal.valueOf(5.00), "AccountID2", "USD")
-        ), AccountType.CARD);
+        ), CARD);
 
-        Account acc3 = new Account("AccountID3", Arrays.asList(
+        Account acc3 = new Account("AccountID3", Collections.singletonList(
                 new Transaction("_3txn4", BigDecimal.valueOf(5.00), "AccountID2", "USD")
-        ), AccountType.CARD);
-
+        ), CARD);
 
         Account acc4 = new Account("AccountID4", Arrays.asList(
                 new Transaction("_4txn1", BigDecimal.valueOf(40.00), "AccountID4", "USD"),
                 new Transaction("_4txn2", BigDecimal.valueOf(10.00), "AccountID4", "USD"),
                 new Transaction("_4txn4", BigDecimal.valueOf(5.00), "AccountID4", "USD")
-        ), AccountType.DEPOSIT);
+        ), DEPOSIT);
 
         return Arrays.asList(acc1, acc2, acc3, acc4);
-    }
-
-    static class AccountTypeComparator implements Comparator<AccountType> {
-
-        private Map<AccountType, Integer> pos;
-
-        static AccountTypeComparator forOrder(AccountType ... expectedOrder) {
-            return new AccountTypeComparator(expectedOrder);
-        }
-
-        private AccountTypeComparator(AccountType... expectedOrder) {
-            this.pos = new HashMap<>();
-            for (int i = 0; i < expectedOrder.length; i++) {
-                pos.put(expectedOrder[i], i);
-            }
-        }
-
-        @Override
-        public int compare(AccountType o1, AccountType o2) {
-            Integer p1 = pos.getOrDefault(o1, -1);
-            Integer p2 = pos.getOrDefault(o2, -1);
-            return p1.compareTo(p2);
-        }
-
     }
 
 }

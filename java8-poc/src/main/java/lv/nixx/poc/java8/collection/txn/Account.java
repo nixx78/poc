@@ -2,7 +2,11 @@ package lv.nixx.poc.java8.collection.txn;
 
 import java.util.*;
 
-public class Account {
+import static lv.nixx.poc.java8.collection.txn.AccountType.*;
+
+public class Account implements Comparable<Account>{
+
+    private static final Comparator<AccountType> accountTypeComparator = AccountTypeComparator.forOrder(DEPOSIT, CURRENT, CARD);
 
     private String id;
     private List<Transaction> txn;
@@ -36,5 +40,13 @@ public class Account {
                 "id='" + id + '\'' +
                 ", type=" + type +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Account account) {
+        Comparator<Account> comparator = Comparator.comparing(Account::getType, accountTypeComparator)
+                .thenComparingInt(t -> t.getTxns().size());
+
+        return comparator.compare(this, account);
     }
 }
