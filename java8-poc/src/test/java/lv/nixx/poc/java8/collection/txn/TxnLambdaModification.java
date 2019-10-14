@@ -387,7 +387,6 @@ public class TxnLambdaModification {
 
 		final AtomicInteger i = new AtomicInteger(0);
 		Map<Integer, Transaction> map = txns.stream()
-				.sorted(Comparator.comparing(Transaction::getId))
 				.collect(Collectors.toMap(t-> i.incrementAndGet(), Function.identity()));
 		
 		System.out.println(map);
@@ -413,6 +412,25 @@ public class TxnLambdaModification {
 		top3Txns.forEach(System.out::println);
 		
 		assertEquals(3, top3Txns.size());
+	}
+
+	@Test
+	public void topTransactionByAccountTest() {
+
+		List<Transaction> txns = Arrays.asList(
+				new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"),
+				new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD"),
+				new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"),
+				new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR"),
+				new Transaction("id4", BigDecimal.valueOf(1.00), "ACC3", "EUR")
+		);
+
+		Map<String, Transaction> maxBy = txns.stream()
+				.collect(
+						Collectors.toMap(Transaction::getAccount, Function.identity(), BinaryOperator.maxBy(Comparator.comparing(Transaction::getAmount)))
+				);
+
+		assertEquals(3, maxBy.size());
 	}
 	
 	@Test
