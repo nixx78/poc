@@ -1,35 +1,45 @@
 package lv.nixx.poc.domain;
 
-import java.math.BigDecimal;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
-@RequiredArgsConstructor 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Transaction {
 
 	private int id;
 	private int pos;
 	private BigDecimal amount;
-	
-	@JsonProperty(required=true)
+
+	@JsonSetter(nulls = Nulls.SKIP)
+	private Type type = Type.CREDIT;
+
 	private Currency currency;
-	
+
+	public Transaction(int id, int pos, BigDecimal amount, Type type, Currency currency) {
+		this.id = id;
+		this.pos = pos;
+		this.amount = amount;
+		this.type = type;
+		this.currency = currency;
+	}
+
 	@JsonProperty("taxFee")
 	public double getTax() {
 		return amount.multiply(BigDecimal.valueOf(0.21)).doubleValue();
 	}
-	
+
 	@JsonIgnore
-	public double getInnoredField() {
+	public double getIgnoredField() {
 		return 0.00;
 	}
+
 }

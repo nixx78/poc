@@ -5,7 +5,10 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.math.BigDecimal;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.*;
+
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.junit.Test;
@@ -15,11 +18,33 @@ import lv.nixx.poc.domain.*;
 public class JacksonTest {
 	
 	private ObjectMapperService objectMapper = new ObjectMapperService();
+
+	@Test
+	public void objectToJsonWithoutNullFieldsTest() throws Exception {
+
+		Transaction p = new Transaction(10, 1, BigDecimal.valueOf(10.00), null, null);
+
+		ObjectMapperService service = new ObjectMapperService();
+		service.setSerializationInclusion(NON_NULL);
+		service.enable(SerializationFeature.INDENT_OUTPUT);
+
+		String s = service.writeValueAsString(p);
+		// Null field will not be in JSON
+		System.out.println(s);
+
+		Transaction transaction = service.readValue(s, Transaction.class);
+
+		System.out.println(transaction);
+
+		assertNotNull(transaction);
+		assertNull(transaction.getCurrency());
+		assertEquals("Type should be set by default", Type.CREDIT, transaction.getType());
+	}
 		
 	@Test
 	public void objectToStringSample() throws Exception {
-		Transaction p = new Transaction(10, 1, BigDecimal.valueOf(10.00), Currency.EUR);
-		
+		Transaction p = new Transaction(10, 1, BigDecimal.valueOf(10.00), null, Currency.EUR);
+
 		String jsonString = objectMapper.writeValueAsString(p);
 		System.out.println(jsonString);
 		

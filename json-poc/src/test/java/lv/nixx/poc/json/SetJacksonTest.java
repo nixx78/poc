@@ -25,11 +25,11 @@ public class SetJacksonTest {
 		Txns txns = new Txns();
 		txns.setTransactions(new HashSet<>(
 				Arrays.asList(
-						new Transaction(10, 1,  BigDecimal.valueOf(10.00), Currency.EUR),
-						new Transaction(20, 2, BigDecimal.valueOf(20.00), Currency.EUR),
-						new Transaction(30, 3, BigDecimal.valueOf(30.00), Currency.EUR),
-						new Transaction(40, 4, BigDecimal.valueOf(40.00), Currency.EUR),
-						new Transaction(50, 5, BigDecimal.valueOf(50.00), Currency.EUR)
+						new Transaction(10, 1,  BigDecimal.valueOf(10.00), null,  Currency.EUR),
+						new Transaction(20, 2, BigDecimal.valueOf(20.00), null, Currency.EUR),
+						new Transaction(30, 3, BigDecimal.valueOf(30.00), null, Currency.EUR),
+						new Transaction(40, 4, BigDecimal.valueOf(40.00), null, Currency.EUR),
+						new Transaction(50, 5, BigDecimal.valueOf(50.00), null, Currency.EUR)
 						)
 				));
 
