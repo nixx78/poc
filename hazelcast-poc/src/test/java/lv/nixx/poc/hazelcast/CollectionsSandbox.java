@@ -7,12 +7,14 @@ import static org.hamcrest.Matchers.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.*;
 
+import com.hazelcast.query.*;
+import com.hazelcast.query.impl.predicates.AndPredicate;
+import com.hazelcast.query.impl.predicates.EqualPredicate;
+import com.hazelcast.query.impl.predicates.InPredicate;
+import com.hazelcast.query.impl.predicates.OrPredicate;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,10 +26,6 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
 import com.hazelcast.core.MultiMap;
-import com.hazelcast.query.EntryObject;
-import com.hazelcast.query.Predicate;
-import com.hazelcast.query.PredicateBuilder;
-import com.hazelcast.query.SqlPredicate;
 import com.hazelcast.test.TestHazelcastInstanceFactory;
 
 import lv.nixx.poc.hazelcast.model.Person;
@@ -54,30 +52,22 @@ public class CollectionsSandbox {
 		hz = new TestHazelcastInstanceFactory().newHazelcastInstance(config);
 
 		personMap = hz.getMap("persons.map");
+		personMap.clear();
 	}
 
 	@Test
 	public void predicateSandbox() throws ParseException {
+		int entryId = 3;
+
 		personMap.put(1, new Person(1, "Name1", df.parse("06.12.1978")));
 		personMap.put(2, new Person(2, "Name2", df.parse("06.12.1980")));
-		personMap.put(3, new Person(3, "Name3", df.parse("06.12.2004")));
-		personMap.put(4, new Person(4, "Name4", df.parse("06.12.2019")));
-		personMap.put(5, new Person(5, "ABC", df.parse("06.12.2019")));
+		personMap.put(entryId, new Person(entryId, "Name3", df.parse("06.12.2004")));
 
-		EntryObject e = new PredicateBuilder().getEntryObject();
+		personMap.get(entryId);
+		personMap.get(entryId);
+		personMap.get(entryId);
 
-		Predicate<Integer, Person> equal = e.get("name").equal("ABC");
-
-		Collection<Person> values = personMap.values(equal);
-		assertEquals(1, values.size());
-
-		System.out.println(values);
-
-		personMap.get(5);
-		personMap.get(5);
-		personMap.get(5);
-
-		EntryView<Integer, Person> entry = personMap.getEntryView(5);
+		EntryView<Integer, Person> entry = personMap.getEntryView(entryId);
 		System.out.println("size in memory  : " + entry.getCost());
 		System.out.println("creationTime    : " + entry.getCreationTime());
 		System.out.println("expirationTime  : " + entry.getExpirationTime());
@@ -87,36 +77,6 @@ public class CollectionsSandbox {
 		System.out.println("version         : " + entry.getVersion());
 		System.out.println("key             : " + entry.getKey());
 		System.out.println("value           : " + entry.getValue());
-	}
-
-	@Test
-	public void sqlPredicateTest() throws ParseException {
-		personMap.put(1, new Person(1, "Name1", df.parse("06.12.1978")));
-		personMap.put(2, new Person(2, "Name2", df.parse("06.12.1980")));
-		personMap.put(3, new Person(3, "Name3", df.parse("06.12.2004")));
-
-		Person person4 = new Person(4, "Name4", df.parse("06.12.2019"));
-		person4.setState(Collections.emptyList());
-		personMap.put(4, person4);
-
-		Person person5 = new Person(5, "ABC", df.parse("06.12.2019"));
-		person5.setState(Arrays.asList("st1", "st2", "st3"));
-		personMap.put(5, person5);
-
-		Person person6 = new Person(6, "ABC", df.parse("06.12.2019"));
-		person6.setState(Arrays.asList("st2", "st3"));
-		personMap.put(6, person6);
-
-		Person person7 = new Person(7, "ABC", df.parse("06.12.2019"));
-		person7.setState(Arrays.asList("st3"));
-		personMap.put(7, person7);
-
-		executeFilter("state[any]==null", 2, 1, 4, 3);
-		executeFilter("state[any]==st1", 5);
-		executeFilter("state[any]=='st1' OR state[any]==null", 1, 2, 3, 4, 5);
-		executeFilter("state[any] in (st2,st1)", 6, 5);
-		executeFilter("state[any] not in (st2, st5)", 1, 2, 3, 4, 7);
-		executeFilter("name like A%", 5, 6, 7);
 	}
 
 	@Test
