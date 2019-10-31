@@ -7,6 +7,9 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.*;
 
 import lv.nixx.poc.java8.collection.txn.*;
@@ -66,6 +69,20 @@ public class CollectionPlayground {
 			s1.add(String.valueOf(i));
 		}
 		System.out.println("HashSet time: " + (System.currentTimeMillis() - st));
+	}
+
+	@Test
+	public void mapTest() {
+
+		ConcurrentHashMap<String, ReentrantReadWriteLock> m = new ConcurrentHashMap<>();
+		ReentrantReadWriteLock lock = m.computeIfAbsent("cusip.settleDate", t-> new ReentrantReadWriteLock());
+		try {
+			lock.readLock().lock();
+			System.out.println(lock.getReadHoldCount());
+		} finally {
+			lock.readLock().unlock();
+			System.out.println(lock.getReadHoldCount());
+		}
 	}
 	
 	@Test
