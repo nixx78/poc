@@ -3,7 +3,6 @@ package lv.nixx.poc.domain.subclass;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.*;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.*;
-
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,3 +21,4 @@ public abstract class Parent {
     Parent() {
     }
 }
+
