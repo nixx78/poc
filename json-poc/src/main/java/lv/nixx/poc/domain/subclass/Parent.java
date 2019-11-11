@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-@JsonTypeInfo(use = NAME, include =  EXISTING_PROPERTY, property = "type")
+@JsonTypeInfo(use = NAME, include =  EXISTING_PROPERTY, property = "type", visible = true)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Child1.class, name = "TYPE_1"),
         @JsonSubTypes.Type(value = Child2.class, name = "TYPE_2") }
