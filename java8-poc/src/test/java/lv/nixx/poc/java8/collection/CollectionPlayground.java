@@ -26,6 +26,30 @@ public class CollectionPlayground {
 		final long count = Arrays.stream(numbers).filter(t -> t > threshold).count();
 		assertEquals(3, count);
 	}
+
+	@Test
+	public void putTest() {
+		Map<String, Object> map = new HashMap<>();
+		String key = "key";
+		String key1 = "key1";
+
+		map.put(key, new Object());
+
+		int hc1 = map.get(key).hashCode();
+		map.put(key, new Object());
+		int hc2 = map.get(key).hashCode();
+
+		assertNotSame(hc1, hc2);
+
+		Object v = new Object();
+		map.put(key1, v);
+
+		hc1 = map.get(key1).hashCode();
+		map.put(key1, v);
+		hc2 = map.get(key1).hashCode();
+
+		assertEquals(hc1, hc2);
+	}
 	
 	@Test
 	public void listTraverse() {
