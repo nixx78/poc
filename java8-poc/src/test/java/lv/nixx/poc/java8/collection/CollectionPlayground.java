@@ -1,8 +1,5 @@
 package lv.nixx.poc.java8.collection;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,6 +10,8 @@ import java.util.stream.*;
 import lv.nixx.poc.java8.collection.txn.*;
 
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class CollectionPlayground {
 	
@@ -162,7 +161,7 @@ public class CollectionPlayground {
 				.toArray();
 		
 		Arrays.stream(res).forEach(System.out::println);
-		assertTrue(Arrays.equals(new int[]{12, 60, 99, 100, 777}, res));
+		assertArrayEquals(new int[]{12, 60, 99, 100, 777}, res);
 	}
 	
 	@Test
@@ -195,7 +194,7 @@ public class CollectionPlayground {
 	
 	@Test
 	public void computeIfPresent() {
-		
+
 		Map<Integer, String> map = new HashMap<>();
 		map.put(1, "One");
 		map.put(2, "Two");
@@ -232,7 +231,7 @@ public class CollectionPlayground {
 		
 		final Map<Character, Long> statistic = 
 				collection.stream()
-				.map(t->Character.toLowerCase(t))
+				.map(Character::toLowerCase)
 				.collect(
 						Collectors.groupingBy(t->t, 
 						Collectors.counting())
@@ -261,10 +260,7 @@ public class CollectionPlayground {
 	public void theLongestWord_CollectMethod() {
 		List<String> str = Arrays.asList("123","1", "12", "12345");
 		
-		final Optional<String> collect =str.stream()
-				.collect(
-						Collectors.maxBy(Comparator.comparingInt( t-> t.length()))
-				);
+		final Optional<String> collect = str.stream().max(Comparator.comparingInt(String::length));
 		
 		assertTrue(collect.isPresent());
 		assertEquals("12345", collect.get());
@@ -298,11 +294,13 @@ public class CollectionPlayground {
 	public void computeIfAbsent() {
 		
 		Map<String, String> map = new HashMap<>();
-		
-		map.computeIfAbsent("1", t -> System.currentTimeMillis() + t);
-		
+
+		String firstVal = map.computeIfAbsent("1", t -> "First.Value");
+		String secondVal = map.computeIfAbsent("1", t -> "Second.Value");
+
 		map.forEach((k,v) -> System.out.println(k + ":" + v) );
-		
+
+		assertEquals(firstVal, secondVal);
 	}
 
 	
@@ -310,8 +308,7 @@ public class CollectionPlayground {
 	public void theLongestWord_ReduceMethod() {
 		List<String> str = Arrays.asList("123", "1", "12", "12345");
 
-		final Optional<String> collect = str.stream()
-				.collect(Collectors.reducing((t, u) -> t.length() > u.length() ? t : u));
+		final Optional<String> collect = str.stream().reduce((t, u) -> t.length() > u.length() ? t : u);
 		
 		assertTrue(collect.isPresent());
 		assertEquals("12345", collect.get());
@@ -323,6 +320,8 @@ public class CollectionPlayground {
 		Arrays.parallelSetAll(a, i->i);
 		
 		System.out.println(Arrays.toString(a));
+
+		assertEquals(100, a.length);
 	}
 	
 		
