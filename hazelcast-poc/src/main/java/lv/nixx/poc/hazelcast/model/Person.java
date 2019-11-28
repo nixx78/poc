@@ -11,8 +11,10 @@ import lombok.experimental.Accessors;
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode(of="id")
+@Builder(toBuilder=true)
 public class Person implements Serializable {
 	
 	@NonNull
@@ -23,7 +25,7 @@ public class Person implements Serializable {
 	
 	@NonNull
 	private Date age;
-	 
+
 	private Collection<String> state;
-	
+
 }
