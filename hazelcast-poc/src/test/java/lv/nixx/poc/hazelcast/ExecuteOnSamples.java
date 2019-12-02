@@ -1,10 +1,9 @@
-package lv.nixx.poc.hazelcast.entryprocessing;
+package lv.nixx.poc.hazelcast;
 
 import com.hazelcast.core.EntryView;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import com.hazelcast.map.EntryBackupProcessor;
-import com.hazelcast.map.EntryProcessor;
+import com.hazelcast.map.AbstractEntryProcessor;
 import com.hazelcast.test.TestHazelcastInstanceFactory;
 import lv.nixx.poc.hazelcast.model.Person;
 import org.junit.Before;
@@ -17,6 +16,8 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.*;
 
 public class ExecuteOnSamples {
+
+    // https://docs.hazelcast.org/docs/latest-dev/manual/html-single/index.html#entry-processor
 
     private HazelcastInstance hazelcastInstance = new TestHazelcastInstanceFactory().newHazelcastInstance();
 
@@ -75,7 +76,8 @@ public class ExecuteOnSamples {
         assertEquals("name1.version1.version2", ew.getValue().getName());
     }
 
-    class PersonUpdater implements EntryProcessor<String, Person> {
+    class PersonUpdater extends AbstractEntryProcessor<String, Person> {
+//    class PersonUpdater implements EntryProcessor<String, Person> {
 
         private String updateValue;
 
@@ -103,12 +105,6 @@ public class ExecuteOnSamples {
                 return p;
             }
         }
-
-        @Override
-        public EntryBackupProcessor<String, Person> getBackupProcessor() {
-            return null;
-        }
-
     }
 
 }
