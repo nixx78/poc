@@ -24,7 +24,7 @@ public class BenchmarkExtension implements BeforeTestExecutionCallback, AfterTes
 		final Optional<Class<?>> testClass = context.getTestClass();
 		final Optional<Method> testMethod = context.getTestMethod();
 		
-		String className = testClass.isPresent() ? testClass.get().getSimpleName() : "";
+		String className = testClass.map(Class::getSimpleName).orElse("");
 		String method = testMethod.isPresent() ? testMethod.get().getName() : "";
 		
 		long elapsedTime = System.currentTimeMillis() - launchTime;
