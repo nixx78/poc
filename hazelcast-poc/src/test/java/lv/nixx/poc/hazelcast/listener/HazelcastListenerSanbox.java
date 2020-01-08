@@ -1,7 +1,8 @@
 package lv.nixx.poc.hazelcast.listener;
 
-import org.junit.Test;
-
+import com.hazelcast.config.Config;
+import com.hazelcast.config.EntryListenerConfig;
+import com.hazelcast.config.MapConfig;
 import com.hazelcast.core.EntryEvent;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
@@ -10,21 +11,54 @@ import com.hazelcast.map.listener.EntryAddedListener;
 import com.hazelcast.map.listener.EntryRemovedListener;
 import com.hazelcast.map.listener.EntryUpdatedListener;
 import com.hazelcast.test.TestHazelcastInstanceFactory;
+import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class HazelcastListenerSanbox {
 
 	private HazelcastInstance hazelcastInstance = new TestHazelcastInstanceFactory().newHazelcastInstance();
+
+	@Test
+	public void testConfigListenerRegistration() throws InterruptedException {
+		Config config = hazelcastInstance.getConfig();
+
+		MapConfig mapWithListenerConfig =  config.getMapConfig("mapWithListener");
+
+		EntryListenerConfig entryListenerConfig = new EntryListenerConfig();
+		entryListenerConfig.setImplementation(new MyEntryListener());
+
+		// In this case, we duplicate listeners
+		mapWithListenerConfig.addEntryListenerConfig(entryListenerConfig);
+		mapWithListenerConfig.addEntryListenerConfig(entryListenerConfig);
+
+		List<EntryListenerConfig> c1 = mapWithListenerConfig.getEntryListenerConfigs();
+		assertEquals(2, c1.size());
+
+		IMap<String, String> map = hazelcastInstance.getMap("mapWithListener");
+		map.put("key", "value");
+
+		List<EntryListenerConfig> c2 = config.getMapConfig("mapWithoutListener").getEntryListenerConfigs();
+		assertEquals(0, c2.size());
+	}
 	
 	@Test
 	public void entryListenerTest() {
 		// https://docs.hazelcast.org/docs/latest-development/manual/html/Distributed_Events/Event_Listener_for_Members/Listening_for_Map_Events.html
 		
 		IMap<String, String> map = hazelcastInstance.getMap("abc");
-		map.addEntryListener(new MyEntryListener(), true);
-		map.addInterceptor(new MapInterceptorImpl());		
-		
+		String s = map.addEntryListener(new MyEntryListener(), true);
+
+		map.addInterceptor(new MapInterceptorImpl());
+
+		System.out.println("Listener1 Id:" + s);
+
+
 		map.put("One", "One.value");
+
 		map.replace("One", "One.Replaced");
 		map.remove("One");
 		
