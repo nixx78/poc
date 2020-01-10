@@ -22,6 +22,9 @@ public class Transaction {
 	@JsonSetter(nulls = Nulls.SKIP)
 	private Type type = Type.CREDIT;
 
+	@JsonProperty("Txn description")
+	private String description;
+
 	private Currency currency;
 
 	public Transaction(int id, int pos, BigDecimal amount, Type type, Currency currency) {

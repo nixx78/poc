@@ -44,10 +44,11 @@ public class JacksonTest {
 	@Test
 	public void objectToStringSample() throws Exception {
 		Transaction p = new Transaction(10, 1, BigDecimal.valueOf(10.00), null, Currency.EUR);
+		p.setDescription("Txn Description value");
 
 		String jsonString = objectMapper.writeValueAsString(p);
+		assertNotNull(jsonString);
 		System.out.println(jsonString);
-		
 	}
 	
 	@Test
@@ -55,7 +56,8 @@ public class JacksonTest {
 		String json = "{\r\n" + 
 				"  \"id\" : 10,\r\n" + 
 				"  \"amount\" : 10.0,\r\n" + 
-				"  \"currency\" : \"EUR\"\r\n" + 
+				"  \"currency\" : \"EUR\",\r\n" +
+				"\"Txn description\" : \"Txn Description value\""+
 				"}";
 		
 		Transaction txn = objectMapper.readValue(json, Transaction.class);
