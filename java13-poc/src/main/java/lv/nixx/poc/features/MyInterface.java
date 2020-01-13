@@ -1,4 +1,4 @@
-package lv.nixx.poc.java9;
+package lv.nixx.poc.features;
 
 public interface MyInterface {
 
