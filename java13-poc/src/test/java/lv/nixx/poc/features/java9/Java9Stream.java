@@ -1,4 +1,4 @@
-package lv.nixx.poc.features;
+package lv.nixx.poc.features.java9;
 
 import java.util.List;
 import java.util.stream.Stream;

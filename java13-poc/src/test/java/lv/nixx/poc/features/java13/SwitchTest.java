@@ -1,4 +1,4 @@
-package lv.nixx.poc.features;
+package lv.nixx.poc.features.java13;
 
 import org.junit.Test;
 

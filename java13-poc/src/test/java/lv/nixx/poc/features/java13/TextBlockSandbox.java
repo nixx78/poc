@@ -1,6 +1,8 @@
-package lv.nixx.poc.features;
+package lv.nixx.poc.features.java13;
 
 import org.junit.Test;
+
+import java.util.stream.Collectors;
 
 public class TextBlockSandbox {
 
@@ -17,6 +19,8 @@ public class TextBlockSandbox {
 
         System.out.println("Text Block String:\n" + textBlock);
         System.out.println("Normal String Literal:\n" + str);
+
+        System.out.println("textBlock.lines()\n" + textBlock.lines().collect(Collectors.toList()));
 
         System.out.println("Text Block and String Literal equals() Comparison: " + (textBlock.equals(str)));
         System.out.println("Text Block and String Literal == Comparison: " + (textBlock == str));

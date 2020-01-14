@@ -1,4 +1,4 @@
-package lv.nixx.poc.features;
+package lv.nixx.poc.features.java9;
 
 import java.io.Closeable;
 import java.io.IOException;
