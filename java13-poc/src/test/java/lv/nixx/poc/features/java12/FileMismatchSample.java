@@ -10,8 +10,6 @@ import static org.junit.Assert.assertEquals;
 
 public class FileMismatchSample {
 
-    //FIXME https://www.journaldev.com/28666/java-12-features#4-jep-230-and-344
-
     @Test
     public void fileMismatchSample() throws IOException {
 
