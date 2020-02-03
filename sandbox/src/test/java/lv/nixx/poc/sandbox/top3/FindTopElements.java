@@ -23,7 +23,7 @@ public class FindTopElements {
 				new Person(2, "name2", df.parse("06.10.1980")),
 				new Person(3, "name3", df.parse("06.10.1981")));
 
-		final Comparator<Person> comparator = (p, q) -> p.getDateOfBirth().compareTo(q.getDateOfBirth());
+		final Comparator<Person> comparator = Comparator.comparing(Person::getDateOfBirth);
 		PriorityQueue<Person> topElements = new PriorityQueue<>(3, comparator);
 
 		// Add elements from external source
@@ -33,7 +33,7 @@ public class FindTopElements {
 				topElements.add(p);
 			} else {
 				final Person top = topElements.peek();
-				if (comparator.compare(p, top) == 1) {
+				if (comparator.compare(p, top) > 0) {
 					topElements.poll();
 					topElements.add(p);
 				}

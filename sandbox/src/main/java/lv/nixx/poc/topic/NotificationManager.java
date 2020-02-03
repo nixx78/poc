@@ -18,17 +18,17 @@ public class NotificationManager {
 
 
 	public void notifyAbout(UIMessageOne message) {
-		MessageWrapper mw = new MessageWrapper<UIMessageOne>(message);
+		MessageWrapper mw = new MessageWrapper<>(message);
 		notifications.get(message.getClass()).send(mw);
 	}
 
 	public void notifyAbout(UIMessageTwo message) {
-		MessageWrapper mw = new MessageWrapper<UIMessageTwo>(message);
+		MessageWrapper mw = new MessageWrapper<>(message);
 		notifications.get(message.getClass()).send(mw);	
 	}
 
 	public void notifyAbout(UIMessageThree message) {
-		MessageWrapper mw = new MessageWrapper<UIMessageThree>(message);
+		MessageWrapper mw = new MessageWrapper<>(message);
 		notifications.get(message.getClass()).send(mw);	
 	}
 

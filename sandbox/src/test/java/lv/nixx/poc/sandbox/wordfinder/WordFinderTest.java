@@ -8,13 +8,7 @@ public class WordFinderTest {
 	
 	@Test
 	public void testFindLongesWord() {
-		
-		/* For example, given L = {mercury, venus, earth, mars, jupiter, saturn, uranus, neptune} 
-		and s = ajsxuytcnhre, the function longestWord returns saturn. 
-		Note that returning uranus would be wrong as s only contains one letter u.
-		*/ 
-		
-		WordFinder wf = new WordFinder("./src/test/resources/short_list.txt");               
+		WordFinder wf = new WordFinder("./src/test/resources/short_list.txt");
 		String longest = wf.longestWord("ajsxuytcnhre");
 		
 		assertNotNull(longest);

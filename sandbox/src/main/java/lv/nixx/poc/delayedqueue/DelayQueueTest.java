@@ -5,7 +5,7 @@ import java.util.concurrent.DelayQueue;
 
 public class DelayQueueTest {
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) {
 
 		final BlockingQueue<Email> queue = new DelayQueue<>();
 

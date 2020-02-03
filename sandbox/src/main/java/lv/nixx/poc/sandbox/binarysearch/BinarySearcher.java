@@ -3,6 +3,9 @@ package lv.nixx.poc.sandbox.binarysearch;
 import java.util.*;
 
 public class BinarySearcher {
+
+	private BinarySearcher() {
+	}
 	
 	public static Person searchById(List<Person> c, Integer searchId) {
 
