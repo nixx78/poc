@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 public class WordFinder {
 
     private String dictionaryFileName;
+    private Stream<String> stream;
 
     public WordFinder(String dictionaryFileName) {
         this.dictionaryFileName = dictionaryFileName;
@@ -24,7 +25,11 @@ public class WordFinder {
 
         String longestWord = "";
 
-        try (Stream<String> stream = Files.lines(Paths.get(dictionaryFileName))) {
+        try {
+            // Just load once
+            if (stream == null) {
+                stream = Files.lines(Paths.get(dictionaryFileName));
+            }
 
             longestWord = stream.filter(dWord -> isBelongToCharset(dWord, wordSet))
                     .max(Comparator.comparingInt(String::length)).orElse("");
