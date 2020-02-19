@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
+import lv.nixx.poc.java8.collection.txn.AccountType;
 import org.junit.Test;
 
 import lv.nixx.poc.java8.collection.txn.Account;
@@ -46,7 +47,7 @@ public class OptionalSandbox {
 	@Test(expected = IllegalStateException.class)
 	public void flatMap() throws Exception {
 		
-		Account c = new Account("ID", null);
+		Account c = new Account("ID", (AccountType)  null);
 		
 		Optional.ofNullable(c)
 			.flatMap(this::getLst)   // Return type: Optional 

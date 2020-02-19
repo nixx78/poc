@@ -13,12 +13,12 @@ public class CustomerSortTest {
 	@Test
 	public void customAccountSort() {
 
-		final List<Account> sortedAccounts = Arrays.asList(new Account("X", null), 
-				new Account("D", null), 
-				new Account("C", null),
-				new Account("A", null),
-				new Account("B", null),
-				new Account("TOP", null))
+		final List<Account> sortedAccounts = Arrays.asList(new Account("X", (AccountType) null),
+				new Account("D", (AccountType) null),
+				new Account("C", (AccountType) null),
+				new Account("A", (AccountType) null),
+				new Account("B", (AccountType) null),
+				new Account("TOP", (AccountType) null))
 		.stream()
 		.sorted((t1, t2)->t1.getId().equals("TOP") ? -1: t1.getId().compareTo(t2.getId()))
 		.collect(Collectors.toList());

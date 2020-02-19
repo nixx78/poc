@@ -103,6 +103,21 @@ public class AccountPlayground {
     }
 
     @Test
+    public void getTransactionsWithLimitByAccount() {
+
+        Map<String, Collection<Transaction>> accountsWithTransactions = createAccountsWithTransactions()
+            .stream()
+            .filter(t -> t.getTxns() != null)
+            .collect(Collectors.toMap(Account::getId, t -> t.getTxns().stream()
+                    .filter(x -> x.getAmount().compareTo(BigDecimal.TEN) > 0)
+                    .collect(Collectors.toList()))
+            );
+
+        accountsWithTransactions.entrySet().forEach(System.out::println);
+
+    }
+
+    @Test
     public void createDistinctAccountList() {
 
         Set<String> uniqueAccounts = Stream.of(
