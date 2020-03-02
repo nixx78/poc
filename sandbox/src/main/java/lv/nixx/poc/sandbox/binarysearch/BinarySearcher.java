@@ -9,10 +9,9 @@ public class BinarySearcher {
 	
 	public static Person searchById(List<Person> c, Integer searchId) {
 
-		Collections.sort(c, (p1, p2) -> Integer.compare(p1.id, p2.id));
-		boolean doIteration = true;
-		
-		while(doIteration) {
+		Collections.sort(c, Comparator.comparingInt(p -> p.id));
+
+		while(true) {
 			int midle = c.size() / 2;
 			final Person cp = c.get(midle);
 			
@@ -23,7 +22,6 @@ public class BinarySearcher {
 			}
 			c = searchId < cp.id  ? c.subList(0, midle) : c.subList(midle, c.size());
 		}
-		return null;
 	}
 	
 
