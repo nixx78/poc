@@ -1,4 +1,4 @@
-package lv.nixx.poc.hazelcast.service;
+package lv.nixx.poc.hazelcast.cache;
 
 import java.util.Collection;
 
@@ -7,9 +7,9 @@ import com.hazelcast.query.PredicateBuilder;
 
 import lv.nixx.poc.hazelcast.model.*;
 
-public class PersonStringKeyManager extends GenericEntityManager<String, Person> {
+public class PersonStringKeyCache extends AbstractEntityCache<String, Person> {
 	
-	public PersonStringKeyManager() {
+	public PersonStringKeyCache() {
 		super("person.map");
 	}
 
@@ -19,7 +19,7 @@ public class PersonStringKeyManager extends GenericEntityManager<String, Person>
 				.getEntryObject()
 				.get("id").equal(id);
 
-			return collectAndMap(p);
+			return getValues(p);
 	}
 
 }

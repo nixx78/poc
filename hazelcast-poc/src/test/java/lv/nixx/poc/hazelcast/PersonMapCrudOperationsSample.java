@@ -34,7 +34,7 @@ public class PersonMapCrudOperationsSample {
         System.out.println("After add");
         System.out.println(service.map.entrySet());
 
-        assertEquals(2, service.map.size());
+        assertEquals(1, service.map.size());
 
         service.updatePerson(groupId, new Person(10, "Name.v11", new Date()));
 

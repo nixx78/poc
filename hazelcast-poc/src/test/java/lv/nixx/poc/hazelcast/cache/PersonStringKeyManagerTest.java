@@ -1,4 +1,4 @@
-package lv.nixx.poc.hazelcast.service;
+package lv.nixx.poc.hazelcast.cache;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import lv.nixx.poc.hazelcast.cache.PersonStringKeyCache;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +21,7 @@ import lv.nixx.poc.hazelcast.model.Person;
 
 public class PersonStringKeyManagerTest {
 	
-	private PersonStringKeyManager service = new PersonStringKeyManager();
+	private PersonStringKeyCache service = new PersonStringKeyCache();
 	private final Date date = new Date();
 
 	@Before

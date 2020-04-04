@@ -1,4 +1,4 @@
-package lv.nixx.poc.hazelcast.service;
+package lv.nixx.poc.hazelcast.cache;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
@@ -20,11 +20,11 @@ import lv.nixx.poc.hazelcast.model.Category;
 import lv.nixx.poc.hazelcast.model.CategoryPersonTuple;
 import lv.nixx.poc.hazelcast.model.Person;
 import lv.nixx.poc.hazelcast.model.PersonKey;
-import lv.nixx.poc.hazelcast.service.PersonCompositeKeyManager;
+import lv.nixx.poc.hazelcast.cache.PersonCompositeKeyCache;
 
-public class PersonCompositeKeyManagerTest {
+public class PersonCompositeKeyCacheTest {
 	
-	private PersonCompositeKeyManager service = new PersonCompositeKeyManager();
+	private PersonCompositeKeyCache service = new PersonCompositeKeyCache();
 	private final Date date = new Date();
 
 	@Before

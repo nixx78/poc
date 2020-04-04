@@ -1,4 +1,4 @@
-package lv.nixx.poc.hazelcast.service;
+package lv.nixx.poc.hazelcast.cache;
 
 import java.util.Collection;
 import java.util.Map.Entry;
@@ -14,7 +14,7 @@ import lombok.Setter;
 
 @Setter
 @RequiredArgsConstructor
-public abstract class GenericEntityManager<K, V> {
+public abstract class AbstractEntityCache<K, V> implements CacheOperations<K, V> {
 
 	protected HazelcastInstance hazelcastInstance;
 	
@@ -25,27 +25,34 @@ public abstract class GenericEntityManager<K, V> {
 		return hazelcastInstance.getMap(mapName);
 	}
 	
+	@Override
 	public V get(K key) {
 		return getMap().get(key);
 	}
 
+	@Override
 	public void add(K key, V person) {
 		getMap().set(key, person);
 	}
 	
+	@Override
 	public V update(K key, V person) {
 		return getMap().replace(key, person);
 	}
 	
+	@Override
 	public V remove(K key) {
 		return getMap().remove(key);
 	}
 	
-	protected Collection<V> collectAndMap(Predicate<?,?> p) {
+	@Override
+	public Collection<V> getValues(Predicate<?, ?> p) {
 		return getMap().entrySet(p)
 				.stream()
 				.map(Entry::getValue)
 				.collect(Collectors.toList());
 	}
+
+
 
 }
