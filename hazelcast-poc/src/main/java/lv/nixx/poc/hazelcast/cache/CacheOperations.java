@@ -14,4 +14,7 @@ public interface CacheOperations<K, V> {
     V remove(K key);
 
     Collection<V> getValues(Predicate<?, ?> p);
+
+    int size();
+
 }

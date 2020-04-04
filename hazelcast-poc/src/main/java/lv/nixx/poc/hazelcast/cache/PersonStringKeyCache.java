@@ -1,25 +1,24 @@
 package lv.nixx.poc.hazelcast.cache;
 
-import java.util.Collection;
-
 import com.hazelcast.query.Predicate;
 import com.hazelcast.query.PredicateBuilder;
+import lv.nixx.poc.hazelcast.model.Person;
 
-import lv.nixx.poc.hazelcast.model.*;
+import java.util.Collection;
 
-public class PersonStringKeyCache extends AbstractEntityCache<String, Person> {
-	
-	public PersonStringKeyCache() {
-		super("person.map");
-	}
+public class PersonStringKeyCache extends AbstractEntityCache<String, Person> implements PersonStringKeyCacheOperations {
 
-	public Collection<Person> getPersonsByAttributes(Integer id, String name) {
-		
-		Predicate<?,?> p = new PredicateBuilder()
-				.getEntryObject()
-				.get("id").equal(id);
+    public PersonStringKeyCache() {
+        super("person.map");
+    }
 
-			return getValues(p);
-	}
+    public Collection<Person> getPersonsByAttributes(Integer id, String name) {
+
+        Predicate<?, ?> p = new PredicateBuilder()
+                .getEntryObject()
+                .get("id").equal(id);
+
+        return getValues(p);
+    }
 
 }
