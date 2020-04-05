@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-import lv.nixx.poc.hazelcast.cache.PersonStringKeyCache;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,13 +20,13 @@ import lv.nixx.poc.hazelcast.model.Person;
 
 public class PersonStringKeyManagerTest {
 	
-	private PersonStringKeyCache service = new PersonStringKeyCache();
+	private PersonStringKeyCache service;
 	private final Date date = new Date();
 
 	@Before
 	public void init() {
 		HazelcastInstance inst = new TestHazelcastInstanceFactory().newHazelcastInstance();
-		service.setHazelcastInstance(inst);
+		service = new PersonStringKeyCache(inst);
 	}
 	
 	@Test
@@ -39,26 +38,26 @@ public class PersonStringKeyManagerTest {
 		Person p102 = new Person(102, "Name2", date);
 		Person p103 = new Person(103, "Name3", date);
 
-		service.add(id1, p102);
-		service.add(id2, p103);
+		service.crud.add(id1, p102);
+		service.crud.add(id2, p103);
 		
 		Person p1 = new Person(101, "Name1", date);
 		
-		service.add(id100, p1);
+		service.crud.add(id100, p1);
 		
 	
 		p1.setName("Name.Changed");
 		
-		service.update(id100, p1);
+		service.crud.update(id100, p1);
 		
-		assertEquals("Name.Changed", service.get(id100).getName());
+		assertEquals("Name.Changed", service.crud.get(id100).getName());
 		
-		service.remove(id100);
+		service.crud.remove(id100);
 		
-		assertNull(service.get(id100));
+		assertNull(service.crud.get(id100));
 		
-		assertNotNull(service.get(id1));
-		assertNotNull(service.get(id2));
+		assertNotNull(service.crud.get(id1));
+		assertNotNull(service.crud.get(id2));
 
 	}
 
@@ -66,14 +65,14 @@ public class PersonStringKeyManagerTest {
 	public void getAllBySelectionIdTest() {
 		
 		
-		service.add("id1", new Person(101, "Name1", date));
-		service.add("id2", new Person(102, "Name2", date));
-		service.add("id3", new Person(103, "Name3", date));
+		service.crud.add("id1", new Person(101, "Name1", date));
+		service.crud.add("id2", new Person(102, "Name2", date));
+		service.crud.add("id3", new Person(103, "Name3", date));
 		
-		service.add("id4", new Person(104, "Name4", date));
-		service.add("id5", new Person(106, "Name5", date));
+		service.crud.add("id4", new Person(104, "Name4", date));
+		service.crud.add("id5", new Person(106, "Name5", date));
 		
-		service.add("id6", new Person(106, "Name5", date));
+		service.crud.add("id6", new Person(106, "Name5", date));
 
 		assertThat(getPersonsByAttributes(106, "Name4"), containsInAnyOrder(106, 106));
 

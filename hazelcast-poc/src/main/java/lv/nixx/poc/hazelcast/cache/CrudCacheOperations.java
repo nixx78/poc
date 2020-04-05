@@ -4,7 +4,7 @@ import com.hazelcast.query.Predicate;
 
 import java.util.Collection;
 
-public interface CacheOperations<K, V> {
+public interface CrudCacheOperations<K, V> {
     V get(K key);
 
     void add(K key, V person);

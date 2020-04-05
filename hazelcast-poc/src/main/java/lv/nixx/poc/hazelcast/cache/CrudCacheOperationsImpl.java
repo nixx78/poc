@@ -13,8 +13,9 @@ import java.util.stream.Collectors;
 
 @Setter
 @RequiredArgsConstructor
-public abstract class AbstractEntityCache<K, V> implements CacheOperations<K, V> {
+public class CrudCacheOperationsImpl<K, V> implements CrudCacheOperations<K, V> {
 
+    @NonNull
     protected HazelcastInstance hazelcastInstance;
 
     @NonNull
@@ -31,7 +32,7 @@ public abstract class AbstractEntityCache<K, V> implements CacheOperations<K, V>
 
     @Override
     public void add(K key, V value) {
-        getMap().set(key, value);
+        getMap().put(key, value);
     }
 
     @Override

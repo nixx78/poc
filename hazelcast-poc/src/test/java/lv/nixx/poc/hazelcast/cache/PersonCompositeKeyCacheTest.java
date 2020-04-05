@@ -20,55 +20,52 @@ import lv.nixx.poc.hazelcast.model.Category;
 import lv.nixx.poc.hazelcast.model.CategoryPersonTuple;
 import lv.nixx.poc.hazelcast.model.Person;
 import lv.nixx.poc.hazelcast.model.PersonKey;
-import lv.nixx.poc.hazelcast.cache.PersonCompositeKeyCache;
 
 public class PersonCompositeKeyCacheTest {
 	
-	private PersonCompositeKeyCache service = new PersonCompositeKeyCache();
+	private PersonCompositeKeyCache cache;
 	private final Date date = new Date();
 
 	@Before
 	public void init() {
 		HazelcastInstance inst = new TestHazelcastInstanceFactory().newHazelcastInstance();
-		service.setHazelcastInstance(inst);
+		cache = new PersonCompositeKeyCache(inst);
 	}
 	
 	@Test
 	public void crudTest() {
-		service.add(new PersonKey(10L, new Category(2L, false, "RED")), new Person(102, "Name2", date));
-		service.add(new PersonKey(10L, new Category(3L, false, "RED")), new Person(103, "Name3", date));
+		cache.crud.add(new PersonKey(10L, new Category(2L, false, "RED")), new Person(102, "Name2", date));
+		cache.crud.add(new PersonKey(10L, new Category(3L, false, "RED")), new Person(103, "Name3", date));
 		
 		Person p1 = new Person(101, "Name1", date);
 		PersonKey key1 = new PersonKey(10L, new Category(1L, false, "RED"));
 		
-		service.add(key1, p1);
+		cache.crud.add(key1, p1);
 		
-		assertEquals(3, service.getPersonsBySelection(10L).size());
+		assertEquals(3, cache.getPersonsBySelection(10L).size());
 		
 		p1.setName("Name.Changed");
 		
-		service.update(key1, p1);
+		cache.crud.update(key1, p1);
 		
-		assertEquals("Name.Changed", service.get(key1).getName());
+		assertEquals("Name.Changed", cache.crud.get(key1).getName());
 		
-		service.remove(key1);
+		cache.crud.remove(key1);
 		
-		assertNull(service.get(key1));
-		assertEquals(2, service.getPersonsBySelection(10L).size());
+		assertNull(cache.crud.get(key1));
+		assertEquals(2, cache.getPersonsBySelection(10L).size());
 	}
 
 	@Test
 	public void getAllBySelectionIdTest() {
+		cache.crud.add(new PersonKey(10L, new Category(1L, false, "RED")), new Person(101, "Name1", date));
+		cache.crud.add(new PersonKey(10L, new Category(2L, false, "WHITE")), new Person(102, "Name2", date));
+		cache.crud.add(new PersonKey(10L, new Category(3L, false, "RED")), new Person(103, "Name3", date));
 		
+		cache.crud.add(new PersonKey(12L, new Category(4L, false, "BLUE")), new Person(104, "Name4", date));
+		cache.crud.add(new PersonKey(12L, new Category(1L, false, "RED")), new Person(105, "Name5", date));
 		
-		service.add(new PersonKey(10L, new Category(1L, false, "RED")), new Person(101, "Name1", date));
-		service.add(new PersonKey(10L, new Category(2L, false, "WHITE")), new Person(102, "Name2", date));
-		service.add(new PersonKey(10L, new Category(3L, false, "RED")), new Person(103, "Name3", date));
-		
-		service.add(new PersonKey(12L, new Category(4L, false, "BLUE")), new Person(104, "Name4", date));
-		service.add(new PersonKey(12L, new Category(1L, false, "RED")), new Person(105, "Name5", date));
-		
-		service.add(new PersonKey(1L,  new Category(5L, false, "RED")), new Person(106, "Name5", date));
+		cache.crud.add(new PersonKey(1L,  new Category(5L, false, "RED")), new Person(106, "Name5", date));
 
 		assertThat(getPersonsBySelection(10L), containsInAnyOrder(101, 102, 103));
 		assertThat(getPersonsBySelection(12L), containsInAnyOrder(104, 105));
@@ -96,7 +93,7 @@ public class PersonCompositeKeyCacheTest {
 		};
 		
 		long selectionId = 777L;
-		service.addBulkForSelection(selectionId, tuples);
+		cache.addBulkForSelection(selectionId, tuples);
 		
 		final Collection<Integer> personsBySelection = getPersonsBySelection(777L);
 		assertThat(personsBySelection, containsInAnyOrder(100, 101, 102));
@@ -104,14 +101,14 @@ public class PersonCompositeKeyCacheTest {
 	}
 	
 	private Collection<Integer> getPersonsBySelection(long selectionId) {
-		return service.getPersonsBySelection(selectionId)
+		return cache.getPersonsBySelection(selectionId)
 				.stream()
 				.map(Person::getId)
 				.collect(Collectors.toList());
 	}
 	
 	private Collection<Integer> getPersonsByCategory(Category category) {
-		return service.getPersonsBySelection(category)
+		return cache.getPersonsBySelection(category)
 				.stream()
 				.map(Person::getId)
 				.collect(Collectors.toList());

@@ -1,15 +1,18 @@
 package lv.nixx.poc.hazelcast.cache;
 
+import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.query.Predicate;
 import com.hazelcast.query.PredicateBuilder;
 import lv.nixx.poc.hazelcast.model.Person;
 
 import java.util.Collection;
 
-public class PersonStringKeyCache extends AbstractEntityCache<String, Person> implements PersonStringKeyCacheOperations {
+public class PersonStringKeyCache {
 
-    public PersonStringKeyCache() {
-        super("person.map");
+    public CrudCacheOperations<String, Person> crud;
+
+    public PersonStringKeyCache(HazelcastInstance hazelcastInstance) {
+        this.crud = new CrudCacheOperationsImpl<>(hazelcastInstance, "person.map");
     }
 
     public Collection<Person> getPersonsByAttributes(Integer id, String name) {
@@ -18,7 +21,14 @@ public class PersonStringKeyCache extends AbstractEntityCache<String, Person> im
                 .getEntryObject()
                 .get("id").equal(id);
 
-        return getValues(p);
+        return crud.getValues(p);
+    }
+
+    static class Stub extends PersonStringKeyCache {
+        public Stub() {
+            super(null);
+            crud = new CrudCacheOperationsStub<>();
+        }
     }
 
 }
