@@ -32,7 +32,7 @@ public class ExecuteOnSamples {
 
     @Test
     public void executeOnExistingKeySample() {
-        map.put(key1, new Person(1, "name1", new Date(), null));
+        map.put(key1, new Person(1, "name1", new Date()));
 
         Person p = (Person) map.executeOnKey(key1, personUpdater);
         assertNotNull(p);
@@ -54,7 +54,7 @@ public class ExecuteOnSamples {
     @Test
     public void concurrencyTest() throws InterruptedException {
 
-        map.put(key1, new Person(1, "name1", new Date(), null));
+        map.put(key1, new Person(1, "name1", new Date()));
 
         PersonUpdater updaterToVersion1 = new PersonUpdater(".version1");
         PersonUpdater updaterToVersion2 = new PersonUpdater(".version2");
@@ -77,7 +77,6 @@ public class ExecuteOnSamples {
     }
 
     class PersonUpdater extends AbstractEntryProcessor<String, Person> {
-//    class PersonUpdater implements EntryProcessor<String, Person> {
 
         private String updateValue;
 

@@ -4,7 +4,6 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.hazelcast.query.Predicate;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.Collection;
@@ -12,14 +11,17 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 @Setter
-@RequiredArgsConstructor
 public class CrudCacheOperationsImpl<K, V> implements CrudCacheOperations<K, V> {
 
-    @NonNull
     protected HazelcastInstance hazelcastInstance;
 
     @NonNull
     private String mapName;
+
+    public CrudCacheOperationsImpl(HazelcastInstance hazelcastInstance, @NonNull String mapName) {
+        this.hazelcastInstance = hazelcastInstance;
+        this.mapName = mapName;
+    }
 
     protected IMap<K, V> getMap() {
         return hazelcastInstance.getMap(mapName);

@@ -1,10 +1,11 @@
 package lv.nixx.poc.hazelcast;
 
 import com.hazelcast.config.Config;
-import com.hazelcast.core.*;
-import com.hazelcast.query.*;
-import com.hazelcast.query.impl.predicates.AndPredicate;
-import com.hazelcast.query.impl.predicates.OrPredicate;
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.IMap;
+import com.hazelcast.query.Predicate;
+import com.hazelcast.query.Predicates;
+import com.hazelcast.query.SqlPredicate;
 import com.hazelcast.test.TestHazelcastInstanceFactory;
 import lv.nixx.poc.hazelcast.model.Person;
 import org.junit.Before;
@@ -13,7 +14,10 @@ import org.junit.Test;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -43,16 +47,17 @@ public class PredicateSandbox {
 		executeFilter("state[any] in (st2,st1)", 6, 5);
 		executeFilter("state[any] not in (st2, st5)", 1, 2, 3, 4, 7);
 		executeFilter("name like A%", 5, 6, 7);
+		executeFilter("name like %B%", 5, 6);
 	}
 
 	@Test
 	public void predicateTest() {
-		Predicate p = new OrPredicate(
+		Predicate p = Predicates.or(
 				Predicates.equal("name", "ABC"),
 				Predicates.equal("name", "Name1")
 		);
 
-		AndPredicate p1 = new AndPredicate(p, Predicates.in("state[any]", "st2", "st3"));
+		Predicate p1 = Predicates.and(p, Predicates.in("state[any]", "st2", "st3"));
 
 		System.out.println("Predicate:" + p1);
 
@@ -63,7 +68,7 @@ public class PredicateSandbox {
 
 		System.out.println(result);
 
-		assertEquals(3, result.size());
+		assertEquals(2, result.size());
 
 	}
 
@@ -84,7 +89,7 @@ public class PredicateSandbox {
 		person6.setState(Arrays.asList("st2", "st3"));
 		personMap.put(6, person6);
 
-		Person person7 = new Person(7, "ABC", df.parse("06.12.2019"));
+		Person person7 = new Person(7, "A_C", df.parse("06.12.2019"));
 		person7.setState(Collections.singletonList("st3"));
 		personMap.put(7, person7);
 	}

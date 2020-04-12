@@ -28,7 +28,7 @@ public class ComputeIfSamples {
     @Test
     public void partialUpdateSample() {
 
-        map.put(key1, new Person(1, "name1", new Date(), null));
+        map.put(key1, new Person(1, "name1", new Date()));
 
         map.computeIfPresent(key1, (k, v) -> {
             Person p = v.toBuilder().build();
@@ -50,7 +50,7 @@ public class ComputeIfSamples {
     @Test
     public void computeIfPresentLockSample() throws InterruptedException {
 
-        map.put(key1, new Person(1, "name1", new Date(), null));
+        map.put(key1, new Person(1, "name1", new Date()));
 
         Thread thread = new Thread(() -> map.computeIfPresent(key1, (k, v) -> {
 
