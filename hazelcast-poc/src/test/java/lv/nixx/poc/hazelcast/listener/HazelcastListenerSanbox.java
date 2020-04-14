@@ -11,6 +11,7 @@ import com.hazelcast.map.MapInterceptor;
 import com.hazelcast.map.listener.EntryAddedListener;
 import com.hazelcast.map.listener.EntryRemovedListener;
 import com.hazelcast.map.listener.EntryUpdatedListener;
+import com.hazelcast.map.listener.MapClearedListener;
 import lv.nixx.poc.hazelcast.HazelcastTestInstance;
 import org.junit.Test;
 
@@ -90,7 +91,7 @@ public class HazelcastListenerSanbox {
 		map.clear();
 	}
 
-	class MyEntryListener implements EntryAddedListener<String, String>, 
+	static class MyEntryListener implements EntryAddedListener<String, String>,
 									 EntryUpdatedListener<String, String>,
 									 EntryRemovedListener<String, String>{
 		
@@ -110,7 +111,7 @@ public class HazelcastListenerSanbox {
 		}
 	}
 	
-	class MapInterceptorImpl implements MapInterceptor {
+	static class MapInterceptorImpl implements MapInterceptor {
 
 		@Override
 		public Object interceptGet(Object value) {
@@ -147,7 +148,7 @@ public class HazelcastListenerSanbox {
 		
 	}
 
-	class ClearAllListener implements MapClearedListener {
+	static class ClearAllListener implements MapClearedListener {
 		@Override
 		public void mapCleared(MapEvent event) {
 			System.out.println("Map clear event: " + event);

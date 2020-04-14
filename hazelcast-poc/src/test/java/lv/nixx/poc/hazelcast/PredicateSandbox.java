@@ -1,12 +1,10 @@
 package lv.nixx.poc.hazelcast;
 
-import com.hazelcast.config.Config;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.hazelcast.query.Predicate;
 import com.hazelcast.query.Predicates;
 import com.hazelcast.query.SqlPredicate;
-import com.hazelcast.test.TestHazelcastInstanceFactory;
 import lv.nixx.poc.hazelcast.model.Person;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +24,7 @@ import static org.junit.Assert.assertThat;
 
 public class PredicateSandbox {
 
-	private HazelcastInstance hz  = new TestHazelcastInstanceFactory().newHazelcastInstance(new Config());
+	private HazelcastInstance hz  = HazelcastTestInstance.get();
 
 	private final DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 

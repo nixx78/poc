@@ -6,7 +6,6 @@ import com.hazelcast.config.MapConfig;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.hazelcast.query.SqlPredicate;
-import com.hazelcast.test.TestHazelcastInstanceFactory;
 import lv.nixx.poc.hazelcast.model.Person;
 import lv.nixx.poc.hazelcast.model.extractor.PersonPropertiesExtractor;
 import org.junit.Test;
@@ -25,7 +24,7 @@ public class ValueExtractorSample {
         mapConfig.addMapAttributeConfig(new MapAttributeConfig("properties", PersonPropertiesExtractor.class.getName()));
         cfg.addMapConfig(mapConfig);
 
-        HazelcastInstance hazelcastInstance = new TestHazelcastInstanceFactory().newHazelcastInstance(cfg);
+        HazelcastInstance hazelcastInstance = HazelcastTestInstance.get(cfg);
         map = hazelcastInstance.getMap("map.person.extractor");
     }
 
