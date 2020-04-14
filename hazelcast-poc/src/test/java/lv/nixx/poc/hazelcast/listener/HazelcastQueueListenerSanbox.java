@@ -1,21 +1,19 @@
 package lv.nixx.poc.hazelcast.listener;
 
-import org.junit.Test;
-
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IQueue;
 import com.hazelcast.core.ItemEvent;
 import com.hazelcast.core.ItemListener;
-
-import com.hazelcast.test.TestHazelcastInstanceFactory;
+import lv.nixx.poc.hazelcast.HazelcastTestInstance;
+import org.junit.Test;
 
 public class HazelcastQueueListenerSanbox {
 
 	private static final String QUEUE_NAME = "simpleQueue";
-	private HazelcastInstance hazelcastInstance = new TestHazelcastInstanceFactory().newHazelcastInstance();
+	private HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
 	
 	@Test
-	public void queueListenerTest() throws InterruptedException {
+	public void queueListenerTest() {
 		IQueue<Message> producerQueue = hazelcastInstance.getQueue(QUEUE_NAME);
 
 		producerQueue.addItemListener(new MyItemListener(), true);

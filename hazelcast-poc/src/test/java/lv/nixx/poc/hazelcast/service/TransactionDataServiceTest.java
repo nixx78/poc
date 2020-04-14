@@ -1,6 +1,6 @@
 package lv.nixx.poc.hazelcast.service;
 
-import com.hazelcast.test.TestHazelcastInstanceFactory;
+import lv.nixx.poc.hazelcast.HazelcastTestInstance;
 import lv.nixx.poc.hazelcast.model.Transaction;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class TransactionDataServiceTest {
     @Before
     public void init() {
         transactionDataService = new TransactionDataService();
-        transactionDataService.setHazelcastInstance(new TestHazelcastInstanceFactory().newHazelcastInstance());
+        transactionDataService.setHazelcastInstance(HazelcastTestInstance.get());
     }
 
     @Test

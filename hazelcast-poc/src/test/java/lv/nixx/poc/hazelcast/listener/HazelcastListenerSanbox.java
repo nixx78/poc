@@ -10,7 +10,7 @@ import com.hazelcast.map.MapInterceptor;
 import com.hazelcast.map.listener.EntryAddedListener;
 import com.hazelcast.map.listener.EntryRemovedListener;
 import com.hazelcast.map.listener.EntryUpdatedListener;
-import com.hazelcast.test.TestHazelcastInstanceFactory;
+import lv.nixx.poc.hazelcast.HazelcastTestInstance;
 import org.junit.Test;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 public class HazelcastListenerSanbox {
 
-	private HazelcastInstance hazelcastInstance = new TestHazelcastInstanceFactory().newHazelcastInstance();
+	private HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
 
 	@Test
 	public void testConfigListenerRegistration() throws InterruptedException {

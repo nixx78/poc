@@ -1,34 +1,24 @@
 package lv.nixx.poc.hazelcast;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.Matchers.*;
+import com.hazelcast.config.Config;
+import com.hazelcast.config.MultiMapConfig;
+import com.hazelcast.core.*;
+import com.hazelcast.query.SqlPredicate;
+import lv.nixx.poc.hazelcast.model.Person;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import com.hazelcast.query.*;
-import com.hazelcast.query.impl.predicates.AndPredicate;
-import com.hazelcast.query.impl.predicates.EqualPredicate;
-import com.hazelcast.query.impl.predicates.InPredicate;
-import com.hazelcast.query.impl.predicates.OrPredicate;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.hazelcast.config.Config;
-import com.hazelcast.config.MultiMapConfig;
-import com.hazelcast.core.DistributedObject;
-import com.hazelcast.core.EntryView;
-import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
-
-import com.hazelcast.core.MultiMap;
-import com.hazelcast.test.TestHazelcastInstanceFactory;
-
-import lv.nixx.poc.hazelcast.model.Person;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class CollectionsSandbox {
 
@@ -49,7 +39,7 @@ public class CollectionsSandbox {
 
 		config.addMultiMapConfig(mmConfig);
 
-		hz = new TestHazelcastInstanceFactory().newHazelcastInstance(config);
+		hz = HazelcastTestInstance.get(config);
 
 		personMap = hz.getMap("persons.map");
 		personMap.clear();

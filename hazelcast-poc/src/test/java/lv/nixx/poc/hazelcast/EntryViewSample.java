@@ -3,7 +3,6 @@ package lv.nixx.poc.hazelcast;
 import com.hazelcast.core.EntryView;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import com.hazelcast.test.TestHazelcastInstanceFactory;
 import org.junit.Test;
 
 import java.text.DateFormat;
@@ -15,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 public class EntryViewSample {
 
-    private HazelcastInstance hazelcastInstance = new TestHazelcastInstanceFactory().newHazelcastInstance();
+    private HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
 
     @Test
     public void getEntryViewSample() throws InterruptedException {

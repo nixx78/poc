@@ -4,7 +4,6 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.hazelcast.map.EntryBackupProcessor;
 import com.hazelcast.map.EntryProcessor;
-import com.hazelcast.test.TestHazelcastInstanceFactory;
 import lv.nixx.poc.hazelcast.model.Person;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 public class PersonMapCrudOperationsSample {
 
-    private HazelcastInstance hazelcastInstance = new TestHazelcastInstanceFactory().newHazelcastInstance();
+    private HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
     private Service service = new Service();
 
     @Before

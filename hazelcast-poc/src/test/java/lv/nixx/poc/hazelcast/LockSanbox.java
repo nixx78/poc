@@ -1,17 +1,15 @@
 package lv.nixx.poc.hazelcast;
 
-import java.util.concurrent.TimeUnit;
-
-import org.junit.Test;
-
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.ILock;
 import com.hazelcast.core.IMap;
-import com.hazelcast.test.TestHazelcastInstanceFactory;
+import org.junit.Test;
+
+import java.util.concurrent.TimeUnit;
 
 public class LockSanbox {
 
-	private HazelcastInstance hazelcastInstance = new TestHazelcastInstanceFactory().newHazelcastInstance();
+	private HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
 
 	@Test
 	public void mapLockNotExistingKeySample() {

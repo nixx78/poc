@@ -1,25 +1,19 @@
 package lv.nixx.poc.hazelcast.cache;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import lv.nixx.poc.hazelcast.HazelcastTestInstance;
+import lv.nixx.poc.hazelcast.model.Category;
+import lv.nixx.poc.hazelcast.model.CategoryPersonTuple;
+import lv.nixx.poc.hazelcast.model.Person;
+import lv.nixx.poc.hazelcast.model.PersonKey;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.test.TestHazelcastInstanceFactory;
-
-import lv.nixx.poc.hazelcast.model.Category;
-import lv.nixx.poc.hazelcast.model.CategoryPersonTuple;
-import lv.nixx.poc.hazelcast.model.Person;
-import lv.nixx.poc.hazelcast.model.PersonKey;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.Assert.*;
 
 public class PersonCompositeKeyCacheTest {
 	
@@ -28,8 +22,7 @@ public class PersonCompositeKeyCacheTest {
 
 	@Before
 	public void init() {
-		HazelcastInstance inst = new TestHazelcastInstanceFactory().newHazelcastInstance();
-		cache = new PersonCompositeKeyCache(inst);
+		cache = new PersonCompositeKeyCache(HazelcastTestInstance.get());
 	}
 	
 	@Test

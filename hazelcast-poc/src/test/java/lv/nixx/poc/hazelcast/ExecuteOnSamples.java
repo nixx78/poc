@@ -4,7 +4,6 @@ import com.hazelcast.core.EntryView;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.hazelcast.map.AbstractEntryProcessor;
-import com.hazelcast.test.TestHazelcastInstanceFactory;
 import lv.nixx.poc.hazelcast.model.Person;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +18,7 @@ public class ExecuteOnSamples {
 
     // https://docs.hazelcast.org/docs/latest-dev/manual/html-single/index.html#entry-processor
 
-    private HazelcastInstance hazelcastInstance = new TestHazelcastInstanceFactory().newHazelcastInstance();
+    private HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
 
     private String key1 = "key1";
     private IMap<String, Person> map = hazelcastInstance.getMap("person.test");
@@ -32,7 +31,7 @@ public class ExecuteOnSamples {
 
     @Test
     public void executeOnExistingKeySample() {
-        map.put(key1, new Person(1, "name1", new Date(), null));
+        map.put(key1, new Person(1, "name1", new Date()));
 
         Person p = (Person) map.executeOnKey(key1, personUpdater);
         assertNotNull(p);
@@ -54,7 +53,7 @@ public class ExecuteOnSamples {
     @Test
     public void concurrencyTest() throws InterruptedException {
 
-        map.put(key1, new Person(1, "name1", new Date(), null));
+        map.put(key1, new Person(1, "name1", new Date()));
 
         PersonUpdater updaterToVersion1 = new PersonUpdater(".version1");
         PersonUpdater updaterToVersion2 = new PersonUpdater(".version2");

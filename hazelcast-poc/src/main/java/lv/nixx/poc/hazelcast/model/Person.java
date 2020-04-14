@@ -1,15 +1,16 @@
 package lv.nixx.poc.hazelcast.model;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
-
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 @SuppressWarnings("serial")
 @Data
-@RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
@@ -27,5 +28,11 @@ public class Person implements Serializable {
 	private Date age;
 
 	private Collection<String> state;
+	private Map<String, String> map = new HashMap<>();
 
+	public Person(@NonNull Integer id, @NonNull String name, @NonNull Date age) {
+		this.id = id;
+		this.name = name;
+		this.age = age;
+	}
 }

@@ -3,7 +3,6 @@ package lv.nixx.poc.hazelcast;
 import com.hazelcast.core.EntryView;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import com.hazelcast.test.TestHazelcastInstanceFactory;
 import lv.nixx.poc.hazelcast.model.Person;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ComputeIfSamples {
 
-    private HazelcastInstance hazelcastInstance = new TestHazelcastInstanceFactory().newHazelcastInstance();
+    private HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
 
     private String key1 = "key1";
     private IMap<String, Person> map = hazelcastInstance.getMap("person.test");
@@ -28,7 +27,7 @@ public class ComputeIfSamples {
     @Test
     public void partialUpdateSample() {
 
-        map.put(key1, new Person(1, "name1", new Date(), null));
+        map.put(key1, new Person(1, "name1", new Date()));
 
         map.computeIfPresent(key1, (k, v) -> {
             Person p = v.toBuilder().build();
@@ -50,7 +49,7 @@ public class ComputeIfSamples {
     @Test
     public void computeIfPresentLockSample() throws InterruptedException {
 
-        map.put(key1, new Person(1, "name1", new Date(), null));
+        map.put(key1, new Person(1, "name1", new Date()));
 
         Thread thread = new Thread(() -> map.computeIfPresent(key1, (k, v) -> {
 

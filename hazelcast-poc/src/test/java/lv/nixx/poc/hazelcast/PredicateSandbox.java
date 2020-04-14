@@ -1,11 +1,12 @@
 package lv.nixx.poc.hazelcast;
 
-import com.hazelcast.config.Config;
-import com.hazelcast.core.*;
-import com.hazelcast.query.*;
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.IMap;
+import com.hazelcast.query.Predicate;
+import com.hazelcast.query.Predicates;
+import com.hazelcast.query.SqlPredicate;
 import com.hazelcast.query.impl.predicates.AndPredicate;
 import com.hazelcast.query.impl.predicates.OrPredicate;
-import com.hazelcast.test.TestHazelcastInstanceFactory;
 import lv.nixx.poc.hazelcast.model.Person;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +14,10 @@ import org.junit.Test;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -22,7 +26,7 @@ import static org.junit.Assert.assertThat;
 
 public class PredicateSandbox {
 
-	private HazelcastInstance hz  = new TestHazelcastInstanceFactory().newHazelcastInstance(new Config());
+	private HazelcastInstance hz  = HazelcastTestInstance.get();
 
 	private final DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -43,6 +47,15 @@ public class PredicateSandbox {
 		executeFilter("state[any] in (st2,st1)", 6, 5);
 		executeFilter("state[any] not in (st2, st5)", 1, 2, 3, 4, 7);
 		executeFilter("name like A%", 5, 6, 7);
+	}
+
+	@Test
+	public void sqlPredicateForMapSample() {
+
+		// TODO Implement extractor there....
+		List<Integer> f = personMap.values(new SqlPredicate("map[K1]=V1)")).stream().map(Person::getId).collect(Collectors.toList());
+
+		System.out.println(f);
 	}
 
 	@Test
@@ -68,8 +81,15 @@ public class PredicateSandbox {
 	}
 
 	private void createTestData() throws ParseException {
-		personMap.put(1, new Person(1, "Name1", df.parse("06.12.1978")));
-		personMap.put(2, new Person(2, "Name2", df.parse("06.12.1980")));
+		Person name1 = new Person(1, "Name1", df.parse("06.12.1978"));
+		name1.getMap().put("K1", "V1");
+
+		personMap.put(1, name1);
+
+		Person name2 = new Person(2, "Name2", df.parse("06.12.1980"));
+		name2.getMap().put("K2","V2");
+
+		personMap.put(2, name2);
 		personMap.put(3, new Person(3, "Name3", df.parse("06.12.2004")));
 
 		Person person4 = new Person(4, "Name4", df.parse("06.12.2019"));
