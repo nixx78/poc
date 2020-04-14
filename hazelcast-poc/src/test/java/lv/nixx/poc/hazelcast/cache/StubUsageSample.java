@@ -1,6 +1,9 @@
 package lv.nixx.poc.hazelcast.cache;
 
+import lv.nixx.poc.hazelcast.model.Person;
 import org.junit.Test;
+
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,14 +11,10 @@ public class StubUsageSample {
 
     @Test
     public void stubSample() {
+        PersonStringKeyCache stub = new PersonStringKeyCache.Stub();
+        stub.crud.add("key", new Person(1, "name", new Date()));
 
-//        PersonStringKeyCrudCacheOperations stub = new PersonStringKeyCrudCacheOperations.Stub();
-//        stub.add("key", new Person());
-//
-//        assertEquals(1, stub.size());
-
-        PersonStringKeyCache cache = new PersonStringKeyCache.Stub();
-
+        assertEquals(1, stub.crud.size());
     }
 
 

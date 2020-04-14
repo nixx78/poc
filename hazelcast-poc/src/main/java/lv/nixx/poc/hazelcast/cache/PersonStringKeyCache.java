@@ -25,7 +25,7 @@ public class PersonStringKeyCache {
     }
 
     static class Stub extends PersonStringKeyCache {
-        public Stub() {
+        Stub() {
             super(null);
             crud = new CrudCacheOperationsStub<>();
         }

@@ -6,6 +6,7 @@ import com.hazelcast.config.MapConfig;
 import com.hazelcast.core.EntryEvent;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
+import com.hazelcast.core.MapEvent;
 import com.hazelcast.map.MapInterceptor;
 import com.hazelcast.map.listener.EntryAddedListener;
 import com.hazelcast.map.listener.EntryRemovedListener;
@@ -73,7 +74,22 @@ public class HazelcastListenerSanbox {
 		map.put("Four", "Three.NewValue.Value");
 		
 	}
-	
+
+	@Test
+	public void clearAllListenerTest() {
+
+		IMap<String, String> map = hazelcastInstance.getMap("map.forClearAll");
+		String s = map.addEntryListener(new ClearAllListener(), true);
+
+		map.put("k1", "v1");
+		map.put("k2", "v2");
+		map.put("k3", "v3");
+		map.put("k4", "v4");
+
+		System.out.println("Size: " + map.size());
+		map.clear();
+	}
+
 	class MyEntryListener implements EntryAddedListener<String, String>, 
 									 EntryUpdatedListener<String, String>,
 									 EntryRemovedListener<String, String>{
@@ -129,6 +145,13 @@ public class HazelcastListenerSanbox {
 			System.out.println("afterRemove: " + oldValue);
 		}
 		
+	}
+
+	class ClearAllListener implements MapClearedListener {
+		@Override
+		public void mapCleared(MapEvent event) {
+			System.out.println("Map clear event: " + event);
+		}
 	}
 
 

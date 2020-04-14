@@ -1,12 +1,12 @@
 package lv.nixx.poc.hazelcast;
 
+import com.hazelcast.config.Config;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.hazelcast.query.Predicate;
 import com.hazelcast.query.Predicates;
 import com.hazelcast.query.SqlPredicate;
-import com.hazelcast.query.impl.predicates.AndPredicate;
-import com.hazelcast.query.impl.predicates.OrPredicate;
+import com.hazelcast.test.TestHazelcastInstanceFactory;
 import lv.nixx.poc.hazelcast.model.Person;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +26,7 @@ import static org.junit.Assert.assertThat;
 
 public class PredicateSandbox {
 
-	private HazelcastInstance hz  = HazelcastTestInstance.get();
+	private HazelcastInstance hz  = new TestHazelcastInstanceFactory().newHazelcastInstance(new Config());
 
 	private final DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -47,25 +47,17 @@ public class PredicateSandbox {
 		executeFilter("state[any] in (st2,st1)", 6, 5);
 		executeFilter("state[any] not in (st2, st5)", 1, 2, 3, 4, 7);
 		executeFilter("name like A%", 5, 6, 7);
-	}
-
-	@Test
-	public void sqlPredicateForMapSample() {
-
-		// TODO Implement extractor there....
-		List<Integer> f = personMap.values(new SqlPredicate("map[K1]=V1)")).stream().map(Person::getId).collect(Collectors.toList());
-
-		System.out.println(f);
+		executeFilter("name like %B%", 5, 6);
 	}
 
 	@Test
 	public void predicateTest() {
-		Predicate p = new OrPredicate(
+		Predicate p = Predicates.or(
 				Predicates.equal("name", "ABC"),
 				Predicates.equal("name", "Name1")
 		);
 
-		AndPredicate p1 = new AndPredicate(p, Predicates.in("state[any]", "st2", "st3"));
+		Predicate p1 = Predicates.and(p, Predicates.in("state[any]", "st2", "st3"));
 
 		System.out.println("Predicate:" + p1);
 
@@ -76,20 +68,13 @@ public class PredicateSandbox {
 
 		System.out.println(result);
 
-		assertEquals(3, result.size());
+		assertEquals(2, result.size());
 
 	}
 
 	private void createTestData() throws ParseException {
-		Person name1 = new Person(1, "Name1", df.parse("06.12.1978"));
-		name1.getMap().put("K1", "V1");
-
-		personMap.put(1, name1);
-
-		Person name2 = new Person(2, "Name2", df.parse("06.12.1980"));
-		name2.getMap().put("K2","V2");
-
-		personMap.put(2, name2);
+		personMap.put(1, new Person(1, "Name1", df.parse("06.12.1978")));
+		personMap.put(2, new Person(2, "Name2", df.parse("06.12.1980")));
 		personMap.put(3, new Person(3, "Name3", df.parse("06.12.2004")));
 
 		Person person4 = new Person(4, "Name4", df.parse("06.12.2019"));
@@ -104,7 +89,7 @@ public class PredicateSandbox {
 		person6.setState(Arrays.asList("st2", "st3"));
 		personMap.put(6, person6);
 
-		Person person7 = new Person(7, "ABC", df.parse("06.12.2019"));
+		Person person7 = new Person(7, "A_C", df.parse("06.12.2019"));
 		person7.setState(Collections.singletonList("st3"));
 		personMap.put(7, person7);
 	}

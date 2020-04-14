@@ -76,7 +76,6 @@ public class ExecuteOnSamples {
     }
 
     class PersonUpdater extends AbstractEntryProcessor<String, Person> {
-//    class PersonUpdater implements EntryProcessor<String, Person> {
 
         private String updateValue;
 
