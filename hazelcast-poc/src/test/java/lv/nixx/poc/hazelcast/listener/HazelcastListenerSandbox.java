@@ -20,7 +20,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 
-public class HazelcastListenerSanbox {
+public class HazelcastListenerSandbox {
 
 	private HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
 
