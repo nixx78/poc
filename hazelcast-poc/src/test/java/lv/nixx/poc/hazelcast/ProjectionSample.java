@@ -6,6 +6,7 @@ import com.hazelcast.projection.Projections;
 import lv.nixx.poc.hazelcast.model.Person;
 import lv.nixx.poc.hazelcast.model.PersonDTO;
 import lv.nixx.poc.hazelcast.model.projection.PersonDTOProj;
+import lv.nixx.poc.hazelcast.service.Service;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+
+import static org.junit.Assert.assertNotNull;
 
 public class ProjectionSample {
 
@@ -33,14 +36,24 @@ public class ProjectionSample {
 
     @Test
     public void multiAttributeProjection() {
-        final Collection<Object[]> project = personMap.project(Projections.multiAttribute("name", "age"));
-        project.forEach(t-> System.out.println(Arrays.toString(t)));
+        final Collection<Object[]> resp = personMap.project(Projections.multiAttribute("name", "age"));
+        resp.forEach(t -> System.out.println(Arrays.toString(t)));
+        assertNotNull(resp);
     }
 
     @Test
     public void customProjection() {
         final Collection<PersonDTO> dtos = personMap.project(new PersonDTOProj());
         dtos.forEach(System.out::println);
+        assertNotNull(dtos);
+    }
+
+    @Test
+    public void projectionAnonymousClass() {
+        // В этом случае, на сторону Hazelcast передается весь Service и он должнет быть сериализованными
+        final Collection<PersonDTO> dtos = new Service().getPersons(personMap);
+        dtos.forEach(System.out::println);
+        assertNotNull(dtos);
     }
 
     private void createTestData() throws ParseException {
@@ -66,7 +79,6 @@ public class ProjectionSample {
 
         personMap.put(8, new Person(3, "Name3", null));
     }
-
 
 
 }
