@@ -2,8 +2,10 @@ package lv.nixx.poc.hazelcast;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.config.MultiMapConfig;
-import com.hazelcast.core.*;
-import com.hazelcast.query.SqlPredicate;
+import com.hazelcast.core.DistributedObject;
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.IMap;
+import com.hazelcast.core.MultiMap;
 import lv.nixx.poc.hazelcast.model.Person;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,14 +13,9 @@ import org.junit.Test;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 public class CollectionsSandbox {
 
@@ -43,30 +40,6 @@ public class CollectionsSandbox {
 
 		personMap = hz.getMap("persons.map");
 		personMap.clear();
-	}
-
-	@Test
-	public void predicateSandbox() throws ParseException {
-		int entryId = 3;
-
-		personMap.put(1, new Person(1, "Name1", df.parse("06.12.1978")));
-		personMap.put(2, new Person(2, "Name2", df.parse("06.12.1980")));
-		personMap.put(entryId, new Person(entryId, "Name3", df.parse("06.12.2004")));
-
-		personMap.get(entryId);
-		personMap.get(entryId);
-		personMap.get(entryId);
-
-		EntryView<Integer, Person> entry = personMap.getEntryView(entryId);
-		System.out.println("size in memory  : " + entry.getCost());
-		System.out.println("creationTime    : " + entry.getCreationTime());
-		System.out.println("expirationTime  : " + entry.getExpirationTime());
-		System.out.println("number of hits  : " + entry.getHits());
-		System.out.println("lastAccessedTime: " + entry.getLastAccessTime());
-		System.out.println("lastUpdateTime  : " + entry.getLastUpdateTime());
-		System.out.println("version         : " + entry.getVersion());
-		System.out.println("key             : " + entry.getKey());
-		System.out.println("value           : " + entry.getValue());
 	}
 
 	@Test
@@ -105,14 +78,6 @@ public class CollectionsSandbox {
 			System.out.println(distributedObject.getName() + "#" + distributedObject.getServiceName());
 		}
 
-	}
-
-	private void executeFilter(String sqlPredicate, Integer... ids) {
-		List<Integer> f = personMap.values(new SqlPredicate(sqlPredicate)).stream().map(Person::getId).collect(Collectors.toList());
-
-		System.out.println("Expected: " + Arrays.toString(ids) + " actual: " + f);
-
-		assertThat(f, containsInAnyOrder(ids));
 	}
 
 }
