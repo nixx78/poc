@@ -2,9 +2,7 @@ package lv.nixx.poc.hazelcast.predicate;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import com.hazelcast.query.Predicate;
-import com.hazelcast.query.Predicates;
-import com.hazelcast.query.SqlPredicate;
+import com.hazelcast.query.*;
 import lv.nixx.poc.hazelcast.HazelcastTestInstance;
 import lv.nixx.poc.hazelcast.model.Person;
 import org.junit.Before;
@@ -54,8 +52,8 @@ public class PredicateSandbox {
         List<String> r = new ArrayList<>(m.values(Predicates.equal("__key", 1)));
         assertEquals("Value1", r.get(0));
 
-		List<Map.Entry<Integer, String>> r1 = new ArrayList<>(m.entrySet(Predicates.equal("this", "NOT_VALID")));
-		assertEquals( Integer.valueOf(5), r1.get(0).getKey());
+        List<Map.Entry<Integer, String>> r1 = new ArrayList<>(m.entrySet(Predicates.equal("this", "NOT_VALID")));
+        assertEquals(Integer.valueOf(5), r1.get(0).getKey());
 
     }
 
@@ -89,7 +87,21 @@ public class PredicateSandbox {
         System.out.println(result);
 
         assertEquals(2, result.size());
+    }
 
+    @Test
+    public void entryObjectSample() {
+
+        EntryObject e = new PredicateBuilder().getEntryObject();
+        PredicateBuilder p = e.get("name").equal("ABC").or(e.get("name").equal("Name1"));
+        Collection<Integer> ids = personMap.values(p).stream().map(Person::getId).collect(Collectors.toList());
+
+        assertThat(ids, containsInAnyOrder(1, 5, 6));
+
+        PredicateBuilder p1 = new PredicateBuilder().getEntryObject().get("name").in("ABC", "Name1");
+        ids = personMap.values(p1).stream().map(Person::getId).collect(Collectors.toList());
+
+        assertThat(ids, containsInAnyOrder(1, 5, 6));
     }
 
     private void createTestData() throws ParseException {
