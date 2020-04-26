@@ -1,4 +1,4 @@
-package lv.nixx.poc.hazelcast;
+package lv.nixx.poc.hazelcast.predicate;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.config.MapAttributeConfig;
@@ -6,6 +6,7 @@ import com.hazelcast.config.MapConfig;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.hazelcast.query.SqlPredicate;
+import lv.nixx.poc.hazelcast.HazelcastTestInstance;
 import lv.nixx.poc.hazelcast.model.Person;
 import lv.nixx.poc.hazelcast.model.extractor.PersonPropertiesExtractor;
 import org.junit.Test;
