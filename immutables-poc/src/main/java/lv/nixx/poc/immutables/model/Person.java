@@ -8,6 +8,14 @@ import java.util.Set;
 @Value.Immutable
 abstract class Person {
     abstract String name();
+
+    @Value.Default
+    String secondName() {
+        return "SecondName.Default";
+    }
+
+
     abstract Date dateOfBirth();
+
     abstract Set<String> roles();
 }
