@@ -456,21 +456,45 @@ public class TxnLambdaModification {
         assertEquals(3, maxBy.size());
     }
 
-    //	@Test
-//	public void transactionByAccountWithCondition() {
-//		List<Transaction> txns = Arrays.asList(
-//				new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"),
-//				new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD"),
-//				new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"),
-//				new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR"),
-//				new Transaction("id4", BigDecimal.valueOf(1.00), "ACC3", "EUR")
-//		);
-//
-//		txns.stream()
-//				.collect(
-//						Collectors.toMap(Transaction::getCurrency, Collectors.toList()));
-//	}
-//
+    @Test
+    public void getTransactionsByPeriod() throws ParseException {
+
+        List<Transaction> txns = List.of(
+                new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD", getDate("21.04.2020")),
+                new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD", getDate("01.05.2020")),
+                new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR", getDate("02.05.2020")),
+                new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR", getDate("03.05.2020")),
+                new Transaction("id5", BigDecimal.valueOf(1.00), "ACC3", "EUR", getDate("01.06.2020"))
+        );
+
+        DateFilter df = new DateFilter(getDate("01.05.2020"), getDate("01.06.2020"));
+
+        final List<Transaction> datesInRange = txns.stream()
+                .filter(t -> df.isInRange(t.getLastUpdateDate()))
+                .collect(Collectors.toList());
+
+        System.out.println(datesInRange);
+
+        assertEquals(4, datesInRange.size());
+
+    }
+
+    static class DateFilter {
+        final Date dateFrom;
+        final Date dateTo;
+
+        DateFilter(Date dateFrom, Date dateTo) {
+            this.dateFrom = dateFrom;
+            this.dateTo = dateTo;
+        }
+
+        boolean isInRange(Date date) {
+            return (date.compareTo(dateFrom) >= 0 && date.compareTo(dateTo) <= 0);
+//          return (date.equals(dateFrom) || date.after(dateFrom)) && (date.equals(dateTo) || date.before(dateTo));
+        }
+
+    }
+
     @Test
     public void peekTest() {
 
