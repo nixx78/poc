@@ -69,6 +69,16 @@ public class PartitionSample {
         assertThat(newBalance, comparesEqualTo(BigDecimal.valueOf(1000)));
     }
 
+    @Test
+    //https://docs.hazelcast.org/docs/latest-dev/manual/html-single/#data-partitioning
+    public void partitionsSample() {
+        final IMap<Object, Object> m1 = hazelcastInstance.getMap("m1@p.key");
+        final IMap<Object, Object> m2 = hazelcastInstance.getMap("m2@p.key");
+
+        System.out.println("M1:" + m1.getPartitionKey());
+        System.out.println("M2:" + m2.getPartitionKey());
+    }
+
     static class AddTxnTask implements Callable<BigDecimal>, PartitionAware<String>, Serializable, HazelcastInstanceAware {
 
         private final Transaction txn;
