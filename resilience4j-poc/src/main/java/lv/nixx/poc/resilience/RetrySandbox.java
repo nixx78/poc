@@ -15,6 +15,7 @@ public class RetrySandbox {
                 .maxAttempts(10)
                 .waitDuration(Duration.ofSeconds(5L))
                 .retryOnException(e -> e instanceof IllegalStateException)
+                .retryOnResult( e-> e.equals("Fail"))
                 .build();
 
         final Retry retry = Retry.of("retry1", c);
@@ -26,7 +27,7 @@ public class RetrySandbox {
         });
 
         ep.onSuccess(e -> {
-            System.out.println("Retry event, type:" + e.getEventType() + ", try:" + e.getNumberOfRetryAttempts() + " error: " + e.getLastThrowable());
+            System.out.println("Retry event, type:" + e.getEventType() + ", try:" + e.getNumberOfRetryAttempts() + "  last Throwable: " + e.getLastThrowable());
         });
 
         Service service = new Service();
@@ -41,8 +42,12 @@ public class RetrySandbox {
         String method(String param) {
             System.out.println("Method call, param:" + param);
             try {
-                if (i < 3) {
+                 if (i <= 3) {
                     throw new IllegalStateException("Exception in service");
+                }
+
+                if (i == 4) {
+                    return "Fail";
                 }
                 return "Success:" + param;
             } finally {
