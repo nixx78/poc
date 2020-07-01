@@ -6,6 +6,8 @@ import com.hazelcast.core.DistributedObject;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.hazelcast.core.MultiMap;
+import com.hazelcast.map.QueryCache;
+import com.hazelcast.query.TruePredicate;
 import lv.nixx.poc.hazelcast.model.Person;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class CollectionsSandbox {
 
@@ -66,7 +69,7 @@ public class CollectionsSandbox {
 	}
 
 	@Test
-	public void distributedObjectsListTest() throws ParseException {
+	public void distributedObjectsListTest() {
 
 		hz.getMap("mapName1");
 		hz.getMap("mapName2");
@@ -77,6 +80,28 @@ public class CollectionsSandbox {
 		for (DistributedObject distributedObject : distributedObjects) {
 			System.out.println(distributedObject.getName() + "#" + distributedObject.getServiceName());
 		}
+
+	}
+
+	@Test
+	public void getMapNameTest() {
+		IMap<Object, Object> map = hz.getMap("h.name");
+		assertEquals("h.name", map.getName());
+	}
+
+	@Test
+	public void getQueryCache() {
+		personMap.put(1, new Person().setId(1).setName("Name1"));
+		personMap.put(2, new Person().setId(2).setName("Name2"));
+
+		QueryCache<Integer, Person> c1 = personMap.getQueryCache("C1", TruePredicate.truePredicate(), true);
+		Person p1 = c1.get(1);
+		assertNotNull(p1);
+
+
+		Collection<Person> values = c1.values();
+		System.out.println(values);
+
 
 	}
 
