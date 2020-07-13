@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.*;
 
@@ -123,6 +124,15 @@ public class JacksonTest {
 
 		JsonNode expectedNode = objectMapper.readTree("{\"person\":{\"name\":\"Name.Value\",\"surname\":\"Surname.Value\",\"value\":\"Text.Value\"}}");
 		assertEquals(expectedNode, rootNode);
+
+		JsonNode person = expectedNode.get("person");
+
+		String name = person.get("name").asText();
+		System.out.println(name);
+
+		String notExistingFieldValue = Optional.ofNullable(person.get("notExistingField")).map(JsonNode::asText).orElse(null);
+		assertNull(notExistingFieldValue);
+		assertFalse(person.has("notExistingField"));
 	}
 
 
