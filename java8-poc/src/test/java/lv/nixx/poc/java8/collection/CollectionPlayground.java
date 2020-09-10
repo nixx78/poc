@@ -356,6 +356,12 @@ public class CollectionPlayground {
 		final int r = Arrays.stream(a).reduce(0, (x,y)-> x^y);
 		assertEquals(5, r);
 	}
+
+	@Test
+	public void sumOfObject() {
+		final int sum = Stream.of(1, 2, 3, 4, 5).reduce(0, Integer::sum);
+		assertEquals(15, sum);
+	}
 	
 	@Test
 	public void  hashedMapModification() {
