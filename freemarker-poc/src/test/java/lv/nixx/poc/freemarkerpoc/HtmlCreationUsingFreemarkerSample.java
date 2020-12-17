@@ -4,7 +4,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lv.nixx.poc.freemarkerpoc.model.DataModel;
 
-import lv.nixx.poc.freemarkerpoc.model.Person;
+import lv.nixx.poc.freemarkerpoc.model.Customer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,25 +33,25 @@ class HtmlCreationUsingFreemarkerSample {
 
         DataModel dm = new DataModel()
                 .setTotalAmount(BigDecimal.valueOf(777_000))
-                .setPersons(List.of(
-                        new Person()
+                .setCustomers(List.of(
+                        new Customer()
                                 .setId(100)
                                 .setName("John")
                                 .setSurname("Rambo")
                                 .setDateOfBirth(df.parse("16/12/1960")),
-                        new Person()
+                        new Customer()
                                 .setId(100)
                                 .setName("John")
                                 .setSurname("Travolta")
 								.setDateOfBirth(df.parse("01/01/1950")),
-                        new Person()
+                        new Customer()
                                 .setId(100)
                                 .setName("Nicolas")
                                 .setSurname("Cage")
 								.setDateOfBirth(df.parse("01/12/1955"))
                 ));
 
-        final Template template = configuration.getTemplate("sample-template.ftl");
+        final Template template = configuration.getTemplate("email-template.ftl");
         final String s = FreeMarkerTemplateUtils.processTemplateIntoString(template, dm);
 
         assertNotNull(s);

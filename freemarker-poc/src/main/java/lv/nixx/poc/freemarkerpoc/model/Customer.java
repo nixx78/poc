@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Data
 @Accessors(chain = true)
-public class Person {
+public class Customer {
 
     private int id;
     private String name;

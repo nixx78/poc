@@ -8,6 +8,7 @@
 <body>
 
 <span>${totalAmount}</span>
+<p>Customer types: ${type?join(", ", "None")}</p>
 
 <br>
 
@@ -19,18 +20,21 @@
     </thead>
 
     <tbody>
-        <#foreach p in persons>
+        <#foreach c in customers>
             <tr>
-                <td>${p.id}</td>
-                <td>${p.name} ${p.surname}</td>
-                <td>${(p.dateOfBirth?string('dd/MM/yyy'))!}</td>
+                <td>${c.id}</td>
+                <td>${c.name} ${c.surname}</td>
+                <td>${(c.dateOfBirth?string('dd/MM/yyy'))!}</td>
             </tr>
         </#foreach>
     </tbody>
 
+
 </table>
 
-</body>
+<br>
+<#include "/email-footer.html">
 
+</body>
 
 </html>
