@@ -7,7 +7,9 @@
 
 <body>
 
-<span>${totalAmount}</span>
+Total amount: <span>${totalAmount!"None"}</span>
+<br>
+Tax: <span>${tax!"None"}</span>     <!-- Check for null with default value -->
 <p>Customer types: ${type?join(", ", "None")}</p>
 
 <br>
@@ -28,8 +30,6 @@
             </tr>
         </#foreach>
     </tbody>
-
-
 </table>
 
 <br>

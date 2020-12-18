@@ -12,6 +12,8 @@ import java.util.List;
 public class DataModel {
 
     private BigDecimal totalAmount;
+    private BigDecimal tax;
+
     private Collection<String> type = List.of("Type1", "Type2", "Type3", "Type4");
 
     private Collection<Customer> customers;
