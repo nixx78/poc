@@ -49,7 +49,7 @@ public class TwoArrayMerge {
 
 		assertNotNull(r);
 		Arrays.stream(r).forEach(System.out::println);
-		assertTrue(Arrays.equals(new int[] { 1, 2, 3, 3, 7, 10, 15, 22, 47 }, r));
+		assertArrayEquals(new int[]{1, 2, 3, 3, 7, 10, 15, 22, 47}, r);
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class TwoArrayMerge {
 
 		assertNotNull(r);
 		Arrays.stream(r).forEach(System.out::println);
-		assertTrue(Arrays.equals(new int[] { 1, 2, 3, 3, 7, 10, 15, 22, 47 }, r));
+		assertArrayEquals(new int[]{1, 2, 3, 3, 7, 10, 15, 22, 47}, r);
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class TwoArrayMerge {
 
 		assertNotNull(r);
 		Arrays.stream(r).forEach(System.out::println);
-		assertTrue(Arrays.equals(new int[] { 0, 0, 0, 2, 3, 7, 47 }, r));
+		assertArrayEquals(new int[]{0, 0, 0, 2, 3, 7, 47}, r);
 	}
 
 }
