@@ -7,12 +7,9 @@ import java.util.logging.Logger;
 
 import com.google.common.base.Stopwatch;
 
-/* http://www.slf4j.org/legacy.html
-*  http://www.slf4j.org/api/org/slf4j/bridge/SLF4JBridgeHandler.html
-*/
 public class JULLoggerComponent {
 	
-	static Logger log = Logger.getLogger("JULLogger");
+	private static Logger log = Logger.getLogger("JULLogger");
 	
 	public static void log(){
 

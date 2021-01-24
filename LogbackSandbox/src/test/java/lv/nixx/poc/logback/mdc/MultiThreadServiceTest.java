@@ -29,8 +29,8 @@ public class MultiThreadServiceTest {
 		 pool.shutdown();
 		 pool.awaitTermination(1000, TimeUnit.SECONDS);
 		 
-		 System.out.println("press ENTER to exit... ");
-		 System.in.read();
+//		 System.out.println("press ENTER to exit... ");
+//		 System.in.read();
 	}
 	
 	class ServiceCaller implements Callable<Object> {

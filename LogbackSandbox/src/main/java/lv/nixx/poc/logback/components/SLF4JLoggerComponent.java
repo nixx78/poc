@@ -10,7 +10,7 @@ import com.google.common.base.Stopwatch;
 
 public class SLF4JLoggerComponent {
 
-	static Logger logger = LoggerFactory.getLogger("SLF4Llogger");
+	private static Logger logger = LoggerFactory.getLogger("SLF4Llogger");
 	
 	public static void log(){
 

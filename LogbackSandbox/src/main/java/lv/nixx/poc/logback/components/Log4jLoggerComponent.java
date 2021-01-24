@@ -10,7 +10,8 @@ import com.google.common.base.Stopwatch;
 
 public class Log4jLoggerComponent {
 
-	static Logger logger = Logger.getLogger("Log4jLogger");
+	private static Logger logger = Logger.getLogger("Log4jLogger");
+
 	public static void log(){
 		Stopwatch sw = Stopwatch.createStarted();
 
