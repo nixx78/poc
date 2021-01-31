@@ -6,23 +6,19 @@ import ch.qos.logback.core.filter.Filter;
 import ch.qos.logback.core.spi.FilterReply;
 
 import java.util.List;
-import java.util.Optional;
+
+import static ch.qos.logback.core.spi.FilterReply.DENY;
+import static ch.qos.logback.core.spi.FilterReply.NEUTRAL;
+import static java.util.Optional.ofNullable;
 
 public class CustomLogbackFilter extends Filter<ILoggingEvent> {
 
     @Override
     public FilterReply decide(ILoggingEvent event) {
-
-        final String message = Optional.ofNullable(event.getFormattedMessage()).orElse("");
-
-        final String exception = Optional.ofNullable(event.getThrowableProxy())
-                .map(IThrowableProxy::getMessage)
-                .orElse("");
-
-        return List.of(message, exception)
-                .stream()
-                .anyMatch(t -> t.contains("ABC_MESSAGE")) ? FilterReply.DENY : FilterReply.NEUTRAL;
-
+        return List.of(
+                ofNullable(event.getFormattedMessage()).orElse(""),
+                ofNullable(event.getThrowableProxy()).map(IThrowableProxy::getMessage).orElse("")
+        ).stream().anyMatch(t -> t.contains("ABC_MESSAGE")) ? DENY : NEUTRAL;
     }
 
 }

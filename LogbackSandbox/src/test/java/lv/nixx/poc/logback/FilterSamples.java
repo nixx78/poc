@@ -16,6 +16,7 @@ public class FilterSamples {
         log.error("Error message [{}]", XYZ_MESSAGE, new IllegalStateException(XYZ_MESSAGE));
         log.error("Error message", new IllegalStateException(XYZ_MESSAGE));   // Filter don't work, text in error
         log.info("Error message [{}]", XYZ_MESSAGE);
+        log.info("");
     }
 
     @Test
