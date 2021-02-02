@@ -5,11 +5,16 @@
     </contextListener>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <param name="Append" value="false" />
+        <param name="Append" value="false"/>
         <file>./log/myApp.log</file>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg %ex{0}%nopex%n</pattern>
         </encoder>
+    </appender>
+
+    <appender name="custom" class="lv.nixx.poc.logback.CustomLogbackAppender">
+        <param1>param1.value</param1>
+        <param2>param2.value</param2>
     </appender>
 
     <appender name="MDC_OUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -38,6 +43,7 @@
     <root level="debug">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
+        <appender-ref ref="custom"/>
     </root>
 
     <logger name="JULLogger" level="TRACE">
