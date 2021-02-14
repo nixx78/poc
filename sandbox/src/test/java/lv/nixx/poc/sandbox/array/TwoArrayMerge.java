@@ -8,12 +8,14 @@ import org.junit.Test;
 
 public class TwoArrayMerge {
 
-	int[] merge(int[] a1, int[] a2) {
+	private int[] merge(int[] a1, int[] a2) {
 
 		final int a1Length = a1.length;
 		final int a2Length = a2.length;
 
 		int[] res = new int[a1Length + a2Length];
+		Arrays.fill(res, -1);
+
 		int i = 0;
 		int j = 0;
 		int pos = 0;
@@ -31,10 +33,12 @@ public class TwoArrayMerge {
 
 		for (int k = i; k < a1Length; k++) {
 			res[pos] = a1[k];
+			pos++;
 		}
 
 		for (int k = j; k < a2Length; k++) {
 			res[pos] = a2[k];
+			pos++;
 		}
 
 		return res;
