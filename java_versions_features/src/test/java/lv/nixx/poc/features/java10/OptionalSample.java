@@ -10,7 +10,7 @@ public class OptionalSample {
     @Test(expected = NoSuchElementException.class)
     public void sample() {
 
-        Object v = Optional.ofNullable(null).orElseThrow(); // Same as get
+        Object v = Optional.empty().orElseThrow(); // Same as get
 
     }
 

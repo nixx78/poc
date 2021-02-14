@@ -1,13 +1,15 @@
-package lv.nixx.poc.features.java13;
+package lv.nixx.poc.features.java15;
 
 import org.junit.Test;
 
 import java.util.stream.Collectors;
 
-public class TextBlockSandbox {
+public class MainFeatures {
+
+    // https://blogs.oracle.com/javamagazine/inside-java-15-fourteen-jeps-in-five-buckets
 
     @Test
-    public void test() {
+    public void textBlockSample() {
 
         String textBlock = """
                   line1
