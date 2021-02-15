@@ -12,14 +12,17 @@ public class MainFeatures {
     public void textBlockSample() {
 
         String textBlock = """
-                  line1
-                    line2
-                            line3
+                12  \s   
+                Lorem ipsum dolor sit amet,
+                consectetur adipiscing elit,
+                sed do eiusmod tempor incididunt\
                 """;
 
-        String str = "line1\nline2\nline3";
+        // \ in text block prevent new line creation
 
-        System.out.println("Text Block String:\n" + textBlock);
+        System.out.println("Text Block String:\n[" + textBlock + "]");
+
+        String str = "line1\nline2\nline3";
         System.out.println("Normal String Literal:\n" + str);
 
         System.out.println("textBlock.lines()\n" + textBlock.lines().collect(Collectors.toList()));
