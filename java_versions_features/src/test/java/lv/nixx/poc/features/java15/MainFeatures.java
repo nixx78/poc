@@ -2,12 +2,16 @@ package lv.nixx.poc.features.java15;
 
 import org.junit.Test;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MainFeatures {
 
     // https://blogs.oracle.com/javamagazine/inside-java-15-fourteen-jeps-in-five-buckets
-
+    // https://www.baeldung.com/java-15-new
     @Test
     public void textBlockSample() {
 
@@ -32,6 +36,35 @@ public class MainFeatures {
 
         System.out.println("After stripIndent");
         System.out.println(textBlock.stripIndent().replace(" ", "*"));
+    }
+
+    @Test
+    public void patternMatching() {
+
+        if ("String.value" instanceof String str) {
+            System.out.println("String to UpperCase:" + str.toUpperCase());
+        }
+
+        Object d = Double.valueOf(10.00);
+        if (d instanceof String str) {
+            System.out.println("String:" + str);
+        } else {
+            System.out.println("Not a string");
+        }
+
+        List<String> mappedStrings = Stream.of("S1", "S2", BigDecimal.valueOf(10), "S3", BigDecimal.valueOf(20))
+                .map(t -> {
+                    if (t instanceof String s) {
+                        return s + "m";
+                    }
+                    return null;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        System.out.println(mappedStrings);
+
+
     }
 
 }
