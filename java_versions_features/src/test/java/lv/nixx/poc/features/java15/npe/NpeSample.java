@@ -18,11 +18,27 @@ public class NpeSample {
 
     }
 
+    @Test(expected = NullPointerException.class)
+    public void npeInCallChainSample() {
+
+        try {
+            getCustomerInstance().getName().length();
+        } catch (NullPointerException npe) {
+            System.err.println(npe);
+            throw npe;
+        }
+
+    }
+
+    private Customer getCustomerInstance() {
+        return new Customer();
+    }
+
 
     class Customer {
 
         String getName() {
-            return "name";
+            return null;
         }
 
     }
