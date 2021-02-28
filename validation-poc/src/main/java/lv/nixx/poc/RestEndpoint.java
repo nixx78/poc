@@ -1,5 +1,6 @@
 package lv.nixx.poc;
 
+import lv.nixx.poc.model.Request;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

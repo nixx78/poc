@@ -2,6 +2,7 @@ package lv.nixx.poc;
 
 import javax.validation.Valid;
 
+import lv.nixx.poc.model.PersonForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;

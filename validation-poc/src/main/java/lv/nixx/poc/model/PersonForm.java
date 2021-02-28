@@ -1,4 +1,4 @@
-package lv.nixx.poc;
+package lv.nixx.poc.model;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
