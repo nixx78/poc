@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -28,4 +32,17 @@ public class RestResponseEntityExceptionHandler {
                               Collectors.mapping(f -> f.getDefaultMessage() + ":" + f.getRejectedValue(), Collectors.toList()))
                 );
     }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public Collection<String> constraintViolationExceptionHandler(ConstraintViolationException ex) {
+
+        Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
+
+        return constraintViolations.stream()
+                .map(t-> t.getPropertyPath().toString() + ":" + t.getMessage())
+                .collect(Collectors.toList());
+    }
+
 }

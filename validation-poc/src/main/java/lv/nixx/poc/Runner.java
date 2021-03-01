@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //TODO https://habr.com/ru/post/536612/
 //TODO https://habr.com/ru/post/487838/
 
+//TODO Add configuration properties validation samples
+
 @SpringBootApplication
 public class Runner {
 

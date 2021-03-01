@@ -1,4 +1,4 @@
-package lv.nixx.poc;
+package lv.nixx.poc.rest;
 
 import lv.nixx.poc.model.Request;
 import org.springframework.validation.BindingResult;
