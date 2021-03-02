@@ -1,13 +1,13 @@
 package lv.nixx.poc.rest;
 
 import lv.nixx.poc.ServiceWithValidator;
+import lv.nixx.poc.configuration.AppConfig;
 import lv.nixx.poc.model.Request;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("rest")
 public class EndpointWithService {
 
     private ServiceWithValidator service;
@@ -17,7 +17,7 @@ public class EndpointWithService {
         this.service = service;
     }
 
-    @PostMapping("rest/service/{id}/{name}")
+    @PostMapping("/service/{id}/{name}")
     public String process(@PathVariable String id, @PathVariable(required = false) String name) {
         return service.process(new Request()
                 .setId(id)
@@ -25,7 +25,11 @@ public class EndpointWithService {
         );
     }
 
-    // TODO Add samples for path variables and parameters validation
+    @GetMapping("/configuration")
+    public AppConfig getConfiguration() {
+        return service.getAppConfig();
+    }
+
 
 
 }
