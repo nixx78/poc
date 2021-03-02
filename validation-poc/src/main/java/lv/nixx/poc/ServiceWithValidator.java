@@ -12,8 +12,12 @@ import javax.validation.Valid;
 @Validated
 public class ServiceWithValidator {
 
+    private final AppConfig props;
+
     @Autowired
-    private AppConfig props;
+    public ServiceWithValidator(AppConfig props) {
+        this.props = props;
+    }
 
     public String process(@Valid Request request) {
         return "Success:FromService";

@@ -23,4 +23,7 @@ public class AppConfig {
     @Value("${total.record.count}")
     private Integer totalRecordCount;
 
+    private CacheConfig accountCache;
+    private CacheConfig customerCache;
+
 }
