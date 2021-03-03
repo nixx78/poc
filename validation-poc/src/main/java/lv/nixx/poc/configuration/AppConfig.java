@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.*;
+import java.util.Collection;
 
 @Validated
 @ConfigurationProperties(prefix = "app")
@@ -26,4 +27,9 @@ public class AppConfig {
     private CacheConfig accountCache;
     private CacheConfig customerCache;
 
+    private String title;
+    private int randomValue;
+
+    Collection<String> types;
+    Collection<String> accounts;
 }

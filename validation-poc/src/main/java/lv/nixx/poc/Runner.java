@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 //TODO https://habr.com/ru/post/536612/
-//TODO Add configuration properties validation samples
+//TODO https://docs.spring.io/spring-boot/docs/2.1.13.RELEASE/reference/html/boot-features-external-config.html
 
 @SpringBootApplication
 @ConfigurationPropertiesScan("lv.nixx.poc.configuration")
