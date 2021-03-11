@@ -4,6 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 //TODO https://docs.hazelcast.com/imdg/latest/management/rest-endpoint-groups.html
+// https://docs.hazelcast.com/management-center/4.2021.03/clustered-rest.html
+// https://docs.hazelcast.com/imdg/latest/clients/rest.html
 
 @SpringBootApplication
 public class Runner {
