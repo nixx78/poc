@@ -39,7 +39,12 @@ public class EndpointWithService {
 
         return Map.of(
                 "name", s.getName(),
-                "aliases", s.getAliases()
+                "aliases", s.getAliases(),
+                "accountCache", s.getAccountCache(),
+                "caches", s.getCaches(),
+                "mapWithRoles", s.getRoles(),
+                "sequence", s.getSequence(),
+                "map", s.getMap()
         );
     }
 
