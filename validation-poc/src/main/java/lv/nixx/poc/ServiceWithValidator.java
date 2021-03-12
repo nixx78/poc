@@ -1,6 +1,7 @@
 package lv.nixx.poc;
 
 import lv.nixx.poc.configuration.AppConfig;
+import lv.nixx.poc.configuration.YmlSettings;
 import lv.nixx.poc.model.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +14,12 @@ import javax.validation.Valid;
 public class ServiceWithValidator {
 
     private final AppConfig props;
+    private final YmlSettings ymlSettings;
 
     @Autowired
-    public ServiceWithValidator(AppConfig props) {
+    public ServiceWithValidator(AppConfig props, YmlSettings ymlSettings) {
         this.props = props;
+        this.ymlSettings = ymlSettings;
     }
 
     public String process(@Valid Request request) {
@@ -25,6 +28,10 @@ public class ServiceWithValidator {
 
     public AppConfig getAppConfig() {
         return props;
+    }
+
+    public YmlSettings getSettingsFromYaml(){
+        return ymlSettings;
     }
 
 }
