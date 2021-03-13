@@ -9,8 +9,13 @@ import lv.nixx.poc.hazelcast.model.serializer.PersonDTOSerializer;
 
 public class HazelcastTestInstance {
 
+    private static HazelcastInstance hazelcastInstance;
+
     public static HazelcastInstance get() {
-        return get(new Config());
+        if (hazelcastInstance == null) {
+            hazelcastInstance = get(new Config());
+        }
+        return hazelcastInstance;
     }
 
     public static HazelcastInstance get(Config config) {
