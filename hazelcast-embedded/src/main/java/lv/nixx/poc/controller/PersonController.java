@@ -1,7 +1,7 @@
-package lv.nixx.poc;
+package lv.nixx.poc.controller;
 
-import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.map.IMap;
+import com.hazelcast.jet.JetInstance;
+import lv.nixx.poc.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,11 +10,15 @@ import java.util.concurrent.ConcurrentMap;
 @RestController
 public class PersonController {
 
+    private final JetInstance jetInstance;
+
     @Autowired
-    private HazelcastInstance hazelcastInstance;
+    public PersonController(JetInstance jetInstance) {
+        this.jetInstance = jetInstance;
+    }
 
     private ConcurrentMap<String, Person> retrieveMap() {
-        return hazelcastInstance.getMap("personMap");
+        return jetInstance.getMap("personMap");
     }
 
     @PostMapping("/person")

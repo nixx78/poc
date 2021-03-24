@@ -17,7 +17,6 @@ import static org.junit.Assert.assertEquals;
 
 public class PipelineSandbox {
 
-
     private final String LIST_NAME = "wordList";
     private final String MAP_NAME = "wordMap";
 
@@ -53,5 +52,6 @@ public class PipelineSandbox {
         long c = countWord(List.of("A", "A", "B", "C", "D", "A"), "a");
         assertEquals(3L, c);
     }
+
 
 }

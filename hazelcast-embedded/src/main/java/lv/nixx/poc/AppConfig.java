@@ -1,7 +1,7 @@
 package lv.nixx.poc;
 
-import com.hazelcast.core.Hazelcast;
-import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.jet.Jet;
+import com.hazelcast.jet.JetInstance;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -15,8 +15,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class AppConfig {
 
     @Bean
-    public HazelcastInstance hazelcastInstance() {
-        return Hazelcast.newHazelcastInstance();
+    public JetInstance jetInstance() {
+        return Jet.newJetInstance();
     }
 
     @Bean
