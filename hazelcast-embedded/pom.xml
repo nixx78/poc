@@ -12,10 +12,11 @@
     <artifactId>hazelcast-embedded-poc</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>hazelcast-embedded-poc</name>
+    <packaging>war</packaging>
     <description>Demo project for Embedded Hazelcast with Spring Boot</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>8</java.version>
         <hazelcast.version>4.1</hazelcast.version>
     </properties>
 
@@ -65,6 +66,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>lv.nixx.poc.Runner</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
