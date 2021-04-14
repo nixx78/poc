@@ -16,6 +16,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toMap;
 import static org.junit.Assert.assertEquals;
 
 public class TxnLambdaModification {
@@ -173,7 +175,7 @@ public class TxnLambdaModification {
         // Счет, список валют
         Map<String, List<String>> c =
                 txns.stream()
-                        .collect(Collectors.groupingBy(
+                        .collect(groupingBy(
                                 Transaction::getAccount,
                                 Collectors.mapping(Transaction::getCurrency, Collectors.toList()))
                         );
@@ -196,7 +198,7 @@ public class TxnLambdaModification {
 
         Map<String, BigDecimal> c = txns.stream()
                 .collect(
-                        Collectors.groupingBy(Transaction::getCurrency,
+                        groupingBy(Transaction::getCurrency,
                                 Collectors.reducing(BigDecimal.ZERO, Transaction::getAmount, BigDecimal::add))
                 );
 
@@ -217,7 +219,7 @@ public class TxnLambdaModification {
 
         Map<String, List<Amount>> c =
                 txns.stream()
-                        .collect(Collectors.groupingBy(Transaction::getAccount,
+                        .collect(groupingBy(Transaction::getAccount,
                                 Collectors.mapping(Amount::new, Collectors.toList())
                                 )
                         );
@@ -239,15 +241,36 @@ public class TxnLambdaModification {
 
         );
 
-        Map<String, Map<String, Long>> c = txns.stream()
-                .collect(Collectors.groupingBy(Transaction::getCurrency,
-                        Collectors.groupingBy(Transaction::getAccount, Collectors.counting())
+        Map<String, Map<String, Long>> m1 = txns.stream()
+                .collect(groupingBy(Transaction::getCurrency,
+                        groupingBy(Transaction::getAccount, Collectors.counting())
                         )
                 );
 
-        c.entrySet().forEach(System.out::println);
+        m1.entrySet().forEach(System.out::println);
 
-        assertEquals(3, c.size());
+        assertEquals(3, m1.size());
+
+        Map<String, Map<String, List<Transaction>>> m2 = txns.stream()
+                .collect(groupingBy(Transaction::getCurrency,
+                        groupingBy(Transaction::getAccount, Collectors.toList())
+                        )
+                );
+
+        /*
+         EUR ->
+                ACC3(id5)
+                ACC2(id3, id4)
+         */
+        assertEquals(3, m2.size());
+
+        Map<String, Map<String, Transaction>> m3 = txns.stream()
+                .collect(groupingBy(Transaction::getCurrency,
+                          toMap(Transaction::getAccount, Function.identity(), (t1, t2) -> t2)
+                        )
+                );
+
+        assertEquals(3, m2.size());
     }
 
     @Test
@@ -280,7 +303,7 @@ public class TxnLambdaModification {
 
         Map<String, Optional<Amount>> r = set.stream()
                 .collect(
-                        Collectors.groupingBy(Amount::getCurrency,
+                        groupingBy(Amount::getCurrency,
                                 Collectors.reducing(Amount::increase))
                 );
 
@@ -300,7 +323,7 @@ public class TxnLambdaModification {
 
         Map<String, Long> r = set.stream()
                 .collect(
-                        Collectors.groupingBy(Amount::getCurrency,
+                        groupingBy(Amount::getCurrency,
                                 Collectors.counting())
                 );
 
@@ -340,7 +363,7 @@ public class TxnLambdaModification {
         Map<String, List<Transaction>> collect =
                 txns.stream()
                         .collect(
-                                Collectors.groupingBy(Transaction::getAccount,
+                                groupingBy(Transaction::getAccount,
                                         Collectors.filtering(t -> t.getCurrency().equalsIgnoreCase("EUR"), Collectors.toList())
                                 )
                         );
