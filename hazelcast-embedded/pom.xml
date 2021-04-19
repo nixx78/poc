@@ -16,7 +16,7 @@
     <description>Demo project for Embedded Hazelcast with Spring Boot</description>
 
     <properties>
-        <java.version>8</java.version>
+        <java.version>15</java.version>
         <hazelcast.version>4.1</hazelcast.version>
     </properties>
 

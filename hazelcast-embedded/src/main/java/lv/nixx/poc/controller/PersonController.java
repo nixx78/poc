@@ -18,7 +18,7 @@ public class PersonController {
     }
 
     private ConcurrentMap<String, Person> retrieveMap() {
-        return jetInstance.getMap("personMap");
+        return jetInstance.getMap("person.map");
     }
 
     @PostMapping("/person")
@@ -28,7 +28,7 @@ public class PersonController {
     }
 
     @GetMapping("/person/{key}")
-    public Person get(@RequestParam(value = "key") String key) {
+    public Person get(@PathVariable(value = "key") String key) {
         return retrieveMap().get(key);
     }
 }

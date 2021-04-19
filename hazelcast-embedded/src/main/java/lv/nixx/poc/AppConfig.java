@@ -1,5 +1,8 @@
 package lv.nixx.poc;
 
+import com.hazelcast.config.Config;
+import com.hazelcast.config.MapConfig;
+import com.hazelcast.config.MapStoreConfig;
 import com.hazelcast.jet.Jet;
 import com.hazelcast.jet.JetInstance;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +19,26 @@ public class AppConfig {
 
     @Bean
     public JetInstance jetInstance() {
-        return Jet.newJetInstance();
+        JetInstance jt = Jet.newJetInstance();
+
+        PersonLoader pl = new PersonLoader();
+
+        MapStoreConfig personStoreConfig = new MapStoreConfig();
+        personStoreConfig .setWriteDelaySeconds(0);
+        personStoreConfig .setEnabled(true);
+        personStoreConfig .setImplementation(pl);
+        personStoreConfig.setInitialLoadMode(MapStoreConfig.InitialLoadMode.EAGER);
+
+        MapConfig mapConfig = new MapConfig();
+        mapConfig .setMapStoreConfig(personStoreConfig );
+        mapConfig .setName("person.map");
+        mapConfig .setTimeToLiveSeconds(0);
+
+        Config hazelcastConfig = jt.getConfig().getHazelcastConfig();
+        hazelcastConfig.addMapConfig(mapConfig);
+
+
+        return jt;
     }
 
     @Bean
@@ -27,5 +49,8 @@ public class AppConfig {
                 .paths(PathSelectors.ant("/**/**"))
                 .build();
     }
+
+
+
 
 }
