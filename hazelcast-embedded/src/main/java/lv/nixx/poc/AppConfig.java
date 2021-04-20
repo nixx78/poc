@@ -21,18 +21,18 @@ public class AppConfig {
     public JetInstance jetInstance() {
         JetInstance jt = Jet.newJetInstance();
 
-        PersonLoader pl = new PersonLoader();
+        PersonMapLoader pl = new PersonMapLoader();
 
-        MapStoreConfig personStoreConfig = new MapStoreConfig();
-        personStoreConfig .setWriteDelaySeconds(0);
-        personStoreConfig .setEnabled(true);
-        personStoreConfig .setImplementation(pl);
-        personStoreConfig.setInitialLoadMode(MapStoreConfig.InitialLoadMode.EAGER);
+        MapStoreConfig psc = new MapStoreConfig();
+        psc.setWriteDelaySeconds(0);
+        psc.setEnabled(true);
+        psc.setImplementation(pl);
+        psc.setInitialLoadMode(MapStoreConfig.InitialLoadMode.EAGER);
 
         MapConfig mapConfig = new MapConfig();
-        mapConfig .setMapStoreConfig(personStoreConfig );
-        mapConfig .setName("person.map");
-        mapConfig .setTimeToLiveSeconds(0);
+        mapConfig.setMapStoreConfig(psc);
+        mapConfig.setName("person.map");
+        mapConfig.setTimeToLiveSeconds(0);
 
         Config hazelcastConfig = jt.getConfig().getHazelcastConfig();
         hazelcastConfig.addMapConfig(mapConfig);
@@ -49,8 +49,6 @@ public class AppConfig {
                 .paths(PathSelectors.ant("/**/**"))
                 .build();
     }
-
-
 
 
 }
