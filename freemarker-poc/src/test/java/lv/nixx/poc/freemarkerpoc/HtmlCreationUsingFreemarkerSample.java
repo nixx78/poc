@@ -29,27 +29,37 @@ class HtmlCreationUsingFreemarkerSample {
     @Test
     void sample() throws Exception {
 
-		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
         DataModel dm = new DataModel()
                 .setTotalAmount(BigDecimal.valueOf(777_000))
                 .setCustomers(List.of(
                         new Customer()
-                                .setId(100)
+                                .setId(101)
                                 .setName("John")
                                 .setSurname("Rambo")
-                                .setDateOfBirth(df.parse("16/12/1960")),
+                                .setDateOfBirth(df.parse("16/12/1960"))
+                                .setType("SIMPLE"),
                         new Customer()
-                                .setId(100)
+                                .setId(102)
                                 .setName("John")
                                 .setSurname("Travolta")
-								.setDateOfBirth(df.parse("01/01/1950")),
+                                .setDateOfBirth(df.parse("01/01/1950"))
+                                .setType("SIMPLE"),
                         new Customer()
-                                .setId(100)
+                                .setId(103)
                                 .setName("Nicolas")
                                 .setSurname("Cage")
-								.setDateOfBirth(df.parse("01/12/1955"))
-                ));
+                                .setDateOfBirth(df.parse("01/12/1955"))
+                                .setType("VIP"),
+                        new Customer()
+                                .setId(104)
+                                .setName("Madonna")
+                                .setSurname("Chikone")
+                                .setDateOfBirth(df.parse("01/12/1965"))
+                                .setType("VIP")
+                        )
+                );
 
         final Template template = configuration.getTemplate("email-template.ftl");
         final String s = FreeMarkerTemplateUtils.processTemplateIntoString(template, dm);
