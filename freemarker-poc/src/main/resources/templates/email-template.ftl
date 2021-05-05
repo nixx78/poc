@@ -47,6 +47,17 @@ Converted value '1': ${convert(1)}
 <p>Vip Customers</p>
 <@tableContent data=getVipCustomers()/>
 
+<p>All customers using list-item</p>
+<#list customers>
+  <ul>
+    <#items as c>
+      <li>#${c.id}  ${c.name} ${c.surname}</li>
+    </#items>
+  </ul>
+<#else>
+   No Data
+</#list>
+
 <br>
 <#include "/email-footer.html">
 
