@@ -32,4 +32,5 @@ public class AppConfig {
 
     Collection<String> types;
     Collection<String> accounts;
+    private String customPropertyWithBase;
 }

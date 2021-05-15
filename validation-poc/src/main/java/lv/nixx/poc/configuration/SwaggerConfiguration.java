@@ -1,4 +1,4 @@
-package lv.nixx.poc;
+package lv.nixx.poc.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
