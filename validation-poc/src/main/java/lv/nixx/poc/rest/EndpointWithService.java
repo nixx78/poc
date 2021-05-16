@@ -4,7 +4,10 @@ import lv.nixx.poc.ServiceWithValidator;
 import lv.nixx.poc.configuration.AppConfig;
 import lv.nixx.poc.configuration.YmlSettings;
 import lv.nixx.poc.model.Request;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -13,10 +16,14 @@ import java.util.Map;
 @RequestMapping("rest")
 public class EndpointWithService {
 
+    private static final Logger log = LoggerFactory.getLogger(EndpointWithService.class);
+
     private final ServiceWithValidator service;
+    private final Environment environment;
 
     @Autowired
-    public EndpointWithService(ServiceWithValidator service) {
+    public EndpointWithService(Environment environment, ServiceWithValidator service) {
+        this.environment = environment;
         this.service = service;
     }
 
@@ -30,6 +37,7 @@ public class EndpointWithService {
 
     @GetMapping("/configuration")
     public AppConfig getConfiguration() {
+        log.info("Custom property [{}]", this.environment.getProperty("base.with.custom"));
         return service.getAppConfig();
     }
 

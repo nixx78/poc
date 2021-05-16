@@ -3,7 +3,6 @@ package lv.nixx.poc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 //TODO https://habr.com/ru/post/536612/
@@ -12,10 +11,10 @@ import org.springframework.context.annotation.PropertySource;
 @SpringBootApplication
 @ConfigurationPropertiesScan("lv.nixx.poc.configuration")
 @PropertySource("classpath:base.properties")
-@PropertySource("classpath:application.properties")
 public class Runner {
 
 	public static void main(String[] args) {
+		System.setProperty("spring.profiles.active", "dev");
 		SpringApplication.run(Runner.class, args);
 	}
 
