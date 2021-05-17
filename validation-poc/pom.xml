@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>lv.nixx</groupId>
-    <artifactId>validation-poc</artifactId>
+    <artifactId>properties-and-validation-poc</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>validation-poc</name>
     <description>Demo project for Spring Boot Validation</description>
