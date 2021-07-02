@@ -5,10 +5,10 @@ import java.util.Date;
 
 public class Transaction implements Comparable<Transaction> {
 
-	private String id;
-	private BigDecimal amount;
-	private String account;
-	private String currency;
+	private final String id;
+	private final BigDecimal amount;
+	private final String account;
+	private final String currency;
 	private Date lastUpdateDate;
 
 	public Transaction(String id, BigDecimal amout, String account, String currency, Date lastUpdateDate) {
@@ -94,11 +94,8 @@ public class Transaction implements Comparable<Transaction> {
 		} else if (!id.equals(other.id))
 			return false;
 		if (lastUpdateDate == null) {
-			if (other.lastUpdateDate != null)
-				return false;
-		} else if (!lastUpdateDate.equals(other.lastUpdateDate))
-			return false;
-		return true;
+			return other.lastUpdateDate == null;
+		} else return lastUpdateDate.equals(other.lastUpdateDate);
 	}
 
 	@Override

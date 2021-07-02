@@ -7,7 +7,7 @@ import lv.nixx.poc.topic.dto.UIMessageThree;
 public class ServiceThree implements Subscriber<UIMessageThree> {
 
 	@Override
-	public void send(MessageWrapper<UIMessageThree> message) {
+	public void send(MessageWrapper<?> message) {
 		System.out.println("ServiceThree:" + message.getMessage());
 		
 	}

@@ -10,7 +10,7 @@ public interface Persons {
 
     final class Operations {
 
-        private Persons persons;
+        private final Persons persons;
 
         public Operations(Persons persons) {
             this.persons = persons;

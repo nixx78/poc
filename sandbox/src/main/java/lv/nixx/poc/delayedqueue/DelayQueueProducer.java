@@ -15,7 +15,7 @@ public class DelayQueueProducer {
 		this.queue = queue;
 	}
 
-	private Thread producerThread = new Thread(() -> {
+	private final Thread producerThread = new Thread(() -> {
 		while (true) {
 			try {
 				// Put Random delay for each email to send.

@@ -1,8 +1,8 @@
 package lv.nixx.poc.topic.dto;
 
-public class UIMessageOne {
+public class UIMessageOne implements UIMessage {
 	
-	private String message;
+	private final String message;
 
 	public UIMessageOne(String message) {
 		this.message = message;

@@ -11,10 +11,7 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,7 +20,7 @@ import java.util.stream.Stream;
 public class NumberStatisticSample {
 
 	
-	private final Collection<String> input = Arrays.asList("", "11", "aa1", "2", "2x", "123", "3333", "3x", "x3x", "z3z2", "55678", "XXX");
+	private final Collection<String> input = List.of("", "11", "aa1", "2", "2x", "123", "3333", "3x", "x3x", "z3z2", "55678", "XXX");
 	
 	@After
 	public void after() {

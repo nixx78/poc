@@ -382,7 +382,7 @@ public class TxnLambdaModification {
 
         try (BufferedReader br = new BufferedReader(new StringReader(txnString))) {
             final List<Transaction> txnList = br.lines()
-                    .map(t -> t.split("\\,"))
+                    .map(t -> t.split(","))
                     .filter(t -> t.length == 4)
                     .map(this::removeSpaces)
                     .map(t -> new Transaction(t[0], parse(t[1]), t[2], t[3]))
@@ -565,7 +565,7 @@ public class TxnLambdaModification {
     }
 
     class LocalAccount {
-        private String id;
+        private final String id;
         Map<String, Amount> amounts = new HashMap<>();
 
         public LocalAccount(String accId) {
@@ -598,9 +598,9 @@ public class TxnLambdaModification {
         }
     }
 
-    class Amount {
-        private String currency;
-        private BigDecimal totalAmount = BigDecimal.ZERO;
+    static class Amount {
+        private final String currency;
+        private BigDecimal totalAmount;
 
         Amount(Transaction txn) {
             this.currency = txn.getCurrency();

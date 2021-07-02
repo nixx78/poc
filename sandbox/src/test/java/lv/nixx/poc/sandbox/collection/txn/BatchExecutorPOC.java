@@ -16,15 +16,15 @@ public class BatchExecutorPOC {
 		// Функция, куда будует передан результат вычесления
 		batchExecutor.setCallback(System.out::println);
 
-		batchExecutor.add(t-> {return t+":"+ System.currentTimeMillis();}, 100);
-		batchExecutor.add(t-> {return t+"#"+ System.currentTimeMillis();}, 200);
-		batchExecutor.add(t-> {return t+"$"+ System.currentTimeMillis();}, 200);
+		batchExecutor.add(t-> t+":"+ System.currentTimeMillis(), 100);
+		batchExecutor.add(t-> t+"#"+ System.currentTimeMillis(), 200);
+		batchExecutor.add(t-> t+"$"+ System.currentTimeMillis(), 200);
 		
 		batchExecutor.executeAll();
 	}
 
 	
-	class BatchExecutor <T, U> {
+	static class BatchExecutor <T, U> {
 		
 		Set<Container<T,U>> container = new HashSet<>();
 		Consumer<U> callback;
@@ -34,11 +34,11 @@ public class BatchExecutorPOC {
 		}
 		
 		public void add(Function<T, U> funct, T data) {
-			container.add(new Container<T,U>(funct, data));
+			container.add(new Container<T, U>(funct, data));
 		}
 
 		public void executeAll() {
-			container.stream().forEach(t -> {
+			container.forEach(t -> {
 				callback.accept( t.execute() );
 				}
 			);
@@ -46,10 +46,10 @@ public class BatchExecutorPOC {
 		
 	}
 	
-	class Container <T, U>{
+	static class Container <T, U>{
 
-		private Function<T, U> function;
-		private T data;
+		private final Function<T, U> function;
+		private final T data;
 		
 		Container(Function<T, U> function, T data) {
 			this.function = function;

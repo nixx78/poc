@@ -50,7 +50,7 @@ public class OptionalSandbox {
         assertEquals("else.value", Optional.empty().orElse("else.value"));
         assertEquals("present.value", Optional.of("present.value").orElse("else.value"));
 
-        assertEquals("else.value", Optional.empty().orElseGet(() -> "else.value"));
+        assertEquals("else.value", Optional.empty().orElse("else.value"));
     }
 
 
@@ -83,7 +83,6 @@ public class OptionalSandbox {
                 .map(Address::getHouseNum)
                 .orElse(-1)
         );
-;
 
         Collection<Person> persons = List.of(
                 new Person("name.value0", new Address("street.value0", 100)),

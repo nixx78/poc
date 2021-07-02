@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 public class WordFinder {
 
-    private String dictionaryFileName;
+    private final String dictionaryFileName;
     private Stream<String> stream;
 
     public WordFinder(String dictionaryFileName) {

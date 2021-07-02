@@ -430,9 +430,7 @@ public class CollectionPlayground {
 		assertEquals("id1", result[3].getId());
 	}
 	
-		
-	
-	class Holder {
+	static class Holder {
 		Group group;
 		Character c;
 

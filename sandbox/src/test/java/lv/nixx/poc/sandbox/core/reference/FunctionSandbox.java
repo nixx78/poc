@@ -45,7 +45,7 @@ public class FunctionSandbox {
 		int plus(int a, int b);
 	}
 	
-	class MyClass implements MyInterface {
+	static class MyClass implements MyInterface {
 
 		@Override
 		public int plus(int a, int b) {
@@ -56,7 +56,7 @@ public class FunctionSandbox {
 	
 	@Data
 	@AllArgsConstructor
-	class Person {
+	static class Person {
 		private String name;
 		private String surname;
 		private Date birhtDate;

@@ -39,16 +39,16 @@ public class TxnByMonthStatistic {
 			return x1.compareTo(x2);
 		};
 		
-		Map<String, Map<String, StatisticAccumullator>> res = txns.stream()
+		Map<String, Map<String, StatisticAccamullator>> res = txns.stream()
 				.collect(
 						groupingBy( t-> getMonthFromDate(t.getLastUpdateDate()), () -> new TreeMap<>(monthComparator),
 						groupingBy( Transaction::getCurrency, new StaticsticCollector()))
 				);
 		
-		for(Map.Entry<String, Map<String, StatisticAccumullator>> e : res.entrySet()) {
+		for(Map.Entry<String, Map<String, StatisticAccamullator>> e : res.entrySet()) {
 			String month = e.getKey();
 			System.out.println(month);
-			for(Map.Entry<String, StatisticAccumullator> monthStats: e.getValue().entrySet()) {
+			for(Map.Entry<String, StatisticAccamullator> monthStats: e.getValue().entrySet()) {
 				String currency = monthStats.getKey();
 				System.out.println("\t" + currency + "\n \t\t" + monthStats.getValue());
 			}
@@ -66,25 +66,25 @@ public class TxnByMonthStatistic {
 		return new SimpleDateFormat("dd.MM.yyyy").parse(date);
 	}
 
-	class StaticsticCollector implements Collector<Transaction, StatisticAccumullator, StatisticAccumullator> {
+	class StaticsticCollector implements Collector<Transaction, StatisticAccamullator, StatisticAccamullator> {
 
 		@Override
-		public Supplier<StatisticAccumullator> supplier() {
-			return StatisticAccumullator::new;
+		public Supplier<StatisticAccamullator> supplier() {
+			return StatisticAccamullator::new;
 		}
 
 		@Override
-		public BiConsumer<StatisticAccumullator, Transaction> accumulator() {
-			return StatisticAccumullator::increaseByTransaction;
+		public BiConsumer<StatisticAccamullator, Transaction> accumulator() {
+			return StatisticAccamullator::increaseByTransaction;
 		}
 
 		@Override
-		public BinaryOperator<StatisticAccumullator> combiner() {
+		public BinaryOperator<StatisticAccamullator> combiner() {
 			return (s1,s2) -> s1;
 		}
 
 		@Override
-		public Function<StatisticAccumullator, StatisticAccumullator> finisher() {
+		public Function<StatisticAccamullator, StatisticAccamullator> finisher() {
 			return Function.identity();
 		}
 
@@ -93,11 +93,11 @@ public class TxnByMonthStatistic {
 			return new HashSet<>(List.of(Characteristics.IDENTITY_FINISH));
 		}
 		
-	}; 
+	}
 
 	@NoArgsConstructor
 	@ToString
-	class StatisticAccumullator {
+	static class StatisticAccamullator {
 		private String currency;
 		private int txnCount = 0;
 		private BigDecimal amount = BigDecimal.ZERO;

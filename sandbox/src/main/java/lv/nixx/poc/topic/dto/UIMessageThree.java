@@ -1,8 +1,8 @@
 package lv.nixx.poc.topic.dto;
 
-public class UIMessageThree {
+public class UIMessageThree implements UIMessage {
 	
-	private String message;
+	private final String message;
 
 	public UIMessageThree(String message) {
 		this.message = message;

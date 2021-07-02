@@ -11,12 +11,12 @@ public class RepeatableElements {
 	@Test
 	public void test1() {
 		final List<List<Integer>> seqs = Arrays.asList(
-				Arrays.asList(1,2,3), 
-				Arrays.asList(2,3,9), 
-				Arrays.asList(7,7,4), 
-				Arrays.asList(1,5,4),
-				Arrays.asList(10,10),
-				Arrays.asList(10)
+				List.of(1,2,3),
+				List.of(2,3,9),
+				List.of(7,7,4),
+				List.of(1,5,4),
+				List.of(10,10),
+				List.of(10)
 			);
 		
 		getUniqueElemems(seqs).forEach(System.out::println);
@@ -26,7 +26,7 @@ public class RepeatableElements {
 		
 		Set<Integer> notUnique = new HashSet<>();
 		seq.stream()
-		.flatMap(lst -> lst.stream().map(t->new Pair(lst.hashCode(), t)))
+		.flatMap(lst -> lst.stream().map(t-> new Pair(lst.hashCode(), t)))
 		.collect(Collectors.toMap( t->t.value, Function.identity(), (e, n) -> {
 			if ( e.seqNum != n.seqNum ) {
 				notUnique.add(n.value);
@@ -37,7 +37,7 @@ public class RepeatableElements {
 		return notUnique;
 	}
 	
-	class Pair {
+	static class Pair {
 		int seqNum;
 		int value;
 

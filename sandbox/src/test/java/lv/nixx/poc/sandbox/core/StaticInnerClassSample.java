@@ -4,11 +4,9 @@ import org.junit.Test;
 
 public class StaticInnerClassSample {
 
-    private String value = "Value";
-
     @Test
     public void innerClassSample() {
-        StaticInnerClassSample.InnerClass innerClass = new StaticInnerClassSample().new InnerClass("IValue");
+        StaticInnerClassSample.InnerClass innerClass = new InnerClass("IValue");
         innerClass.process();
     }
 
@@ -21,20 +19,21 @@ public class StaticInnerClassSample {
         sc2.process();
     }
 
-    class InnerClass {
-        private String iv;
+    static class InnerClass {
+        private final String iv;
 
         InnerClass(String iv) {
             this.iv = iv;
         }
 
         void process() {
+            String value = "Value";
             System.out.println("Inner value: " + iv + ": class value: " + value);
         }
     }
 
     static class StaticClass {
-        private String iv;
+        private final String iv;
 
         StaticClass(String iv) {
             this.iv = iv;

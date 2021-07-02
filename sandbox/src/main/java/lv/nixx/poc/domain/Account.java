@@ -10,9 +10,9 @@ public class Account implements Comparable<Account> {
 
     private static final Comparator<AccountType> accountTypeComparator = AccountTypeComparator.forOrder(DEPOSIT, CURRENT, CARD);
 
-    private String id;
-    private List<Transaction> txn;
-    private AccountType type;
+    private final String id;
+    private final List<Transaction> txn;
+    private final AccountType type;
 
     public Account(String id, AccountType type) {
         this(id, null, type);

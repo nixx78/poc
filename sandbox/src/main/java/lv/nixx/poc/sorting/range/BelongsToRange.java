@@ -50,7 +50,7 @@ public class BelongsToRange {
 	}
 	
 	
-	class Range {
+	static class Range {
 		int to;
 		RangeLabel label;
 		

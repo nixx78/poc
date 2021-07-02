@@ -10,8 +10,8 @@ import static org.junit.Assert.assertEquals;
 
 public class ComparatorSandbox {
 	
-	private static Comparator<BigDecimal> nullSafeBigDecimalComparator = Comparator.nullsFirst(BigDecimal::compareTo);
-	private static Comparator<String> nullSafeStringComparator = Comparator.nullsFirst(String::compareTo);
+	private static final Comparator<BigDecimal> nullSafeBigDecimalComparator = Comparator.nullsFirst(BigDecimal::compareTo);
+	private static final Comparator<String> nullSafeStringComparator = Comparator.nullsFirst(String::compareTo);
 
 	@Test
 	public void compareTest() {

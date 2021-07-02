@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class AccountTypeComparator implements Comparator<AccountType> {
 
-    private Map<AccountType, Integer> pos;
+    private final Map<AccountType, Integer> pos;
 
     public static AccountTypeComparator forOrder(AccountType... expectedOrder) {
         return new AccountTypeComparator(expectedOrder);

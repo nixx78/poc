@@ -27,7 +27,7 @@ public class InterfaceWithFieldTest {
     }
 
 
-    class Parent {
+    static class Parent {
         String process() {
             return "processed";
         }

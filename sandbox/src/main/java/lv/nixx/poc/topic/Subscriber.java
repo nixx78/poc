@@ -1,7 +1,9 @@
 package lv.nixx.poc.topic;
 
-public interface Subscriber<T> {
+import lv.nixx.poc.topic.dto.UIMessage;
+
+public interface Subscriber<T extends UIMessage> {
 	
-	void send(MessageWrapper<T> message);
+	void send(MessageWrapper<?> message);
 
 }

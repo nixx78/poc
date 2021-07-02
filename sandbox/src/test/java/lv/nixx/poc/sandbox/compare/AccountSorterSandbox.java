@@ -8,8 +8,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static lv.nixx.poc.domain.AccountType.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
-import static org.junit.Assert.assertThat;
 
 public class AccountSorterSandbox {
 

@@ -1,8 +1,10 @@
 package lv.nixx.poc.topic;
 
-public class MessageWrapper<T> {
+import lv.nixx.poc.topic.dto.UIMessage;
+
+public class MessageWrapper<T extends UIMessage> {
 	
-	private T message;
+	private final T message;
 	
 	public MessageWrapper(T message) {
 		this.message = message;

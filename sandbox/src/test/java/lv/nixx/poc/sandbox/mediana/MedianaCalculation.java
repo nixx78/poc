@@ -66,7 +66,7 @@ public class MedianaCalculation {
 		System.out.println("Mediana:" + mediana);
 	}
 
-	class Entry {
+	static class Entry {
 		int from;
 		int to;
 		int n;

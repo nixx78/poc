@@ -28,7 +28,7 @@ public class DuplicateKeySample {
 
     @Data
     @AllArgsConstructor
-    class Key {
+    static class Key {
         private String value;
     }
 

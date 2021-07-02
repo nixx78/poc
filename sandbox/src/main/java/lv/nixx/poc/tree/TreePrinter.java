@@ -2,12 +2,12 @@ package lv.nixx.poc.tree;
 
 public class TreePrinter {
 
-    private StringBuilder sb = new StringBuilder();
+    private final StringBuilder sb = new StringBuilder();
 
     public void traverseInOrder(BinaryTree binaryTree) {
         Node root = binaryTree.getRoot();
 
-        sb.append("Root:" + root.value + "\n");
+        sb.append("Root:").append(root.value).append("\n");
         traverseInOrder(root);
 
         System.out.println(sb.toString());
@@ -17,7 +17,7 @@ public class TreePrinter {
         if (node != null) {
             traverseInOrder(node.left);
             if (node.value != null) {
-                sb.append(node + "\n");
+                sb.append(node).append("\n");
             }
             traverseInOrder(node.right);
         }

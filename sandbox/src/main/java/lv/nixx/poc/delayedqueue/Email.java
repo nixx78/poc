@@ -5,9 +5,9 @@ import java.util.concurrent.TimeUnit;
 
 public class Email implements Delayed {
 
-	private String receipient;
-	private String mailBody;
-	private long startTime;
+	private final String receipient;
+	private final String mailBody;
+	private final long startTime;
 
 	public Email(String receipient, String body, long delay) {
 		this.receipient = receipient;

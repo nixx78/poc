@@ -8,7 +8,7 @@ import lv.nixx.poc.topic.service.*;
 
 public class NotificationManager {
 	
-	private Map<Class<?>, Subscriber<?>> notifications = new HashMap<>();
+	private final Map<Class<? extends UIMessage>, Subscriber<?>> notifications = new HashMap<>();
 	
 	public NotificationManager() {
 		notifications.put(UIMessageOne.class, new ServiceOne());
@@ -16,20 +16,10 @@ public class NotificationManager {
 		notifications.put(UIMessageThree.class, new ServiceThree());
 	}
 
-
-	public void notifyAbout(UIMessageOne message) {
-		MessageWrapper mw = new MessageWrapper<>(message);
+	public void notifyAbout(UIMessage message) {
+		MessageWrapper<UIMessage> mw = new MessageWrapper<>(message);
 		notifications.get(message.getClass()).send(mw);
 	}
 
-	public void notifyAbout(UIMessageTwo message) {
-		MessageWrapper mw = new MessageWrapper<>(message);
-		notifications.get(message.getClass()).send(mw);	
-	}
-
-	public void notifyAbout(UIMessageThree message) {
-		MessageWrapper mw = new MessageWrapper<>(message);
-		notifications.get(message.getClass()).send(mw);	
-	}
-
 }
+

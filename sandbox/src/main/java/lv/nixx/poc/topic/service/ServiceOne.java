@@ -7,7 +7,7 @@ import lv.nixx.poc.topic.dto.UIMessageOne;
 public class ServiceOne implements Subscriber<UIMessageOne> {
 
 	@Override
-	public void send(MessageWrapper<UIMessageOne> message) {
+	public void send(MessageWrapper<?> message) {
 		System.out.println("ServiceOne:" + message.getMessage());
 	}
 

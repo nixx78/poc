@@ -41,11 +41,8 @@ public class Person {
 		} else if (!name.equals(other.name))
 			return false;
 		if (surname == null) {
-			if (other.surname != null)
-				return false;
-		} else if (!surname.equals(other.surname))
-			return false;
-		return true;
+			return other.surname == null;
+		} else return surname.equals(other.surname);
 	}
 
 	@Override

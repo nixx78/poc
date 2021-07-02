@@ -4,7 +4,7 @@ import java.util.concurrent.BlockingQueue;
 
 public class DelayQueueConsumer {
 
-	private BlockingQueue<Email> queue;
+	private final BlockingQueue<Email> queue;
 
 	public DelayQueueConsumer(BlockingQueue<Email> queue) {
 		this.queue = queue;

@@ -7,7 +7,7 @@ import lv.nixx.poc.topic.dto.UIMessageTwo;
 public class ServiceTwo implements Subscriber<UIMessageTwo> {
 
 	@Override
-	public void send(MessageWrapper<UIMessageTwo> message) {
+	public void send(MessageWrapper<?> message) {
 		System.out.println("ServiceTwo:" + message.getMessage());
 	}
 

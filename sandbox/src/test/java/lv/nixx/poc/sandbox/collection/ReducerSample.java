@@ -72,7 +72,7 @@ public class ReducerSample {
     @Data
     @ToString
     @AllArgsConstructor
-    class Posting {
+    static class Posting {
         String id;
         Date timestamp;
         Date settleDate;

@@ -49,13 +49,13 @@ public class RetryCounterTest {
 		assertEquals("FailValue10", r.call(10));
 	}
 
-	class RetryCounter<K, V> {
+	static class RetryCounter<K, V> {
 
 		private final Logger LOG = LoggerFactory.getLogger("RetryCounter");
 
-		private int tryCount;
-		private Function<K, V> onTry;
-		private Function<K, V> onError;
+		private final int tryCount;
+		private final Function<K, V> onTry;
+		private final Function<K, V> onError;
 
 		RetryCounter(int tryCount, Function<K, V> onTry, Function<K, V> onError) {
 			this.tryCount = tryCount;

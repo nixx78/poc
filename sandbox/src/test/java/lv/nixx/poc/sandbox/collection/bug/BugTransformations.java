@@ -64,7 +64,7 @@ public class BugTransformations {
 
 	}
 
-	class BugEntry {
+	static class BugEntry {
 		LocalDate date;
 		Integer id;
 		String severity;
@@ -89,7 +89,7 @@ public class BugTransformations {
 
 	}
 
-	class CalendarEntry {
+	static class CalendarEntry {
 		LocalDate date;
 		Integer bugCount;
 
@@ -113,11 +113,11 @@ public class BugTransformations {
 		
 	}
 
-	public class Bug {
-		private int id;
-		private LocalDate openDate;
-		private LocalDate closeDate;
-		private String severity;
+	public static class Bug {
+		private final int id;
+		private final LocalDate openDate;
+		private final LocalDate closeDate;
+		private final String severity;
 
 		public Bug(int id, LocalDate openDate, LocalDate closeDate, String severity) {
 			this.id = id;

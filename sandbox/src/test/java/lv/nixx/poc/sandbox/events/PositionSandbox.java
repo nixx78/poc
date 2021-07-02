@@ -16,7 +16,7 @@ import static lv.nixx.poc.sandbox.events.PositionSandbox.Tier.*;
 
 public class PositionSandbox {
 
-	private Application app = new Application();
+	private final Application app = new Application();
 	
 	private PostingsModel postingModels;
 	private PositionsModel positionModels;
@@ -125,7 +125,7 @@ public class PositionSandbox {
 	@Data
 	@ToString
 	@AllArgsConstructor
-	class Balance {
+	static class Balance {
 		
 		Map<Tier, BigDecimal> balanceByTier;
 		
@@ -140,7 +140,7 @@ public class PositionSandbox {
 	@ToString
 	@EqualsAndHashCode(of = "pos")
 	@AllArgsConstructor
-	class PositionEvent {
+	static class PositionEvent {
 		String pos;
 		BigDecimal balance;
 	}
@@ -149,6 +149,7 @@ public class PositionSandbox {
 	@ToString
 	@EqualsAndHashCode(of = "pos")
 	@AllArgsConstructor
+	static
 	class PostingEvent {
 		String pos;
 		BigDecimal balance;
@@ -158,7 +159,7 @@ public class PositionSandbox {
 	@ToString
 	@EqualsAndHashCode(of = "pos")
 	@AllArgsConstructor
-	class Position {
+	static class Position {
 		String pos;
 		BigDecimal balance;
 		Tier tier;
@@ -168,7 +169,7 @@ public class PositionSandbox {
 	@ToString
 	@EqualsAndHashCode(of = "pos")
 	@AllArgsConstructor
-	class Posting {
+	static class Posting {
 		String pos;
 		BigDecimal balance;
 		Tier tier;

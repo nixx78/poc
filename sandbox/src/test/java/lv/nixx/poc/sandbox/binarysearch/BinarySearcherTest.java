@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Before;
@@ -55,7 +56,7 @@ public class BinarySearcherTest {
 
 	@Test
 	public void testById_OneElementList() {
-		final Person foundPerson = BinarySearcher.searchById(Arrays.asList(new Person(777,"Ivan")), 777);
+		final Person foundPerson = BinarySearcher.searchById(Collections.singletonList(new Person(777, "Ivan")), 777);
 		assertNotNull(foundPerson);
 		assertEquals(777, foundPerson.id);
 		assertEquals("Ivan", foundPerson.name);
@@ -68,7 +69,7 @@ public class BinarySearcherTest {
 	
 	@Test
 	public void notFound_OneElementList() {
-		assertNull(BinarySearcher.searchById(Arrays.asList(new Person(777,"Ivan")), 8888));
+		assertNull(BinarySearcher.searchById(Collections.singletonList(new Person(777, "Ivan")), 8888));
 	}
 
 }

@@ -19,7 +19,7 @@ public class LogggerSample {
 		return "Long Calculated log data";
 	}
 
-	class Logger {
+	static class Logger {
 		
 		private void debug(Supplier<String> message) {
 			if (isDebugEnabled()){

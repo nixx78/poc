@@ -5,8 +5,8 @@ import java.util.*;
 // Содержит только последнюю версию транзакции, версия определяется по LastUpdateDate
 public class TxnHolder {
 
-	private Map<String, Transaction> uniqueRecords = new HashMap<>();
-	private Set<Transaction> duplicatedRecords = new HashSet<>();
+	private final Map<String, Transaction> uniqueRecords = new HashMap<>();
+	private final Set<Transaction> duplicatedRecords = new HashSet<>();
 
 	public void add(Transaction newTxn) {
 		final String id = newTxn.getId();

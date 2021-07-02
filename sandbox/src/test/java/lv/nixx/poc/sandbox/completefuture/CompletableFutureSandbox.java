@@ -140,7 +140,7 @@ public class CompletableFutureSandbox {
 		return u;
 	}
 
-	class User {
+	static class User {
 		String id;
 		String name;
 
