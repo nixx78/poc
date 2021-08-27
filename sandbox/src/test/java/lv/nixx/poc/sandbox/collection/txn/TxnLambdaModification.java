@@ -186,28 +186,6 @@ public class TxnLambdaModification {
     }
 
     @Test
-    public void groupByTotalAmountByCurrency() {
-        List<Transaction> txns = Arrays.asList(
-                new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"),
-                new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD"),
-                new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"),
-                new Transaction("id4", BigDecimal.valueOf(20.00), "ACC2", "EUR"),
-                new Transaction("id5", BigDecimal.valueOf(40.14), "ACC3", "EUR")
-        );
-
-
-        Map<String, BigDecimal> c = txns.stream()
-                .collect(
-                        groupingBy(Transaction::getCurrency,
-                                Collectors.reducing(BigDecimal.ZERO, Transaction::getAmount, BigDecimal::add))
-                );
-
-        c.entrySet().forEach(System.out::println);
-
-        assertEquals(2, c.size());
-    }
-
-    @Test
     public void groupByAccountAmountList() {
         List<Transaction> txns = Arrays.asList(
                 new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"),

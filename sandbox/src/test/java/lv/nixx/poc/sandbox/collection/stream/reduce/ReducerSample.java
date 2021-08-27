@@ -1,4 +1,4 @@
-package lv.nixx.poc.sandbox.collection;
+package lv.nixx.poc.sandbox.collection.stream.reduce;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

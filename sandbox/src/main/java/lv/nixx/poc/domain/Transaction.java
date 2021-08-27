@@ -11,17 +11,17 @@ public class Transaction implements Comparable<Transaction> {
 	private final String currency;
 	private Date lastUpdateDate;
 
-	public Transaction(String id, BigDecimal amout, String account, String currency, Date lastUpdateDate) {
+	public Transaction(String id, BigDecimal amount, String account, String currency, Date lastUpdateDate) {
 		this.id = id;
-		this.amount = amout;
+		this.amount = amount;
 		this.account = account;
 		this.currency = currency;
 		this.lastUpdateDate = lastUpdateDate;
 	}
 
-	public Transaction(String id, BigDecimal amout, String account, String currency) {
+	public Transaction(String id, BigDecimal amount, String account, String currency) {
 		this.id = id;
-		this.amount = amout;
+		this.amount = amount;
 		this.account = account;
 		this.currency = currency;
 	}

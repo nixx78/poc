@@ -1,4 +1,4 @@
-package lv.nixx.poc.sandbox.collection;
+package lv.nixx.poc.sandbox.collection.stream.reduce;
 
 import lombok.ToString;
 import lv.nixx.poc.domain.User;
@@ -12,7 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 
-public class GroupSample {
+public class GroupReduceMap {
 
     @Test
     public void groupSample() {
