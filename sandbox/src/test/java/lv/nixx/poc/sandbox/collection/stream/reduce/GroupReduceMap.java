@@ -29,16 +29,16 @@ public class GroupReduceMap {
         Map<Integer, UserDTO> userDTO = users.stream()
                 .collect(
                         groupingBy(User::getId,
-                                reducing(new UserDTO(), UserDTO::new, (dto1, dto2) -> dto1.putAll(dto2.values))
+                                reducing(new UserDTO(), UserDTO::new, (dto1, dto2) -> dto2.putAll(dto1.values))
                         )
                 );
 
         System.out.println(userDTO.values());
         assertEquals(2, userDTO.size());
         assertThat(userDTO.get(10).values.entrySet(), is(Map.of(
-                "name", "user2",
-                "group", "group2",
-                "schema", "schema2"
+                "name", "user1",
+                "group", "group1",
+                "schema", "schema1"
         ).entrySet()));
     }
 
