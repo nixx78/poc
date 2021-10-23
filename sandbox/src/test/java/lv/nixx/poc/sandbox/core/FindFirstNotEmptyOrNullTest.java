@@ -27,12 +27,12 @@ public class FindFirstNotEmptyOrNullTest {
         String p4;
 
         String getFirstNotEmpty() {
-            return Stream.of(new String[]{p1, p2, p3, p4})
+            return Stream.of(p1, p2, p3, p4)
                     .filter(Objects::nonNull)
                     .filter(t -> !t.isEmpty())
-                    .findFirst().orElseGet(() -> null);
+                    .findFirst()
+                    .orElseGet(() -> null);
         }
     }
-
 
 }
