@@ -19,17 +19,15 @@ import static org.junit.Assert.assertThat;
 
 public class PartitionSample {
 
-    private HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
+    private final HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
 
-    private IMap<String, Account> accounts = hazelcastInstance.getMap("accounts.map");
-    private IMap<TransactionKey, Transaction> transactions = hazelcastInstance.getMap("transactions.map");
-
-    private String accountId = "accId.1";
-
+    private final IMap<String, Account> accounts = hazelcastInstance.getMap("accounts.map");
+    private final IMap<TransactionKey, Transaction> transactions = hazelcastInstance.getMap("transactions.map");
 
     @Test
     public void addTransactionSample() throws ExecutionException, InterruptedException {
 
+        String accountId = "accId.1";
         accounts.put(accountId, new Account(accountId, "Name1"));
 
         transactions.put(new TransactionKey(accountId, "txnId.1"), new Transaction()
