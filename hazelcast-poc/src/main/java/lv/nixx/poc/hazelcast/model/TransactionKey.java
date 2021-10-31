@@ -1,6 +1,6 @@
 package lv.nixx.poc.hazelcast.model;
 
-import com.hazelcast.core.PartitionAware;
+import com.hazelcast.partition.PartitionAware;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

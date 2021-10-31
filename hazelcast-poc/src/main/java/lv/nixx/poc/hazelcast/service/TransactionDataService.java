@@ -1,13 +1,15 @@
 package lv.nixx.poc.hazelcast.service;
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
-import com.hazelcast.map.AbstractEntryProcessor;
+import com.hazelcast.map.EntryProcessor;
+import com.hazelcast.map.IMap;
 import lv.nixx.poc.hazelcast.model.State;
 import lv.nixx.poc.hazelcast.model.Transaction;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 // https://docs.hazelcast.org/docs/latest-dev/manual/html-single/index.html#entry-processor
 
@@ -15,41 +17,49 @@ public class TransactionDataService {
 
     private IMap<String, Map<String, Transaction>> remoteMap;
 
+    //
     public void setHazelcastInstance(HazelcastInstance hazelcastInstance) {
         remoteMap = hazelcastInstance.getMap("txn.test");
     }
 
     public Transaction add(Transaction txn) {
         String accountId = txn.getAccountId();
-        return (Transaction) remoteMap.executeOnKey(accountId, new TransactionAdd(txn));
+        return remoteMap.executeOnKey(accountId, new TransactionAdd(txn));
     }
 
     public Transaction update(Transaction txn) {
         String accountId = txn.getAccountId();
-        return (Transaction) remoteMap.executeOnKey(accountId, new TransactionUpdater(txn));
+        return remoteMap.executeOnKey(accountId, new TransactionUpdater(txn));
     }
 
     public Transaction deleteTransaction(String accountId, String txnId) {
-        return (Transaction) remoteMap.executeOnKey(accountId, new TransactionRemover(txnId));
+        return remoteMap.executeOnKey(accountId, new TransactionRemover(txnId));
     }
 
     public Transaction changeState(String accountId, String txnId, State state) {
 
-        return (Transaction) remoteMap.executeOnKey(accountId, new AbstractEntryProcessor<String, Map<String, Transaction>>() {
+        return remoteMap.executeOnKey(accountId, new EntryProcessor<String, Map<String, Transaction>, Transaction>() {
+
             @Override
-            public Object process(Map.Entry<String, Map<String, Transaction>> entry) {
+            public Transaction process(Map.Entry<String, Map<String, Transaction>> entry) {
+
+                if (entry == null) {
+                    return null;
+                }
+
                 Map<String, Transaction> value = entry.getValue();
                 if (value == null) {
                     return null;
                 }
 
-                Transaction changedTxn = value.computeIfPresent(txnId, (k, v) -> {
+                Transaction updatedTransaction = value.computeIfPresent(txnId, (k, v) -> {
                     v.setState(state);
                     return v;
                 });
 
                 entry.setValue(value);
-                return changedTxn;
+
+                return updatedTransaction;
             }
         });
 
@@ -59,29 +69,26 @@ public class TransactionDataService {
 
         Map<String, Map<String, Transaction>> globalMap = new HashMap<>();
 
-        remoteMap.executeOnEntries(new AbstractEntryProcessor<String, Map<String, Transaction>>() {
-            @Override
-            public Object process(Map.Entry<String, Map<String, Transaction>> entry) {
+        remoteMap.executeOnEntries((EntryProcessor<String, Map<String, Transaction>, Transaction>) entry -> {
 
-                Map<String, Transaction> map = entry.getValue();
-                if (map == null) {
-                    return null;
-                }
-
-                map.values().forEach(t -> {
-                    BigDecimal amount = t.getAmount();
-                    t.setInterest(amount.multiply(BigDecimal.valueOf(0.1)));
-                });
-
-                entry.setValue(map);
-
-                Map<String, Map<String, Transaction>> res = new HashMap<>();
-                res.put(entry.getKey(), map);
-
-                globalMap.putAll(res);
-
+            Map<String, Transaction> map = entry.getValue();
+            if (map == null) {
                 return null;
             }
+
+            map.values().forEach(t -> {
+                BigDecimal amount = t.getAmount();
+                t.setInterest(amount.multiply(BigDecimal.valueOf(0.1)));
+            });
+
+            entry.setValue(map);
+
+            Map<String, Map<String, Transaction>> res = new HashMap<>();
+            res.put(entry.getKey(), map);
+
+            globalMap.putAll(res);
+
+            return null;
         });
 
         return globalMap;
@@ -102,9 +109,9 @@ public class TransactionDataService {
     }
 
 
-    class TransactionAdd extends AbstractEntryProcessor<String, Map<String, Transaction>> {
+    static class TransactionAdd implements EntryProcessor<String, Map<String, Transaction>, Transaction> {
 
-        private Transaction txn;
+        private final Transaction txn;
 
         TransactionAdd(Transaction txn) {
             this.txn = txn;
@@ -123,9 +130,9 @@ public class TransactionDataService {
     }
 
 
-    class TransactionUpdater extends AbstractEntryProcessor<String, Map<String, Transaction>> {
+    static class TransactionUpdater implements EntryProcessor<String, Map<String, Transaction>, Transaction> {
 
-        private Transaction txn;
+        private final Transaction txn;
 
         TransactionUpdater(Transaction txn) {
             this.txn = txn;
@@ -146,9 +153,9 @@ public class TransactionDataService {
         }
     }
 
-    class TransactionRemover extends AbstractEntryProcessor<String, Map<String, Transaction>> {
+    static class TransactionRemover implements EntryProcessor<String, Map<String, Transaction>, Transaction> {
 
-        private String txnId;
+        private final String txnId;
 
         TransactionRemover(String txnId) {
             this.txnId = txnId;

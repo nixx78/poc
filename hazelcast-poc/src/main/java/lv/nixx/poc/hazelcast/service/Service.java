@@ -1,6 +1,6 @@
 package lv.nixx.poc.hazelcast.service;
 
-import com.hazelcast.core.IMap;
+import com.hazelcast.map.IMap;
 import com.hazelcast.projection.Projection;
 import lv.nixx.poc.hazelcast.model.Person;
 import lv.nixx.poc.hazelcast.model.PersonDTO;

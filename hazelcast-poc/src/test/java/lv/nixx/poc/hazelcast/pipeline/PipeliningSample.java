@@ -1,8 +1,8 @@
 package lv.nixx.poc.hazelcast.pipeline;
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
 import com.hazelcast.core.Pipelining;
+import com.hazelcast.map.IMap;
 import lv.nixx.poc.hazelcast.HazelcastTestInstance;
 import org.junit.Before;
 import org.junit.Test;

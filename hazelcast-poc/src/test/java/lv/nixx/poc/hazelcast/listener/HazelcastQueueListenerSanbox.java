@@ -1,16 +1,16 @@
 package lv.nixx.poc.hazelcast.listener;
 
+import com.hazelcast.collection.IQueue;
+import com.hazelcast.collection.ItemEvent;
+import com.hazelcast.collection.ItemListener;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IQueue;
-import com.hazelcast.core.ItemEvent;
-import com.hazelcast.core.ItemListener;
 import lv.nixx.poc.hazelcast.HazelcastTestInstance;
 import org.junit.Test;
 
 public class HazelcastQueueListenerSanbox {
 
 	private static final String QUEUE_NAME = "simpleQueue";
-	private HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
+	private final HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
 	
 	@Test
 	public void queueListenerTest() {

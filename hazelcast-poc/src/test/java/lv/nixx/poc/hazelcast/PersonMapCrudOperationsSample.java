@@ -1,9 +1,8 @@
 package lv.nixx.poc.hazelcast;
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
-import com.hazelcast.map.EntryBackupProcessor;
 import com.hazelcast.map.EntryProcessor;
+import com.hazelcast.map.IMap;
 import lv.nixx.poc.hazelcast.model.Person;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,8 +13,8 @@ import static org.junit.Assert.assertEquals;
 
 public class PersonMapCrudOperationsSample {
 
-    private HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
-    private Service service = new Service();
+    private final HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
+    private final Service service = new Service();
 
     @Before
     public void init() {
@@ -51,15 +50,15 @@ public class PersonMapCrudOperationsSample {
         IMap<Long, Set<Person>> map = hazelcastInstance.getMap("person.test");
 
         Collection<Person> addPerson(Long group, Person person) {
-            return (Collection<Person>) map.executeOnKey(group, new PersonUpdater(person));
+            return map.executeOnKey(group, new PersonUpdater(person));
         }
 
         Collection<Person> updatePerson(Long group, Person person) {
-            return (Collection<Person>) map.executeOnKey(group, new PersonUpdater(person));
+            return map.executeOnKey(group, new PersonUpdater(person));
         }
 
         Collection<Person> deletePerson(Long group, int personId) {
-            return (Collection<Person>) map.executeOnKey(group, new PersonRemover(personId));
+            return map.executeOnKey(group, new PersonRemover(personId));
         }
 
         void clearAll() {
@@ -68,16 +67,16 @@ public class PersonMapCrudOperationsSample {
 
     }
 
-    class PersonUpdater implements EntryProcessor<String, Set<Person>> {
+    static class PersonUpdater implements EntryProcessor<Long, Set<Person>, Collection<Person>> {
 
-        private Person person;
+        private final Person person;
 
         PersonUpdater(Person person) {
             this.person = person;
         }
 
         @Override
-        public Collection<Person> process(Map.Entry<String, Set<Person>> entry) {
+        public Collection<Person> process(Map.Entry<Long, Set<Person>> entry) {
             Set<Person> personSet = entry.getValue();
             if (personSet == null) {
                 personSet = new HashSet<>();
@@ -90,23 +89,18 @@ public class PersonMapCrudOperationsSample {
             return personSet;
         }
 
-        @Override
-        public EntryBackupProcessor<String, Set<Person>> getBackupProcessor() {
-            return null;
-        }
-
     }
 
-    class PersonRemover implements EntryProcessor<String, Set<Person>> {
+    class PersonRemover implements EntryProcessor<Long, Set<Person>, Collection<Person>> {
 
-        private int personId;
+        private final int personId;
 
         PersonRemover(int personId) {
             this.personId = personId;
         }
 
         @Override
-        public Collection<Person> process(Map.Entry<String, Set<Person>> entry) {
+        public Collection<Person> process(Map.Entry<Long, Set<Person>> entry) {
             Set<Person> personSet = entry.getValue();
             if (personSet!= null) {
                 Person o = new Person();
@@ -117,10 +111,6 @@ public class PersonMapCrudOperationsSample {
             return personSet;
         }
 
-        @Override
-        public EntryBackupProcessor<String, Set<Person>> getBackupProcessor() {
-            return null;
-        }
 
     }
 

@@ -1,54 +1,56 @@
 package lv.nixx.poc.hazelcast.cache;
 
-import java.util.Collection;
-
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.ILock;
-import com.hazelcast.query.Predicate;
-import com.hazelcast.query.PredicateBuilder;
+import com.hazelcast.query.Predicates;
+import lv.nixx.poc.hazelcast.model.Category;
+import lv.nixx.poc.hazelcast.model.CategoryPersonTuple;
+import lv.nixx.poc.hazelcast.model.Person;
+import lv.nixx.poc.hazelcast.model.PersonKey;
 
-import lv.nixx.poc.hazelcast.model.*;
+import java.util.Collection;
 
 public class PersonCompositeKeyCache {
 
-	private final HazelcastInstance hazelcastInstance;
-	public CrudCacheOperations<PersonKey, Person> crud;
+    private final HazelcastInstance hazelcastInstance;
+    public CrudCacheOperations<PersonKey, Person> crud;
 
 
-	public PersonCompositeKeyCache(HazelcastInstance hazelcastInstance) {
-		this.crud = new CrudCacheOperationsImpl<>(hazelcastInstance, "person.composite");
-		this.hazelcastInstance = hazelcastInstance;
-	}
+    public PersonCompositeKeyCache(HazelcastInstance hazelcastInstance) {
+        this.crud = new CrudCacheOperationsImpl<>(hazelcastInstance, "person.composite");
+        this.hazelcastInstance = hazelcastInstance;
+    }
 
-	public void addBulkForSelection(long selectionId, CategoryPersonTuple... tuples) {
-		final ILock dLock = hazelcastInstance.getLock(String.valueOf(selectionId));
-		dLock.lock();
+    public void addBulkForSelection(long selectionId, CategoryPersonTuple... tuples) {
+        //FIXME Migrate to Hazelcast 4.X
+//		final ILock dLock = hazelcastInstance.getLock(String.valueOf(selectionId));
+//		dLock.lock();
 		try {
 			for (CategoryPersonTuple t : tuples) {
 				PersonKey pk = new PersonKey(selectionId, t.getCategory());
 				crud.add(pk, t.getPerson());
 			}
 		} finally {
-			dLock.unlock();
+//			dLock.unlock();
 		}
-	}
+    }
 
-	public Collection<Person> getPersonsBySelection(long selectionId) {
+    public Collection<Person> getPersonsBySelection(long selectionId) {
+        return crud.getValues(Predicates.newPredicateBuilder()
+                .getEntryObject()
+                .key()
+                .get("selectionId")
+                .equal(selectionId)
+        );
 
-		Predicate<?, ?> p = new PredicateBuilder().getEntryObject()
+    }
+
+    public Collection<Person> getPersonsBySelection(Category category) {
+		return crud.getValues(Predicates.newPredicateBuilder()
+				.getEntryObject()
 				.key()
-				.get("selectionId").equal(selectionId);
-
-		return crud.getValues(p);
-	}
-
-	public Collection<Person> getPersonsBySelection(Category category) {
-
-		Predicate<?, ?> p = new PredicateBuilder().getEntryObject()
-				.key()
-				.get("category").equal(category);
-
-		return crud.getValues(p);
-	}
+				.get("category")
+				.equal(category)
+		);
+    }
 
 }

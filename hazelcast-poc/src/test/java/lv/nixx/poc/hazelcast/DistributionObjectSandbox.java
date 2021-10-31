@@ -1,6 +1,10 @@
 package lv.nixx.poc.hazelcast;
 
-import com.hazelcast.core.*;
+import com.hazelcast.core.DistributedObject;
+import com.hazelcast.core.DistributedObjectEvent;
+import com.hazelcast.core.DistributedObjectListener;
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.map.IMap;
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;

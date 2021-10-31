@@ -3,6 +3,7 @@ package lv.nixx.poc.hazelcast.cache;
 import com.hazelcast.query.Predicate;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public interface CrudCacheOperations<K, V> {
     V get(K key);
@@ -13,8 +14,13 @@ public interface CrudCacheOperations<K, V> {
 
     V remove(K key);
 
-    Collection<V> getValues(Predicate<?, ?> p);
+    Collection<V> getValues(Predicate<K, V> p);
 
     int size();
+
+    default Collection<V> getAll() {
+        //FIXME Implement method
+        return Collections.emptyList();
+    }
 
 }

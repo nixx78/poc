@@ -1,8 +1,10 @@
 package lv.nixx.poc.hazelcast.predicate;
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
-import com.hazelcast.query.*;
+import com.hazelcast.map.IMap;
+import com.hazelcast.query.Predicate;
+import com.hazelcast.query.PredicateBuilder;
+import com.hazelcast.query.Predicates;
 import lv.nixx.poc.hazelcast.HazelcastTestInstance;
 import lv.nixx.poc.hazelcast.model.Person;
 import org.junit.Before;
@@ -14,13 +16,13 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 public class PredicateSandbox {
 
-    private HazelcastInstance hz = HazelcastTestInstance.get();
+    private final HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
 
     private final DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -28,14 +30,14 @@ public class PredicateSandbox {
 
     @Before
     public void init() throws ParseException {
-        personMap = hz.getMap("persons.map");
+        personMap = hazelcastInstance.getMap("persons.map");
         personMap.clear();
         createTestData();
     }
 
     @Test
     public void predicatesForMapWithPrimitives() {
-        IMap<Integer, String> m = hz.getMap("primitives");
+        IMap<Integer, String> m = hazelcastInstance.getMap("primitives");
 
         m.putAll(
                 Map.of(
@@ -70,12 +72,12 @@ public class PredicateSandbox {
 
     @Test
     public void predicateTest() {
-        Predicate p = Predicates.or(
+        Predicate<Integer, Person> p = Predicates.or(
                 Predicates.equal("name", "ABC"),
                 Predicates.equal("name", "Name1")
         );
 
-        Predicate p1 = Predicates.and(p, Predicates.in("state[any]", "st2", "st3"));
+        Predicate<Integer, Person> p1 = Predicates.and(p, Predicates.in("state[any]", "st2", "st3"));
 
         System.out.println("Predicate:" + p1);
 
@@ -92,14 +94,21 @@ public class PredicateSandbox {
     @Test
     public void entryObjectSample() {
 
-        EntryObject e = new PredicateBuilder().getEntryObject();
+        PredicateBuilder.EntryObject e = Predicates.newPredicateBuilder().getEntryObject();
+
         PredicateBuilder p = e.get("name").equal("ABC").or(e.get("name").equal("Name1"));
-        Collection<Integer> ids = personMap.values(p).stream().map(Person::getId).collect(Collectors.toList());
+
+        Collection<Person> values = personMap.values(p);
+
+        Collection<Integer> ids = values.stream()
+                .map(Person::getId)
+                .collect(Collectors.toList());
 
         assertThat(ids, containsInAnyOrder(1, 5, 6));
 
-        PredicateBuilder p1 = new PredicateBuilder().getEntryObject().get("name").in("ABC", "Name1");
-        ids = personMap.values(p1).stream().map(Person::getId).collect(Collectors.toList());
+        PredicateBuilder p1 = Predicates.newPredicateBuilder().getEntryObject().get("name").in("ABC", "Name1");
+        Collection<Person> values1 = personMap.values(p1);
+        ids = values1.stream().map(Person::getId).collect(Collectors.toList());
 
         assertThat(ids, containsInAnyOrder(1, 5, 6));
     }
@@ -128,7 +137,13 @@ public class PredicateSandbox {
 
 
     private void executeFilter(String sqlPredicate, Integer... ids) {
-        List<Integer> f = personMap.values(new SqlPredicate(sqlPredicate)).stream().map(Person::getId).collect(Collectors.toList());
+
+        List<Integer> f = personMap.values(Predicates.sql(sqlPredicate))
+                .stream()
+                .map(Person::getId)
+                .collect(
+                        Collectors.toList()
+                );
 
         System.out.println("Expected: " + Arrays.toString(ids) + " actual: " + f);
 

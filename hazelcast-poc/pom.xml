@@ -11,7 +11,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<hazelcast.version>3.12.6</hazelcast.version>
+		<hazelcast.version>4.2</hazelcast.version>
 		<jackson.version>2.12.2</jackson.version>
 	</properties>
 
@@ -63,6 +63,13 @@
 			<artifactId>hazelcast</artifactId>
 			<version>${hazelcast.version}</version>
 			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.hazelcast</groupId>
+			<artifactId>hazelcast-sql</artifactId>
+			<version>${hazelcast.version}</version>
 			<scope>test</scope>
 		</dependency>
 

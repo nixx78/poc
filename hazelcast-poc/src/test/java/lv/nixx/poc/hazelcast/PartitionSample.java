@@ -1,7 +1,11 @@
 package lv.nixx.poc.hazelcast;
 
 import com.hazelcast.aggregation.Aggregators;
-import com.hazelcast.core.*;
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.HazelcastInstanceAware;
+import com.hazelcast.core.IExecutorService;
+import com.hazelcast.map.IMap;
+import com.hazelcast.partition.PartitionAware;
 import com.hazelcast.query.Predicates;
 import lv.nixx.poc.hazelcast.model.Account;
 import lv.nixx.poc.hazelcast.model.Transaction;
@@ -14,8 +18,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.comparesEqualTo;
-import static org.junit.Assert.assertThat;
 
 public class PartitionSample {
 

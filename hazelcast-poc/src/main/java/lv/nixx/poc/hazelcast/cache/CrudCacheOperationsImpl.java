@@ -1,14 +1,12 @@
 package lv.nixx.poc.hazelcast.cache;
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
+import com.hazelcast.map.IMap;
 import com.hazelcast.query.Predicate;
 import lombok.NonNull;
 import lombok.Setter;
 
 import java.util.Collection;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 @Setter
 public class CrudCacheOperationsImpl<K, V> implements CrudCacheOperations<K, V> {
@@ -53,11 +51,8 @@ public class CrudCacheOperationsImpl<K, V> implements CrudCacheOperations<K, V> 
     }
 
     @Override
-    public Collection<V> getValues(Predicate<?, ?> p) {
-        return getMap().entrySet(p)
-                .stream()
-                .map(Entry::getValue)
-                .collect(Collectors.toList());
+    public Collection<V> getValues(Predicate<K, V> p) {
+        return getMap().values(p);
     }
 
 

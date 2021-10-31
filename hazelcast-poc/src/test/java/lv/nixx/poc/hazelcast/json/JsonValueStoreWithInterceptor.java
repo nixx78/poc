@@ -3,7 +3,7 @@ package lv.nixx.poc.hazelcast.json;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.HazelcastJsonValue;
-import com.hazelcast.core.IMap;
+import com.hazelcast.map.IMap;
 import com.hazelcast.map.MapInterceptor;
 import lombok.SneakyThrows;
 import lv.nixx.poc.hazelcast.HazelcastTestInstance;

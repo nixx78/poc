@@ -2,7 +2,7 @@ package lv.nixx.poc.hazelcast;
 
 import com.hazelcast.core.EntryView;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
+import com.hazelcast.map.IMap;
 import lv.nixx.poc.hazelcast.model.Person;
 import org.junit.Before;
 import org.junit.Test;

@@ -16,6 +16,8 @@ import static org.junit.Assert.assertNull;
 
 public class TransactionDataServiceTest {
 
+// FIXME Migrate to Hazelcast 4
+
     private static final String NOT_EXISTING_ACCOUNT_ID = "NotExistingAccountId";
     private static final String NOT_EXISTING_TXN_ID = "NotExistingId";
 
@@ -52,7 +54,7 @@ public class TransactionDataServiceTest {
     public void updateTest() {
         transactionDataService.add(new Transaction(accountId, txnId1, USD, BigDecimal.valueOf(10.01), DRAFT, ZERO));
         transactionDataService.add(new Transaction(accountId, txnId2, EUR, BigDecimal.valueOf(10.01), DRAFT, ZERO));
-        
+
         Transaction updatedTxn = transactionDataService.update(new Transaction(accountId, txnId2, RUB, BigDecimal.valueOf(10.01), DRAFT, ZERO));
         assertEquals("RUB", updatedTxn.getCurrency());
 

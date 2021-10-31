@@ -6,7 +6,7 @@ import lv.nixx.poc.hazelcast.model.PersonDTO;
 
 import java.util.Map;
 
-public class PersonDTOProj extends Projection<Map.Entry<Integer, Person>, PersonDTO> {
+public class PersonDTOProj implements Projection<Map.Entry<Integer, Person>, PersonDTO> {
 
     @Override
     public PersonDTO transform(Map.Entry<Integer, Person> input) {

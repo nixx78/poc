@@ -1,26 +1,27 @@
 package lv.nixx.poc.hazelcast.listener;
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.ITopic;
-import com.hazelcast.monitor.LocalTopicStats;
+import com.hazelcast.topic.ITopic;
+import com.hazelcast.topic.LocalTopicStats;
 import lv.nixx.poc.hazelcast.HazelcastTestInstance;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.UUID;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
 
 public class TopicListenerSandbox {
 
-    private HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
+    private final HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
 
     @Test
     public void sendAndReceiveMessageFromTopic() throws InterruptedException {
 
-        ITopic<String> messageTopic = hazelcastInstance.getTopic("MessageTopic");
+        ITopic<Object> messageTopic = hazelcastInstance.getTopic("MessageTopic");
 
-        String s = messageTopic.addMessageListener(m-> {
+        UUID s = messageTopic.addMessageListener(m-> {
             System.out.println(new Date(m.getPublishTime()) + " : payload:" + m.getMessageObject());
         });
 

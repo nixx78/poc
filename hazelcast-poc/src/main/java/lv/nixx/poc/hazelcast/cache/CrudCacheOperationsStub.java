@@ -46,7 +46,7 @@ public class CrudCacheOperationsStub<K, V> implements CrudCacheOperations<K, V> 
     }
 
     @Override
-    public Collection<V> getValues(Predicate<?, ?> p) {
+    public Collection<V> getValues(Predicate<K, V> p) {
 //        return getMap().entrySet(p)
 //                .stream()
 //                .map(Entry::getValue)

@@ -2,8 +2,8 @@ package lv.nixx.poc.hazelcast;
 
 import com.hazelcast.core.EntryView;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
-import com.hazelcast.map.AbstractEntryProcessor;
+import com.hazelcast.map.EntryProcessor;
+import com.hazelcast.map.IMap;
 import lv.nixx.poc.hazelcast.model.Person;
 import org.junit.Before;
 import org.junit.Test;
@@ -75,16 +75,16 @@ public class ExecuteOnSamples {
         assertEquals("name1.version1.version2", ew.getValue().getName());
     }
 
-    class PersonUpdater extends AbstractEntryProcessor<String, Person> {
+    static class PersonUpdater implements EntryProcessor<String, Person, Person> {
 
-        private String updateValue;
+        private final String updateValue;
 
         PersonUpdater(String updateValue) {
             this.updateValue = updateValue;
         }
 
         @Override
-        public Object process(Map.Entry<String, Person> entry) {
+        public Person process(Map.Entry<String, Person> entry) {
             // Skip Update in this case
             if (entry.getValue() == null) {
                 return null;

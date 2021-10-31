@@ -1,11 +1,11 @@
 package lv.nixx.poc.hazelcast.predicate;
 
+import com.hazelcast.config.AttributeConfig;
 import com.hazelcast.config.Config;
-import com.hazelcast.config.MapAttributeConfig;
 import com.hazelcast.config.MapConfig;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
-import com.hazelcast.query.SqlPredicate;
+import com.hazelcast.map.IMap;
+import com.hazelcast.query.Predicates;
 import lv.nixx.poc.hazelcast.HazelcastTestInstance;
 import lv.nixx.poc.hazelcast.model.Person;
 import lv.nixx.poc.hazelcast.model.extractor.PersonPropertiesExtractor;
@@ -17,12 +17,12 @@ import static org.junit.Assert.assertEquals;
 
 public class ValueExtractorSample {
 
-    private IMap<String, Person> map;
+    private final IMap<String, Person> map;
 
     public ValueExtractorSample() {
         Config cfg = new Config();
         MapConfig mapConfig = new MapConfig("map.person.extractor");
-        mapConfig.addMapAttributeConfig(new MapAttributeConfig("properties", PersonPropertiesExtractor.class.getName()));
+        mapConfig.addAttributeConfig(new AttributeConfig("properties", PersonPropertiesExtractor.class.getName()));
         cfg.addMapConfig(mapConfig);
 
         HazelcastInstance hazelcastInstance = HazelcastTestInstance.get(cfg);
@@ -46,12 +46,12 @@ public class ValueExtractorSample {
         map.put("key1", p1);
         map.put("key2", p2);
 
-        Collection<Person> values = map.values(new SqlPredicate("properties[pkey3]=value3"));
+        Collection<Person> values = map.values(Predicates.sql("properties[pkey3]=value3"));
         assertEquals(1, values.size());
 
         System.out.println(values);
 
-        values = map.values(new SqlPredicate("properties[any]=value1"));
+        values = map.values(Predicates.sql("properties[any]=value1"));
         assertEquals(2, values.size());
 
         System.out.println(values);

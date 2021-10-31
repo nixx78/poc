@@ -1,15 +1,12 @@
 package lv.nixx.poc.hazelcast;
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.ILock;
-import com.hazelcast.core.IMap;
+import com.hazelcast.map.IMap;
 import org.junit.Test;
-
-import java.util.concurrent.TimeUnit;
 
 public class LockSanbox {
 
-	private HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
+	private final HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
 
 	@Test
 	public void mapLockNotExistingKeySample() {
@@ -31,30 +28,32 @@ public class LockSanbox {
 	
 	@Test
 	public void distributedLockSample() throws InterruptedException {
+
+		//FIXME Migrate to Hazelcast 4.2
 		
-		ILock dLock = hazelcastInstance.getLock("dLock.key");
-		System.out.println("Lock [" + dLock + " locked: " + dLock.isLocked() );
-		
-		dLock.lock();
-		dLock.lock();
-		dLock.lock();
-		
-		System.out.println("Lock [" + dLock + " count: " + dLock.getLockCount() );
-		
-		dLock.unlock();
-		
-		System.out.println("Lock [" + dLock + " count after one unlock: " + dLock.getLockCount() );
-		
-		dLock.forceUnlock();
-		System.out.println("Lock [" + dLock + " count after forseUnlock: " + dLock.getLockCount() );
-		
-		dLock.lock(500, TimeUnit.MILLISECONDS);
-		
-		TimeUnit.MILLISECONDS.sleep(300);
-		System.out.println("Lock [" + dLock + " remaining lease time: " + dLock.getRemainingLeaseTime() );
-		
-		dLock.unlock();
-		System.out.println("Lock [" + dLock + " remaining lease time after unlock: " + dLock.getRemainingLeaseTime() );
+//		ILock dLock = hazelcastInstance.getLock("dLock.key");
+//		System.out.println("Lock [" + dLock + " locked: " + dLock.isLocked() );
+//
+//		dLock.lock();
+//		dLock.lock();
+//		dLock.lock();
+//
+//		System.out.println("Lock [" + dLock + " count: " + dLock.getLockCount() );
+//
+//		dLock.unlock();
+//
+//		System.out.println("Lock [" + dLock + " count after one unlock: " + dLock.getLockCount() );
+//
+//		dLock.forceUnlock();
+//		System.out.println("Lock [" + dLock + " count after forseUnlock: " + dLock.getLockCount() );
+//
+//		dLock.lock(500, TimeUnit.MILLISECONDS);
+//
+//		TimeUnit.MILLISECONDS.sleep(300);
+//		System.out.println("Lock [" + dLock + " remaining lease time: " + dLock.getRemainingLeaseTime() );
+//
+//		dLock.unlock();
+//		System.out.println("Lock [" + dLock + " remaining lease time after unlock: " + dLock.getRemainingLeaseTime() );
 	}
 
 

@@ -1,20 +1,18 @@
 package lv.nixx.poc.hazelcast.predicate;
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
+import com.hazelcast.map.IMap;
 import com.hazelcast.query.PagingPredicate;
 import com.hazelcast.query.Predicates;
 import lv.nixx.poc.hazelcast.HazelcastTestInstance;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Map;
-
 public class PagingPredicateSandbox {
 
-    private HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
+    private final HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
 
-    private IMap<Integer, String> data = hazelcastInstance.getMap("pages");
+    private final IMap<Integer, String> data = hazelcastInstance.getMap("pages");
 
     @Before
     public void init() {
@@ -25,9 +23,9 @@ public class PagingPredicateSandbox {
     @Test
     public void pagingSample() {
 
-        PagingPredicate<Integer, String> pagingPredicate = new PagingPredicate<Integer, String>(
+        PagingPredicate<Integer, String> pagingPredicate = Predicates.pagingPredicate(
                 Predicates.notEqual("this", "NOT_VALID"),
-                Map.Entry.comparingByKey(),
+//                Map.Entry.comparingByKey(),
                 10);
 
         System.out.println("Page: " + pagingPredicate.getPage() + " : " + data.values(pagingPredicate));

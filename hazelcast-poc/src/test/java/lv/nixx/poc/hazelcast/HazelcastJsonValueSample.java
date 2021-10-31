@@ -3,7 +3,7 @@ package lv.nixx.poc.hazelcast;
 import com.hazelcast.aggregation.Aggregators;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.HazelcastJsonValue;
-import com.hazelcast.core.IMap;
+import com.hazelcast.map.IMap;
 import com.hazelcast.query.Predicates;
 import org.junit.Test;
 
@@ -14,7 +14,9 @@ import static org.junit.Assert.assertEquals;
 
 public class HazelcastJsonValueSample {
 
-    private final HazelcastInstance hz = HazelcastTestInstance.get();
+    private final HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
+
+    // https://docs.hazelcast.com/hazelcast/5.0/query/querying-maps-predicates
 
     @Test
     public void storeAndRetrieveSample() {
@@ -22,7 +24,7 @@ public class HazelcastJsonValueSample {
         String t2 = "{ \"curr\": \"EUR\", \"amount\": 10.34 }";
         String t3 = "{ \"curr\": \"EURs\", \"amount\": 15 }";
 
-        IMap<Integer, HazelcastJsonValue> idPersonMap = hz.getMap("currencyJsonValues");
+        IMap<Integer, HazelcastJsonValue> idPersonMap = hazelcastInstance.getMap("currencyJsonValues");
         idPersonMap.put(1, new HazelcastJsonValue(t1));
         idPersonMap.put(2, new HazelcastJsonValue(t2));
         idPersonMap.put(3, new HazelcastJsonValue(t3));
@@ -35,13 +37,14 @@ public class HazelcastJsonValueSample {
     @Test
     public void searchInJsonValue() {
 
-        IMap<String, HazelcastJsonValue> m = hz.getMap("valuesWithPos");
+        IMap<String, HazelcastJsonValue> m = hazelcastInstance.getMap("valuesWithPos");
 
         m.putAll(Map.of(
                 "v1.1", new HazelcastJsonValue("{ \"value\": \"v1\", \"pos\": 1 }"),
                 "v1.2", new HazelcastJsonValue("{ \"value\": \"v1\", \"pos\": 2 }"),
                 "v1.5", new HazelcastJsonValue("{ \"value\": \"v1\", \"pos\": 5 }"),
                 "v2.1", new HazelcastJsonValue("{ \"value\": \"v2\", \"pos\": 1 }"),
+                "v2.3", new HazelcastJsonValue("{ \"value\": \"v2\", \"pos\": 10 }"),
                 "v2.2", new HazelcastJsonValue("{ \"value\": \"v2\", \"pos\": 2 }")
         ));
 
@@ -57,6 +60,15 @@ public class HazelcastJsonValueSample {
                 );
 
         assertEquals("{ \"value\": \"v1\", \"pos\": 1 }", value.iterator().next().toString());
+
+//        com.hazelcast.sql.HazelcastSqlException: Failed to resolve value metadata: JSON objects are not supported.
+//        SqlResult sqlResult = hazelcastInstance.getSql().execute("select pos from valuesWithPos");
+//
+//        for (SqlRow sr : sqlResult) {
+//            System.out.println((char[]) sr.getObject(1));
+//        }
+
+
     }
 
 }

@@ -5,8 +5,8 @@ import com.hazelcast.config.EntryListenerConfig;
 import com.hazelcast.config.MapConfig;
 import com.hazelcast.core.EntryEvent;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
-import com.hazelcast.core.MapEvent;
+import com.hazelcast.map.IMap;
+import com.hazelcast.map.MapEvent;
 import com.hazelcast.map.MapInterceptor;
 import com.hazelcast.map.listener.EntryAddedListener;
 import com.hazelcast.map.listener.EntryRemovedListener;
@@ -16,13 +16,14 @@ import lv.nixx.poc.hazelcast.HazelcastTestInstance;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
 
 public class HazelcastListenerSandbox {
 
-	private HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
+	private final HazelcastInstance hazelcastInstance = HazelcastTestInstance.get();
 
 	@Test
 	public void testConfigListenerRegistration() throws InterruptedException {
@@ -52,7 +53,7 @@ public class HazelcastListenerSandbox {
 		// https://docs.hazelcast.org/docs/latest-development/manual/html/Distributed_Events/Event_Listener_for_Members/Listening_for_Map_Events.html
 		
 		IMap<String, String> map = hazelcastInstance.getMap("abc");
-		String s = map.addEntryListener(new MyEntryListener(), true);
+		UUID s = map.addEntryListener(new MyEntryListener(), true);
 
 		map.addInterceptor(new MapInterceptorImpl());
 
@@ -80,7 +81,7 @@ public class HazelcastListenerSandbox {
 	public void clearAllListenerTest() {
 
 		IMap<String, String> map = hazelcastInstance.getMap("map.forClearAll");
-		String s = map.addEntryListener(new ClearAllListener(), true);
+		UUID s = map.addEntryListener(new ClearAllListener(), true);
 
 		map.put("k1", "v1");
 		map.put("k2", "v2");
@@ -153,6 +154,7 @@ public class HazelcastListenerSandbox {
 		public void mapCleared(MapEvent event) {
 			System.out.println("Map clear event: " + event);
 		}
+
 	}
 
 

@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class PersonPropertiesExtractor extends ValueExtractor<Person, String> {
+public class PersonPropertiesExtractor implements ValueExtractor<Person, String> {
 
     @Override
     public void extract(Person person, String arg, ValueCollector collector) {
