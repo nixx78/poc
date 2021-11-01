@@ -16,8 +16,6 @@ import static org.junit.Assert.assertNull;
 
 public class TransactionDataServiceTest {
 
-// FIXME Migrate to Hazelcast 4
-
     private static final String NOT_EXISTING_ACCOUNT_ID = "NotExistingAccountId";
     private static final String NOT_EXISTING_TXN_ID = "NotExistingId";
 

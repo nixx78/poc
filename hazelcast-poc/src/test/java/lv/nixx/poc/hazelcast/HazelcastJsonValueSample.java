@@ -4,9 +4,11 @@ import com.hazelcast.aggregation.Aggregators;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.HazelcastJsonValue;
 import com.hazelcast.map.IMap;
+import com.hazelcast.projection.Projections;
 import com.hazelcast.query.Predicates;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -67,8 +69,23 @@ public class HazelcastJsonValueSample {
 //        for (SqlRow sr : sqlResult) {
 //            System.out.println((char[]) sr.getObject(1));
 //        }
+    }
 
+    @Test
+    public void projectionSample() {
 
+        IMap<String, HazelcastJsonValue> m = hazelcastInstance.getMap("pesons.json");
+
+        m.putAll(Map.of(
+                "k1", new HazelcastJsonValue("{ \"name\": \"Name1\", \"surname\": \"Surname1\", \"age\": 18 }"),
+                "k2", new HazelcastJsonValue("{ \"name\": \"Name2\", \"surname\": \"Surname2\", \"age\": 19 }"),
+                "k3", new HazelcastJsonValue("{ \"name\": \"Name3\", \"surname\": \"Surname3\", \"age\": 20 }"),
+                "k4", new HazelcastJsonValue("{ \"name\": \"Name4\", \"surname\": \"Surname4\", \"age\": 21 }"),
+                "k5", new HazelcastJsonValue("{ \"name\": \"Name5\", \"surname\": \"Surname5\", \"age\": 22 }")
+        ));
+
+        Collection<Object[]> project = m.project(Projections.multiAttribute("name", "surname"));
+        project.forEach( t -> System.out.println(Arrays.toString(t)));
     }
 
 }
