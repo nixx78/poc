@@ -1,4 +1,4 @@
-package lv.nixx.poc.hazelcast;
+package lv.nixx.poc.hazelcast.json;
 
 import com.hazelcast.aggregation.Aggregators;
 import com.hazelcast.core.HazelcastInstance;
@@ -6,6 +6,7 @@ import com.hazelcast.core.HazelcastJsonValue;
 import com.hazelcast.map.IMap;
 import com.hazelcast.projection.Projections;
 import com.hazelcast.query.Predicates;
+import lv.nixx.poc.hazelcast.HazelcastTestInstance;
 import org.junit.Test;
 
 import java.util.Arrays;
