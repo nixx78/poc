@@ -1,4 +1,4 @@
-package lv.nixx.poc;
+package lv.nixx.poc.model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -2,7 +2,7 @@ package lv.nixx.poc.controller;
 
 import com.hazelcast.jet.JetInstance;
 import com.hazelcast.map.IMap;
-import lv.nixx.poc.Person;
+import lv.nixx.poc.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

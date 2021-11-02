@@ -1,4 +1,4 @@
-package lv.nixx.poc;
+package lv.nixx.poc.model;
 
 import com.hazelcast.jet.JetInstance;
 import com.hazelcast.jet.pipeline.Pipeline;

@@ -1,7 +1,9 @@
-package lv.nixx.poc;
+package lv.nixx.poc.service;
 
 import com.hazelcast.jet.JetInstance;
 import com.hazelcast.map.IMap;
+import lv.nixx.poc.model.ExternalResource;
+import lv.nixx.poc.model.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

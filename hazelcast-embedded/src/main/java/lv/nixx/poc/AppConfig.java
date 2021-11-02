@@ -5,6 +5,7 @@ import com.hazelcast.config.MapConfig;
 import com.hazelcast.config.MapStoreConfig;
 import com.hazelcast.jet.Jet;
 import com.hazelcast.jet.JetInstance;
+import lv.nixx.poc.service.PersonMapLoader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -36,7 +37,6 @@ public class AppConfig {
 
         Config hazelcastConfig = jt.getConfig().getHazelcastConfig();
         hazelcastConfig.addMapConfig(mapConfig);
-
 
         return jt;
     }

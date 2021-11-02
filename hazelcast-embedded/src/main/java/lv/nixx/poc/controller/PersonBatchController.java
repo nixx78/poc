@@ -2,8 +2,8 @@ package lv.nixx.poc.controller;
 
 import com.hazelcast.jet.JetInstance;
 import com.hazelcast.map.IMap;
-import lv.nixx.poc.Person;
-import lv.nixx.poc.PersonMapLoaderAsBatch;
+import lv.nixx.poc.model.Person;
+import lv.nixx.poc.service.PersonMapLoaderAsBatch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
