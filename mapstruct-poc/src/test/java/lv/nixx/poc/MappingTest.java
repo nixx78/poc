@@ -8,8 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MappingTest {
 
-    //TODO https://stackoverflow.com/questions/47676369/mapstruct-and-lombok-not-working-together
-
+    // TODO https://mapstruct.org/
     @Test
     void entityToDtoMappingTest() {
 
