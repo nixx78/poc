@@ -2,10 +2,14 @@ package lv.nixx.poc;
 
 import lv.nixx.poc.model.CustomerDto;
 import lv.nixx.poc.model.CustomerEntity;
+import lv.nixx.poc.model.CustomerType;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerMappingTest {
@@ -14,18 +18,19 @@ class CustomerMappingTest {
     @Test
     void entityToDtoMappingTest() {
 
-        CustomerEntity customerEntity = new CustomerEntity();
-        customerEntity.setId(100L);
-        customerEntity.setFirstName("FirstName");
-        customerEntity.setSecondName("SecondName");
-
-        CustomerDto customerDto = CustomerMapper.INSTANCE.customerToDto(customerEntity);
+        CustomerDto customerDto = CustomerMapper.INSTANCE.customerToDto(new CustomerEntity()
+                .setId(100L)
+                .setFirstName("FirstName")
+                .setSecondName("SecondName")
+                .setType("VIP")
+        );
 
         assertAll(
                 () -> assertNotNull(customerDto),
                 () -> assertEquals(100L, customerDto.getId()),
                 () -> assertEquals("FirstName", customerDto.getName()),
-                () -> assertEquals("SecondName", customerDto.getSurname())
+                () -> assertEquals("SecondName", customerDto.getSurname()),
+                () -> assertEquals(CustomerType.VIP, customerDto.getCustomerType())
         );
     }
 
@@ -43,6 +48,34 @@ class CustomerMappingTest {
                 () -> assertEquals(1000L, customerDto.getId()),
                 () -> assertEquals("FirstName", customerDto.getName()),
                 () -> assertEquals("SecondName", customerDto.getSurname())
+        );
+    }
+
+    @Test
+    void collectionMapTest() {
+
+        List<CustomerDto> customerDtos = CustomerMapper.INSTANCE.customerToDto(
+                List.of(
+                        new CustomerEntity()
+                                .setId(100L)
+                                .setFirstName("FirstName1")
+                                .setSecondName("SecondName1"),
+                        new CustomerEntity()
+                                .setId(200L)
+                                .setFirstName("FirstName2")
+                                .setSecondName("SecondName2")
+                )
+        );
+
+        assertThat(2, equalTo(customerDtos.size()));
+
+        CustomerDto customerDto = customerDtos.get(0);
+
+        assertAll(
+                () -> assertNotNull(customerDto),
+                () -> assertEquals(100L, customerDto.getId()),
+                () -> assertEquals("FirstName1", customerDto.getName()),
+                () -> assertEquals("SecondName1", customerDto.getSurname())
         );
     }
 }

@@ -7,4 +7,5 @@ public class CustomerDto {
     private long id;
     private String name;
     private String surname;
+    private CustomerType customerType;
 }
