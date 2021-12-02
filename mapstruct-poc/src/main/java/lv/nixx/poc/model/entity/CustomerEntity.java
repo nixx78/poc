@@ -1,4 +1,4 @@
-package lv.nixx.poc.model;
+package lv.nixx.poc.model.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

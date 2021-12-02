@@ -1,7 +1,7 @@
-package lv.nixx.poc;
+package lv.nixx.poc.mapper;
 
-import lv.nixx.poc.model.CustomerDto;
-import lv.nixx.poc.model.CustomerEntity;
+import lv.nixx.poc.model.dto.CustomerDto;
+import lv.nixx.poc.model.entity.CustomerEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
