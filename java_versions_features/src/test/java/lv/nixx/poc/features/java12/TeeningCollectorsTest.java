@@ -1,14 +1,15 @@
 package lv.nixx.poc.features.java12;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.*;
-import static org.junit.Assert.assertEquals;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.summingDouble;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TeeningCollectorsSample {
+public class TeeningCollectorsTest {
 
     @Test
     public void sample() {

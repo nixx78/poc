@@ -1,11 +1,11 @@
 package lv.nixx.poc.features.java9;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.junit.Test;
-
-public class Java9Stream {
+public class Java9StreamTest {
 	
 	@Test
 	public void stream() {

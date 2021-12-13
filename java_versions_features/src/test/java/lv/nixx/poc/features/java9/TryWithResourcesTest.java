@@ -1,11 +1,11 @@
 package lv.nixx.poc.features.java9;
 
+import org.junit.jupiter.api.Test;
+
 import java.io.Closeable;
 import java.io.IOException;
 
-import org.junit.Test;
-
-public class TryWithResources {
+public class TryWithResourcesTest {
 
 	@Test
 	public void java17Sample() throws IOException {
@@ -22,10 +22,10 @@ public class TryWithResources {
 		}
 	}
 
-	class CloseableImpl implements Closeable {
+	static class CloseableImpl implements Closeable {
 
 		@Override
-		public void close() throws IOException {
+		public void close() {
 			System.out.println("Closeable called");
 		}
 		

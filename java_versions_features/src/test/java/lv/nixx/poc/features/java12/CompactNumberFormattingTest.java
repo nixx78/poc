@@ -1,11 +1,11 @@
 package lv.nixx.poc.features.java12;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class CompactNumberFormattingSample {
+public class CompactNumberFormattingTest {
 
     @Test
     public void sample() {

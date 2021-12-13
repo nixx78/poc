@@ -1,11 +1,11 @@
 package lv.nixx.poc.features.java10;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class LocalVariableTypeInference {
+public class LocalVariableTypeInferenceTest {
 
     // http://openjdk.java.net/jeps/286
     @Test

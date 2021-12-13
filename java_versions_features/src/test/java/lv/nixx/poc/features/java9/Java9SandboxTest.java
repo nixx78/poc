@@ -1,14 +1,14 @@
 package lv.nixx.poc.features.java9;
 
-import static java.util.Map.entry;
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import org.junit.Test;
+import static java.util.Map.entry;
 
-
-public class Java9Sandbox {
+public class Java9SandboxTest {
 	
 	@Test
 	public void listOf() {

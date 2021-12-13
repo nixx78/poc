@@ -1,17 +1,14 @@
 package lv.nixx.poc.features.java12;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class StringNewMethods {
+public class StringNewTest {
 
     @Test
     public void sandbox() {
 
         String transform = "String".transform(t -> t + "Transformed");
         System.out.println(transform);
-
-
-
     }
 
 }

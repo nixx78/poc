@@ -1,14 +1,14 @@
 package lv.nixx.poc.features.java15.record;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 
 import static java.math.BigDecimal.ZERO;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class RecordSample {
+public class RecordTest {
 
     @Test
     public void sample() {
@@ -21,9 +21,10 @@ public class RecordSample {
 
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void incorrectTransactionSample() {
-        new Transaction(1, ZERO);
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> new Transaction(1, ZERO));
+        assertEquals("Amount can't be zero", ex.getMessage());
     }
 
     @Test
