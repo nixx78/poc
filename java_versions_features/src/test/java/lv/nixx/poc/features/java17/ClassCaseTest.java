@@ -29,4 +29,16 @@ class ClassCaseTest {
         };
     }
 
+    @Test
+    void caseWithNullCheckSample() {
+
+        Object obj = "S";
+        switch (obj) {
+            case Integer t -> System.out.println("Object is Integer");
+            case String s -> System.out.println("Object is String:" + s);
+            case null, default -> System.out.println("Object is null or default");
+        }
+
+    }
+
 }
