@@ -2,7 +2,7 @@ package lv.nixx.poc.features.java15;
 
 import org.junit.jupiter.api.Test;
 
-public class MainFeaturesTest {
+public class TextBlockSampleTest {
 
     // https://blogs.oracle.com/javamagazine/inside-java-15-fourteen-jeps-in-five-buckets
     // https://www.baeldung.com/java-15-new
