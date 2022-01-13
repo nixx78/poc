@@ -9,6 +9,7 @@ import com.hazelcast.query.Predicates;
 import lv.nixx.poc.hazelcast.HazelcastTestInstance;
 import org.junit.Test;
 
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -86,7 +87,29 @@ public class HazelcastJsonValueSample {
         ));
 
         Collection<Object[]> project = m.project(Projections.multiAttribute("name", "surname"));
-        project.forEach( t -> System.out.println(Arrays.toString(t)));
+        project.forEach(t -> System.out.println(Arrays.toString(t)));
     }
+
+
+    @Test
+    public void betweenPredicateSample() {
+
+        IMap<String, HazelcastJsonValue> m = hazelcastInstance.getMap("dtz.json");
+
+        m.putAll(Map.of(
+                "k1", new HazelcastJsonValue("{ \"id\": 100, \"date\": \"2021-01-13T15:00:00Z\" }"),
+                "k2", new HazelcastJsonValue("{ \"id\": 101, \"date\": \"2021-01-13T15:01:00Z\" }"),
+                "k3", new HazelcastJsonValue("{ \"id\": 102, \"date\": \"2021-01-13T15:02:00Z\" }")
+        ));
+
+        ZonedDateTime from = ZonedDateTime.parse("2021-01-13T15:00:00.000Z");
+        ZonedDateTime to = ZonedDateTime.parse("2021-01-13T15:01:00Z");
+
+        Collection<HazelcastJsonValue> d = m.values(Predicates.between("date", from, to));
+
+        d.forEach(System.out::println);
+
+    }
+
 
 }
