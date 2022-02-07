@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -31,34 +32,28 @@ public class BugTransformations {
 		final LocalDate startDate = of(2017, 9, 1);
 		final LocalDate endDate = of(2017, 9, 15);
 
-		final Predicate<Bug> dateFilter = new Predicate<Bug>() {
-			@Override
-			public boolean test(Bug p) {
-				LocalDate closeDate = p.getCloseDate();
-				return p.getOpenDate().compareTo(startDate) >= 0 && closeDate == null
-						|| closeDate.compareTo(endDate) <= 0;
-			}
+		final Predicate<Bug> dateFilter = p -> {
+			LocalDate closeDate = p.getCloseDate();
+			return p.getOpenDate().compareTo(startDate) >= 0 && closeDate == null
+					|| closeDate.compareTo(endDate) <= 0;
 		};
 
-		final Function<Bug, Stream<BugEntry>> mapper = new Function<Bug, Stream<BugEntry>>() {
-			@Override
-			public Stream<BugEntry> apply(Bug t) {
-				final LocalDate openDate = t.getOpenDate();
-				final LocalDate closeDate = t.getCloseDate();
-				long numOfDaysBetween = ChronoUnit.DAYS.between(openDate, closeDate == null ? endDate : closeDate);
-				return IntStream.iterate(0, i -> i + 1).limit(numOfDaysBetween + 1)
-						.mapToObj(i -> new BugEntry(t.getId(), t.getSeverity(), openDate.plusDays(i)));
-			}
+		final Function<Bug, Stream<BugEntry>> mapper = t -> {
+			final LocalDate openDate = t.getOpenDate();
+			final LocalDate closeDate = t.getCloseDate();
+			long numOfDaysBetween = ChronoUnit.DAYS.between(openDate, closeDate == null ? endDate : closeDate);
+			return IntStream.iterate(0, i -> i + 1).limit(numOfDaysBetween + 1)
+					.mapToObj(i -> new BugEntry(t.getId(), t.getSeverity(), openDate.plusDays(i)));
 		};
 
 		final List<CalendarEntry> calendarList = Stream
 				.concat(IntStream.iterate(0, i -> i + 1).limit(ChronoUnit.DAYS.between(startDate, endDate) + 1)
-						.mapToObj(i -> new BugEntry(null, null, startDate.plusDays(i))),
+								.mapToObj(i -> new BugEntry(null, null, startDate.plusDays(i))),
 						bugs.stream().filter(dateFilter).flatMap(mapper))
 				.collect(Collectors.groupingBy(BugEntry::getDate,
 						Collectors.reducing(ZERO, b -> b.getId() == null ? ZERO : ONE, BigDecimal::add)))
 				.entrySet().stream().map(t -> new CalendarEntry(t.getKey(), t.getValue().intValue()))
-				.sorted((b0, b1) -> b0.getDate().compareTo(b1.getDate())).collect(Collectors.toList());
+				.sorted(Comparator.comparing(CalendarEntry::getDate)).toList();
 
 		calendarList.forEach(System.out::println);
 

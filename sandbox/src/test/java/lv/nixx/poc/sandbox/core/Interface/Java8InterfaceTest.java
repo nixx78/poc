@@ -16,7 +16,7 @@ public class Java8InterfaceTest {
 	}
 	
 	@Test
-	public void interfaceInhiritance(){
+	public void interfaceInheritance(){
 		
 		InterfaceA ri = new InterfaceA() {
 

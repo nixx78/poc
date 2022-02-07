@@ -1,11 +1,15 @@
 package lv.nixx.poc.domain;
 
-import java.util.Collection;
+import lombok.Getter;
+import lombok.ToString;
+
 import java.util.Comparator;
 import java.util.List;
 
 import static lv.nixx.poc.domain.AccountType.*;
 
+@Getter
+@ToString
 public class Account implements Comparable<Account> {
 
     private static final Comparator<AccountType> accountTypeComparator = AccountTypeComparator.forOrder(DEPOSIT, CURRENT, CARD);
@@ -28,30 +32,10 @@ public class Account implements Comparable<Account> {
         this.type = type;
     }
 
-    public Collection<Transaction> getTxns() {
-        return txn;
-    }
-
-    public AccountType getType() {
-        return type;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public String toString() {
-        return "Account{" +
-                "id='" + id + '\'' +
-                ", type=" + type +
-                '}';
-    }
-
     @Override
     public int compareTo(Account account) {
         Comparator<Account> comparator = Comparator.comparing(Account::getType, accountTypeComparator)
-                .thenComparingInt(t -> t.getTxns().size());
+                .thenComparingInt(t -> t.getTxn().size());
 
         return comparator.compare(this, account);
     }

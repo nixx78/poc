@@ -20,9 +20,9 @@ public class TopPhrasesTask {
 
 		try (BufferedReader br = new BufferedReader(new StringReader(words))) {
 					br.lines()
-					.flatMap(s -> Arrays.asList(s.split("\\|")).stream())
-					.map( s -> s.trim())
-					.collect(Collectors.toConcurrentMap(w -> w.toLowerCase(), w -> 1, Integer::sum))
+					.flatMap(s -> Arrays.stream(s.split("\\|")))
+					.map(String::trim)
+					.collect(Collectors.toConcurrentMap(String::toLowerCase, w -> 1, Integer::sum))
 					.forEach((s, integer) -> topOccurrence.add(new Tuple(s, integer)));
 
 			System.out.println(topOccurrence);
@@ -36,7 +36,7 @@ public class TopPhrasesTask {
 
 		public TopPhrases(int maxSize) {
 			this.maxSize = maxSize;
-			this.minHeap = new PriorityQueue<Tuple>(Comparator.comparingInt(wc -> wc.count));
+			this.minHeap = new PriorityQueue<>(Comparator.comparingInt(wc -> wc.count));
 		}
 
 		public void add(Tuple data) {

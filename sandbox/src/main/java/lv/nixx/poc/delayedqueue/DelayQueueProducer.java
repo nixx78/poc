@@ -20,8 +20,8 @@ public class DelayQueueProducer {
 			try {
 				// Put Random delay for each email to send.
 				int delay = random.nextInt(10000);
-				String receipient = UUID.randomUUID().toString() + "@gmail.com";
-				Email email = new Email(receipient, emailBody + delay, delay);
+				String recipient = UUID.randomUUID().toString() + "@gmail.com";
+				Email email = new Email(recipient, emailBody + delay, delay);
 
 				System.out.printf("Put email in a DelayQueue = %s%n", email);
 				queue.put(email);

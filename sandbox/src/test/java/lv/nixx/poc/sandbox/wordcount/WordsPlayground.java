@@ -3,6 +3,7 @@ package lv.nixx.poc.sandbox.wordcount;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,7 +19,7 @@ public class WordsPlayground {
 		
 		 final List<String> topWords =
 				 words.stream()
-					.sorted((s1, s2) -> Integer.compare(s1.length(), s2.length()))
+					.sorted(Comparator.comparingInt(String::length))
 					.limit(3)
 					.collect(Collectors.toList());
 		
@@ -32,9 +33,9 @@ public class WordsPlayground {
 				"22", "3333", "55555", "0", "1", "33", "777", "88989898");
 
 		final Map<Integer, List<String>> collect = words.stream()
-				.collect(Collectors.groupingBy(t -> t.length(), Collectors.toList()));
+				.collect(Collectors.groupingBy(String::length, Collectors.toList()));
 		
-		collect.entrySet().stream().forEach(System.out::println);
+		collect.entrySet().forEach(System.out::println);
 	}
 	
 

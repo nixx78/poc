@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 public class TxnHolderTest {
 	
 	@Test
-	public void onlyLatesTxnShouldBeStored() throws ParseException {
+	public void onlyLatestTxnShouldBeStored() throws ParseException {
 		
 		TxnHolder th = new TxnHolder();
 		th.add(new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1.CHANGED", "USD", getDate("01.09.2016")));

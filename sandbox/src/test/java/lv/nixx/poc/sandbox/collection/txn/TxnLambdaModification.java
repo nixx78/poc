@@ -53,7 +53,7 @@ public class TxnLambdaModification {
         txnSet.add(new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"));
         txnSet.add(new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR"));
 
-        txnSet.stream().collect(Collectors.toMap(t -> t.getId(), Function.identity()));
+        txnSet.stream().collect(Collectors.toMap(Transaction::getId, Function.identity()));
     }
 
 
@@ -69,9 +69,7 @@ public class TxnLambdaModification {
         AccountHolder ah = new AccountHolder();
         txnSet.forEach(ah::process);
 
-        ah.accounts.entrySet().forEach(e -> {
-            System.out.println(e.getKey() + ":" + e.getValue());
-        });
+        ah.accounts.forEach((key, value) -> System.out.println(key + ":" + value));
     }
 
     @Test
@@ -84,7 +82,7 @@ public class TxnLambdaModification {
         txnSet.add(new Transaction("id5", BigDecimal.valueOf(40.14), "ACC5", "EUR"));
 
         final Set<String> accounts = txnSet.stream()
-                .map(t -> t.getAccount())
+                .map(Transaction::getAccount)
                 .collect(Collectors.toSet());
 
         assertEquals(4, accounts.size());
@@ -123,22 +121,15 @@ public class TxnLambdaModification {
 
 
         @SuppressWarnings("unused")
-        BinaryOperator<Transaction> mergeFunction = new BinaryOperator<Transaction>() {
-            @Override
-            public Transaction apply(Transaction oldValue, Transaction newValue) {
-                return oldValue.getLastUpdateDate().compareTo(newValue.getLastUpdateDate()) <= 0 ? newValue : oldValue;
-            }
-        };
+        BinaryOperator<Transaction> mergeFunction = (oldValue, newValue) -> oldValue.getLastUpdateDate().compareTo(newValue.getLastUpdateDate()) <= 0 ? newValue : oldValue;
         // mergeFunction и mergeFunction1 делают одно и тоже, просто разная форма записи
-        BinaryOperator<Transaction> mergeFunction1 = (oldValue, newValue) -> {
-            return oldValue.getLastUpdateDate().compareTo(newValue.getLastUpdateDate()) <= 0 ? newValue : oldValue;
-        };
+        BinaryOperator<Transaction> mergeFunction1 = (oldValue, newValue) -> oldValue.getLastUpdateDate().compareTo(newValue.getLastUpdateDate()) <= 0 ? newValue : oldValue;
 
         // Если не указать mergeFunction, то данный запрос будет "падать", так как коллекция содержит повторяющиеся элементы
         final Map<String, Transaction> collect = txnSet.stream()
                 .collect(Collectors.toMap(Transaction::getId, Function.identity(), mergeFunction1));
 
-        collect.values().stream().forEach(System.out::println);
+        collect.values().forEach(System.out::println);
         assertEquals(4, collect.size());
 
         assertEquals(id1LastVersion, collect.get(id1));
@@ -156,8 +147,7 @@ public class TxnLambdaModification {
 
         List<String> array = txns.stream()
                 .filter(t -> t.getCurrency().equalsIgnoreCase("USD"))
-                .map(t -> t.getId())
-                .collect(Collectors.toList());
+                .map(Transaction::getId).toList();
 
         assertEquals(2, array.size());
     }
@@ -542,7 +532,7 @@ public class TxnLambdaModification {
 
     }
 
-    class LocalAccount {
+    static class LocalAccount {
         private final String id;
         Map<String, Amount> amounts = new HashMap<>();
 

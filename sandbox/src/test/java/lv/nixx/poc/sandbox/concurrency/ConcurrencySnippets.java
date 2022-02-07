@@ -99,7 +99,7 @@ public class ConcurrencySnippets {
     }
 
     @Test
-    public void scheduledExecutrorTest() throws InterruptedException {
+    public void scheduledExecutorTest() throws InterruptedException {
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
@@ -125,7 +125,7 @@ public class ConcurrencySnippets {
         assertTrue(s.tryAcquire(1));
     }
 
-    class Printer implements Callable<String> {
+    static class Printer implements Callable<String> {
         int seqLength;
 
         Printer(int seqLength) {

@@ -2,9 +2,9 @@ package lv.nixx.poc.sandbox.fake;
 
 import lv.nixx.poc.sandbox.singleton.Person;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public interface Persons {
 
@@ -16,7 +16,7 @@ public interface Persons {
 
             @Override
             public Collection<Person> get() {
-                return Arrays.asList(
+                return List.of(
                         new Person(1, "name1", "surname1", "iid"),
                         new Person(2, "name2", "surname2", "iid"),
                         new Person(3, "name3", "surname3", "iid")

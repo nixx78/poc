@@ -59,7 +59,7 @@ public class FunctionSandbox {
 	static class Person {
 		private String name;
 		private String surname;
-		private Date birhtDate;
+		private Date birthDate;
 	}
 
 }

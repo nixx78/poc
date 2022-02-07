@@ -7,7 +7,7 @@ public class MatrixMultiplication {
 	
 	
 	@Test
-	public void multilpl() {
+	public void multiple() {
 		
 	/*
 	 * Операция умножения двух матриц выполнима только в том случае, если число 

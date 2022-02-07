@@ -23,7 +23,7 @@ public class MedianaCalculation {
 	}
 
 	private void addCalculateAccumulatedValues(List<Entry> lst) {
-		final Integer sum = lst.stream().map(e -> e.n).reduce(0, (a, b) -> a + b);
+		final Integer sum = lst.stream().map(e -> e.n).reduce(0, Integer::sum);
 
 		for (int i = 0; i < lst.size(); i++) {
 			Entry e = lst.get(i);
@@ -42,7 +42,7 @@ public class MedianaCalculation {
 
 	private void medianaCalculate(List<Entry> lst) {
 
-		final double sum = lst.stream().map(e -> e.n).reduce(0, (a, b) -> a + b).doubleValue();
+		final double sum = lst.stream().map(e -> e.n).reduce(0, Integer::sum).doubleValue();
 
 		int nPrevAccum = 0;
 		boolean notFound = true;

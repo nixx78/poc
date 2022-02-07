@@ -34,13 +34,11 @@ public class BatchExecutorPOC {
 		}
 		
 		public void add(Function<T, U> funct, T data) {
-			container.add(new Container<T, U>(funct, data));
+			container.add(new Container<>(funct, data));
 		}
 
 		public void executeAll() {
-			container.forEach(t -> {
-				callback.accept( t.execute() );
-				}
+			container.forEach(t -> callback.accept( t.execute() )
 			);
 		}
 		

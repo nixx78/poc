@@ -1,12 +1,6 @@
 package lv.nixx.poc.sandbox.fake;
 
-import lv.nixx.poc.sandbox.singleton.Person;
 import org.junit.Test;
-
-import java.util.Arrays;
-
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 
 public class PersonsTest {
 
@@ -24,17 +18,19 @@ public class PersonsTest {
     @Test
     public void mockApproach() {
 
-        Persons p = mock(Persons.class);
-        doReturn(Arrays.asList(
-                new Person(1, "name1", "surname1", "iid"),
-                new Person(2, "name2", "surname2", "iid"),
-                new Person(3, "name3", "surname3", "iid")
-        )).when(p).get();
+        //No work with Mockito
 
-        Service service = new Service();
-        service.setPersons(p);
-
-        service.processAllPersons();
+//        Persons p = mock(Persons.class);
+//        doReturn(List.of(
+//                new Person(1, "name1", "surname1", "iid"),
+//                new Person(2, "name2", "surname2", "iid"),
+//                new Person(3, "name3", "surname3", "iid")
+//        )).when(p).get();
+//
+//        Service service = new Service();
+//        service.setPersons(p);
+//
+//        service.processAllPersons();
     }
 
 

@@ -54,9 +54,7 @@ public class PositionSandbox {
         }
 
         void loadInitialPostings(Collection<Posting> positions) {
-            positions.forEach(p -> {
-                this.postings.put(p.getPos(), p);
-            });
+            positions.forEach(p -> this.postings.put(p.getPos(), p));
         }
 
         void processEvent(PostingEvent event) {

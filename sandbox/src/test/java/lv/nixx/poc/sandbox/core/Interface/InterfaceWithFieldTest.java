@@ -46,10 +46,10 @@ public class InterfaceWithFieldTest {
         }
     }
 
-    private class A extends Parent implements InterfaceWithField {
+    private static class A extends Parent implements InterfaceWithField {
     }
 
-    private class B extends Parent implements InterfaceWithField {
+    private static class B extends Parent implements InterfaceWithField {
     }
 
 }

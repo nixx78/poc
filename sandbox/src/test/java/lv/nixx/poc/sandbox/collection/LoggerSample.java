@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.function.Supplier;
 
-public class LogggerSample {
+public class LoggerSample {
 
 	@Test
 	public void testDebug() {

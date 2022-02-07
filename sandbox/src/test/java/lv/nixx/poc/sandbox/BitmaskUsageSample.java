@@ -47,7 +47,7 @@ public class BitmaskUsageSample {
 		DELETE(0b00100), // 4
 		SEARCH(0b01000); // 8
 
-		int bit;
+		final int bit;
 
 		Permissions(int bit) {
 			this.bit = bit;

@@ -30,8 +30,7 @@ public class AccountSorterSandbox {
     @Test
     public void sortAccountsNaturalEnumOrder() {
         List<Account> sortedList = createAccounts().stream()
-                .sorted(Comparator.comparing(Account::getType).thenComparingInt(t -> t.getTxns().size()))
-                .collect(Collectors.toList());
+                .sorted(Comparator.comparing(Account::getType).thenComparingInt(t -> t.getTxn().size())).toList();
 
         assertThat(sortedList.stream().map(Account::getId).collect(Collectors.toList()),
                 contains("AccountID3", "AccountID2", "AccountID1", "AccountID4"));
@@ -42,7 +41,7 @@ public class AccountSorterSandbox {
 
         Comparator<AccountType> accountTypeComparator = AccountTypeComparator.forOrder(DEPOSIT, CURRENT, CARD);
         Comparator<Account> comparator = Comparator.comparing(Account::getType, accountTypeComparator)
-                .thenComparingInt(t -> t.getTxns().size());
+                .thenComparingInt(t -> t.getTxn().size());
 
         List<Account> sortedList = createAccounts().stream()
                 .sorted(comparator) // Outside created comparator

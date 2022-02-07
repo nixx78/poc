@@ -25,9 +25,9 @@ public class AccountPlayground {
         Stream<Account> accs = createAccountsWithTransactions().stream();
 
         final Set<String> collect = accs
-                .filter(t -> t.getTxns() != null)
-                .filter(a -> a.getTxns().stream().count() > 2)
-                .map(a -> a.getId())
+                .filter(t -> t.getTxn() != null)
+                .filter(a -> (long) a.getTxn().size() > 2)
+                .map(Account::getId)
                 .collect(Collectors.toSet());
 
         collect.forEach(System.out::println);
@@ -37,8 +37,8 @@ public class AccountPlayground {
     public void doubleStatisticsAllTransactions() {
 
         final DoubleSummaryStatistics stat = createAccountsWithTransactions().stream()
-                .filter(t -> t.getTxns() != null)
-                .flatMap(a -> a.getTxns().stream())
+                .filter(t -> t.getTxn() != null)
+                .flatMap(a -> a.getTxn().stream())
                 .collect(Collectors.summarizingDouble(t -> t.getAmount().doubleValue()));
 
         System.out.println(stat);
@@ -51,8 +51,8 @@ public class AccountPlayground {
 
         // First approach
         Set<String> currencyList = accounts.stream()
-                .filter(t -> t.getTxns() != null)
-                .flatMap(t -> t.getTxns().stream())
+                .filter(t -> t.getTxn() != null)
+                .flatMap(t -> t.getTxn().stream())
                 .map(Transaction::getCurrency)
                 .collect(Collectors.toSet());
 
@@ -60,8 +60,8 @@ public class AccountPlayground {
 
         // Second approach
         currencyList = accounts.stream()
-                .filter(t -> t.getTxns() != null)
-                .flatMap(t -> t.getTxns().stream())
+                .filter(t -> t.getTxn() != null)
+                .flatMap(t -> t.getTxn().stream())
                 .filter(distinctByKey(Transaction::getCurrency))
                 .map(Transaction::getCurrency)
                 .collect(Collectors.toSet());
@@ -76,12 +76,12 @@ public class AccountPlayground {
         List<Account> accounts = createAccountsWithTransactions();
 
         Map<String, Transaction> collect = accounts.stream()
-                // For case, if getTxns() Collection can be casted to List
-                .filter(t -> t.getTxns() != null)
-                .collect(Collectors.toMap(Account::getId, t -> ((List<Transaction>) t.getTxns()).get(0)));
+                // For case, if getTxns() Collection can be cast to List
+                .filter(t -> t.getTxn() != null)
+                .collect(Collectors.toMap(Account::getId, t -> ((List<Transaction>) t.getTxn()).get(0)));
 
 
-        // For case, if collection can't be casted to List
+        // For case, if collection can't be cast to List
         //			.collect(Collectors.toMap(Account::getId, t-> new ArrayList<Transaction>(t.getTxns()).get(0)));
 
         assertEquals(3, collect.size());
@@ -93,8 +93,8 @@ public class AccountPlayground {
 
         Map<String, Collection<Transaction>> accountsWithTop3Txns = createAccountsWithTransactions()
                 .stream()
-                .filter(t -> t.getTxns() != null)
-                .collect(Collectors.toMap(Account::getId, t -> t.getTxns().stream()
+                .filter(t -> t.getTxn() != null)
+                .collect(Collectors.toMap(Account::getId, t -> t.getTxn().stream()
                         .sorted(Comparator.comparing(Transaction::getAmount))
                         .limit(3)
                         .collect(Collectors.toList()))
@@ -109,8 +109,8 @@ public class AccountPlayground {
 
         Map<String, Collection<Transaction>> accountsWithTransactions = createAccountsWithTransactions()
             .stream()
-            .filter(t -> t.getTxns() != null)
-            .collect(Collectors.toMap(Account::getId, t -> t.getTxns().stream()
+            .filter(t -> t.getTxn() != null)
+            .collect(Collectors.toMap(Account::getId, t -> t.getTxn().stream()
                     .filter(x -> x.getAmount().compareTo(BigDecimal.TEN) > 0)
                     .collect(Collectors.toList()))
             );
