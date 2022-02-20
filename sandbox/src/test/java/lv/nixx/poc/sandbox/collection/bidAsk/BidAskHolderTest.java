@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,18 @@ public class BidAskHolderTest {
 
         System.out.println("==================");
         m2.forEach((key, value) -> System.out.println(key + "\n\t\t" + value));
+
+        Map<String, BidAskDTO> m3 = positions.stream()
+                .collect(groupingBy(Position::getIsin,
+                        collectingAndThen(
+                                reducing(new BidAskWrapperWithMap(),
+                                        p -> new BidAskWrapperWithMap(p), (w1, w2) -> w1.combine(w2)), BidAskWrapperWithMap::toDto))
+                );
+
+        assertEquals(4, m3.size());
+
+        System.out.println("==================");
+        m3.forEach((key, value) -> System.out.println(key + "\n\t\t" + value));
 
 
     }
@@ -98,6 +111,29 @@ public class BidAskHolderTest {
         BidAskDTO toDto() {
             return new BidAskDTO(bid, ask);
         }
+    }
+
+    static class BidAskWrapperWithMap {
+        Map<BidAsk, Double> m;
+
+        BidAskWrapperWithMap() {
+            m = new HashMap<>();
+        }
+
+        BidAskWrapperWithMap(Position p) {
+            this();
+            m.put(p.bidAsk, p.value);
+        }
+
+        BidAskWrapperWithMap combine(BidAskWrapperWithMap p) {
+            p.m.putAll(this.m);
+            return p;
+        }
+
+        BidAskDTO toDto() {
+            return new BidAskDTO(m.get(BID), m.get(ASK));
+        }
+
     }
 
     @AllArgsConstructor
