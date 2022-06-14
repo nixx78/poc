@@ -3,8 +3,8 @@ package lv.nixx.poc.hazelcast.cache;
 import com.hazelcast.core.HazelcastInstance;
 import lv.nixx.poc.hazelcast.HazelcastTestInstance;
 import lv.nixx.poc.hazelcast.model.Person;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 import java.util.Date;
@@ -12,14 +12,14 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PersonStringKeyManagerTest {
 	
 	private PersonStringKeyCache service;
 	private final Date date = new Date();
 
-	@Before
+	@BeforeEach
 	public void init() {
 		HazelcastInstance inst = HazelcastTestInstance.get();
 		service = new PersonStringKeyCache(inst);

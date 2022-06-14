@@ -1,8 +1,6 @@
 package lv.nixx.poc.hazelcast.json;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.HazelcastJsonValue;
 import com.hazelcast.map.IMap;
 import com.hazelcast.map.MapInterceptor;
 import lombok.SneakyThrows;
@@ -12,14 +10,15 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class JsonValueStoreWithInterceptor {
+public class ValueStoreWithInterceptorTest {
 
     private final HazelcastInstance hazelcast = HazelcastTestInstance.get();
 
     @Test
     public void jsonValueStoreSample() {
 
-        IMap<String, Account> map = hazelcast.getMap("json.map");
+        IMap<String, Account> map = hazelcast.getMap("map.account");
+        map.clear();
         map.addInterceptor(new ConvertOnPutMapInterceptor());
 
         map.put("id1", new Account("id1", "name1"));
@@ -29,21 +28,18 @@ public class JsonValueStoreWithInterceptor {
         assertEquals("name1", acc1.getName());
     }
 
-    static class ConvertOnPutMapInterceptor implements
-            MapInterceptor {
-
-        private final ObjectMapper om = new ObjectMapper();
+    static class ConvertOnPutMapInterceptor implements MapInterceptor {
 
         @SneakyThrows
         @Override
         public Object interceptGet(Object o) {
-            return om.readValue(o.toString(), Account.class);
+            return o;
         }
 
         @SneakyThrows
         @Override
         public Object interceptPut(Object o, Object o1) {
-            return new HazelcastJsonValue(om.writeValueAsString(o1));
+            return o;
         }
 
         @Override

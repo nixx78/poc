@@ -18,6 +18,8 @@ public interface CrudCacheOperations<K, V> {
 
     int size();
 
+    void clearAll();
+
     default Collection<V> getAll() {
         //FIXME Implement method
         return Collections.emptyList();

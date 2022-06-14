@@ -53,4 +53,7 @@ public class PersonCompositeKeyCache {
 		);
     }
 
+    public void clearAll() {
+        crud.clearAll();
+    }
 }
