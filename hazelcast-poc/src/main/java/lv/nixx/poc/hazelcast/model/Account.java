@@ -11,8 +11,8 @@ import java.io.Serializable;
 @ToString
 public class Account implements Serializable {
 
-    private String accountId;
-    private String name;
+    private final String accountId;
+    private final String name;
 
     @JsonCreator
     public Account(@JsonProperty("accountId") String accountId, @JsonProperty("name") String name) {
