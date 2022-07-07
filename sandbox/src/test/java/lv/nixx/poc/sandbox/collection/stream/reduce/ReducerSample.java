@@ -9,14 +9,18 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static java.util.function.BinaryOperator.maxBy;
+import static java.util.stream.Collectors.*;
 
 public class ReducerSample {
 
     @Test
     public void reducerSample() throws Exception {
 
-        Collection<Posting> postings = Arrays.asList(
+        Collection<Posting> postings = List.of(
                 new Posting("post1", toTimestamp("04/26/2019 12:00:01"), toDate("04/26/2019"), BigDecimal.valueOf(10.01)),
                 new Posting("post1", toTimestamp("04/26/2019 12:00:02"), toDate("04/26/2019"), BigDecimal.valueOf(20.01)),
 
@@ -29,10 +33,10 @@ public class ReducerSample {
 
         Collection<Collection<Optional<Posting>>> collect = postings.stream()
                 .collect(
-                        Collectors.collectingAndThen(
-                                Collectors.groupingBy(Posting::getId,
-                                        Collectors.collectingAndThen(
-                                                Collectors.groupingBy(Posting::getSettleDate,
+                        collectingAndThen(
+                                groupingBy(Posting::getId,
+                                        collectingAndThen(
+                                                groupingBy(Posting::getSettleDate,
                                                         Collectors.maxBy(Comparator.comparing(Posting::getTimestamp))
                                                 ), Map::values
                                         )
@@ -44,13 +48,36 @@ public class ReducerSample {
                 .flatMap(Collection::stream)
                 .map(x -> x.orElse(null))
                 .collect(
-                        Collectors.collectingAndThen(
-                                Collectors.groupingBy(Posting::getId, Collectors.reducing(this::calculateBalance))
+                        collectingAndThen(
+                                groupingBy(Posting::getId, reducing(this::calculateBalance))
                                 , Map::values
                         )
                 );
 
         result.forEach(System.out::println);
+
+    }
+
+    @Test
+    public void maxBySample() throws ParseException {
+
+        Collection<Posting> postings = List.of(
+                new Posting("post1", toTimestamp("07/26/2022 12:00:01"), toDate("07/26/2022"), BigDecimal.valueOf(10.01)),
+                new Posting("post1", toTimestamp("07/26/2022 12:00:02"), toDate("07/26/2022"), BigDecimal.valueOf(20.01)),
+
+                new Posting("post1", toTimestamp("07/25/2022 12:00:03"), toDate("07/25/2022"), BigDecimal.valueOf(30.01)),
+
+                new Posting("post2", toDate("07/25/2022"), toTimestamp("07/26/2022 12:00:01"), BigDecimal.valueOf(30.03)),
+
+                new Posting("post3", toDate("07/25/2022"), toTimestamp("07/26/2022 12:00:01"), BigDecimal.valueOf(33.33)),
+                new Posting("post3", toDate("07/07/2022"), toTimestamp("07/26/2022 12:00:01"), BigDecimal.valueOf(33.33))
+        );
+
+        Map<String, Posting> postingsWithMaxTimestamp = postings.stream()
+                .collect(toMap(Posting::getId, Function.identity(), maxBy(Comparator.comparing(Posting::getTimestamp)), TreeMap::new));
+
+        postingsWithMaxTimestamp.entrySet().forEach(System.out::println);
+
 
     }
 
@@ -72,11 +99,16 @@ public class ReducerSample {
     @Data
     @ToString
     @AllArgsConstructor
-    static class Posting {
+    static class Posting implements Comparable<Posting> {
         String id;
         Date timestamp;
         Date settleDate;
         BigDecimal balance;
+
+        @Override
+        public int compareTo(Posting o) {
+            return id.compareTo(o.id);
+        }
     }
 
 }
