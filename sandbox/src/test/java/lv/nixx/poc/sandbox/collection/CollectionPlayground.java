@@ -160,13 +160,10 @@ public class CollectionPlayground {
 
     @Test
     public void collectionDisjoint() {
-
-        Collection<String> c1 = List.of("1", "2", "3");
-        Collection<String> c2 = List.of("4", "5", "6");
-
         // Коллекции должны быть отсортированы
         // Возврашает true - если нет общих элементов
-        assertTrue("Collections are equals", Collections.disjoint(c1, c2));
+        assertTrue("Collections not contains common elements", Collections.disjoint(List.of("1", "2", "3"), List.of("4", "5", "6")));
+        assertFalse("Collections contains common elements", Collections.disjoint(List.of("1", "2", "3"), List.of("1", "2", "4", "5", "6")));
     }
 
     @Test

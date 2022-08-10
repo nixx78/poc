@@ -1,6 +1,6 @@
 package lv.nixx.poc.sandbox.collection.txn;
 
-import lv.nixx.poc.domain.*;
+import lv.nixx.poc.domain.Transaction;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -33,12 +33,12 @@ public class TxnLambdaModification {
         );
 
         TxnProcessor myProcessor = new TxnProcessor();
-        // сссылка на метод, у конкретного экземпляра класса
+        // ссылка на метод, у конкретного экземпляра класса
         txns.stream().forEach(myProcessor::simpleMethod);
         // вызов статического метода с параметрами
         txns.stream().forEach(t -> TxnProcessor.staticMethod(t.getAmount(), t.getCurrency()));
 
-        // Moжно вызывать и вот так, поскольу, MyProcessor implements Consumer
+        // Moжно вызывать и вот так, поскольку, MyProcessor implements Consumer
         MyProcessor mp = new MyProcessor();
         txns.forEach(mp);
     }
