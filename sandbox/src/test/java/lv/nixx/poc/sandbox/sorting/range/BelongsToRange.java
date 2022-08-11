@@ -1,13 +1,13 @@
-package lv.nixx.poc.sorting.range;
+package lv.nixx.poc.sandbox.sorting.range;
 
-import static org.junit.Assert.*;
-import static lv.nixx.poc.sorting.range.BelongsToRange.RangeLabel.*;
+import org.junit.Test;
 
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-import org.junit.Test;
+import static lv.nixx.poc.sandbox.sorting.range.BelongsToRange.RangeLabel.*;
+import static org.junit.Assert.assertEquals;
 
 public class BelongsToRange {
 	

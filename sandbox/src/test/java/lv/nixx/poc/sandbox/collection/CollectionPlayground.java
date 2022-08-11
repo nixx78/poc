@@ -11,7 +11,10 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.Collections.disjoint;
+import static java.util.Collections.emptyList;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class CollectionPlayground {
 
@@ -161,9 +164,13 @@ public class CollectionPlayground {
     @Test
     public void collectionDisjoint() {
         // Коллекции должны быть отсортированы
-        // Возврашает true - если нет общих элементов
-        assertTrue("Collections not contains common elements", Collections.disjoint(List.of("1", "2", "3"), List.of("4", "5", "6")));
-        assertFalse("Collections contains common elements", Collections.disjoint(List.of("1", "2", "3"), List.of("1", "2", "4", "5", "6")));
+        // Возвращает true - если нет общих элементов
+        assertAll(
+                () -> assertTrue("Collections not contains common elements", disjoint(List.of("1", "2", "3"), List.of("4", "5", "6"))),
+                () -> assertFalse("Collections contains common elements", disjoint(List.of("1", "2", "3"), List.of("1", "2", "4", "5", "6"))),
+                () -> assertTrue("Collections not contains common elements", disjoint(emptyList(), List.of("4", "5", "6"))),
+                () -> assertTrue("Collections not contains common elements", disjoint(List.of("1", "2", "3"), emptyList()))
+        );
     }
 
     @Test
@@ -192,20 +199,16 @@ public class CollectionPlayground {
 
     @Test
     public void findCommonElementInCollection() {
-        Collection<String> old = List.of("1", "2", "3");
-        Collection<String> changed = List.of("4", "2", "3");
 
-        final List<String> expectedCommonElements = List.of("2", "3");
-
-        Collection<String> result = new ArrayList<>(old);
+        Collection<String> collectionOne = new ArrayList<>(List.of("1", "2", "3"));
         // common elements in two collections
-        result.retainAll(changed);
-        assertEquals(expectedCommonElements, result);
+        collectionOne.retainAll(List.of("4", "2", "3"));
+        assertEquals(List.of("2", "3"), collectionOne);
 
         // try to find in different order
-        result = new ArrayList<>(changed);
-        result.retainAll(old);
-        assertEquals(expectedCommonElements, result);
+        collectionOne = new ArrayList<>(List.of("4", "2", "3"));
+        collectionOne.retainAll(List.of("1", "2", "3"));
+        assertEquals(List.of("2", "3"), collectionOne);
     }
 
     @Test
