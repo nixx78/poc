@@ -1,19 +1,19 @@
 package lv.nixx.poc.sandbox.map;
 
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class NavigableMapSandbox {
+class NavigableMapSandbox {
 
     @Test
-    public void mapWithOriginalOrder() {
+    void mapWithOriginalOrder() {
 
         NavigableMap<Integer, String> m = new TreeMap<>();
         m.put(1, "One");
@@ -51,7 +51,7 @@ public class NavigableMapSandbox {
     }
 
     @Test
-    public void mapWithGaps() {
+    void mapWithGaps() {
 
         NavigableMap<Integer, String> m = new TreeMap<>();
         m.put(1, "One");
@@ -67,8 +67,9 @@ public class NavigableMapSandbox {
         assertEquals(Integer.valueOf(10), m.pollLastEntry().getKey());
 
         assertEquals(1, m.size());
-
     }
+
+
 
 
 }
