@@ -21,6 +21,10 @@ public class TotalWithTypeSample {
                 new Position(3, new AmountHolder(30, "EOD"))
         );
 
+        // Работает так-же как второй вариант, используется, если нельзя применять map
+        TotalAmountHolder total1 = pos.stream()
+                .reduce(new TotalAmountHolder(), (t1, t2) -> t1.addAmount(t2.getHolder()), TotalAmountHolder::add);
+
         TotalAmountHolder total = pos.stream()
                 .map(Position::getHolder)
                 .reduce(new TotalAmountHolder(), TotalAmountHolder::addAmount, TotalAmountHolder::add);
@@ -36,7 +40,7 @@ public class TotalWithTypeSample {
         int amount = 0;
         String source = "";
 
-       TotalAmountHolder add(TotalAmountHolder anotherTotal) {
+        TotalAmountHolder add(TotalAmountHolder anotherTotal) {
             return new TotalAmountHolder(this.amount + anotherTotal.amount, calculateSource(anotherTotal.source));
         }
 
