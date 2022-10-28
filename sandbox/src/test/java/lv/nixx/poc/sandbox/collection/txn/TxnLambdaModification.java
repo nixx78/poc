@@ -34,9 +34,9 @@ public class TxnLambdaModification {
 
         TxnProcessor myProcessor = new TxnProcessor();
         // ссылка на метод, у конкретного экземпляра класса
-        txns.stream().forEach(myProcessor::simpleMethod);
+        txns.forEach(myProcessor::simpleMethod);
         // вызов статического метода с параметрами
-        txns.stream().forEach(t -> TxnProcessor.staticMethod(t.getAmount(), t.getCurrency()));
+        txns.forEach(t -> TxnProcessor.staticMethod(t.getAmount(), t.getCurrency()));
 
         // Moжно вызывать и вот так, поскольку, MyProcessor implements Consumer
         MyProcessor mp = new MyProcessor();
@@ -158,21 +158,34 @@ public class TxnLambdaModification {
                 new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"),
                 new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD"),
                 new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"),
+                new Transaction("id31", BigDecimal.valueOf(30.14), "ACC2", "EUR"),
                 new Transaction("id4", BigDecimal.valueOf(20.00), "ACC2", "EUR"),
                 new Transaction("id5", BigDecimal.valueOf(40.14), "ACC3", "EUR")
         );
 
         // Счет, список валют
-        Map<String, List<String>> c =
+        Map<String, Set<String>> c =
                 txns.stream()
                         .collect(groupingBy(
                                 Transaction::getAccount,
-                                Collectors.mapping(Transaction::getCurrency, Collectors.toList()))
+                                Collectors.mapping(Transaction::getCurrency, Collectors.toSet()))
                         );
 
         c.entrySet().forEach(System.out::println);
-
         assertEquals(3, c.size());
+
+        System.out.println("--------------------");
+
+        Map<String, List<Transaction>> transactionListByAccount = txns.stream()
+                .collect(groupingBy(Transaction::getAccount));
+
+        transactionListByAccount.forEach((key, value) -> {
+            System.out.println(key);
+            value.forEach(v -> System.out.println("\t\t" + v));
+        });
+
+        assertEquals(3, transactionListByAccount.size());
+
     }
 
     @Test
@@ -188,7 +201,7 @@ public class TxnLambdaModification {
         Map<String, List<Amount>> c =
                 txns.stream()
                         .collect(groupingBy(Transaction::getAccount,
-                                Collectors.mapping(Amount::new, Collectors.toList())
+                                        Collectors.mapping(Amount::new, Collectors.toList())
                                 )
                         );
 
@@ -211,7 +224,7 @@ public class TxnLambdaModification {
 
         Map<String, Map<String, Long>> m1 = txns.stream()
                 .collect(groupingBy(Transaction::getCurrency,
-                        groupingBy(Transaction::getAccount, Collectors.counting())
+                                groupingBy(Transaction::getAccount, Collectors.counting())
                         )
                 );
 
@@ -221,7 +234,7 @@ public class TxnLambdaModification {
 
         Map<String, Map<String, List<Transaction>>> m2 = txns.stream()
                 .collect(groupingBy(Transaction::getCurrency,
-                        groupingBy(Transaction::getAccount, Collectors.toList())
+                                groupingBy(Transaction::getAccount, Collectors.toList())
                         )
                 );
 
@@ -234,7 +247,7 @@ public class TxnLambdaModification {
 
         Map<String, Map<String, Transaction>> m3 = txns.stream()
                 .collect(groupingBy(Transaction::getCurrency,
-                          toMap(Transaction::getAccount, Function.identity(), (t1, t2) -> t2)
+                                toMap(Transaction::getAccount, Function.identity(), (t1, t2) -> t2)
                         )
                 );
 
@@ -376,7 +389,10 @@ public class TxnLambdaModification {
                         .thenComparing(Transaction::getAmount);
 
         List<Transaction> sorted =
-                txns.stream().sorted(c).collect(Collectors.toList());
+                txns.stream()
+                        .sorted(c)
+                        .toList();
+
         sorted.forEach(System.out::println);
     }
 
