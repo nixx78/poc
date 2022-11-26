@@ -56,7 +56,6 @@ renamed '2.txt' -> '2_new.txt'
 ### Создание ссылки на файл: ln  ###
 
 ## _Работа с архивами_ ##
-
 ### Создание архива ###
 tar -czvf txt.gz *.txt
 ````
@@ -67,7 +66,7 @@ $ tar -czvf txt.gz *.txt
 new.1.txt
 ````
 ### Получение содержимого архива ###
-tar -ztvf txt.gz
+_tar -ztvf txt.gz_
 ````
 nixx7@LAPTOP-M44LHQT2 MINGW64 /c/tmp/linux_playground
 $ tar -ztvf txt.gz
@@ -77,7 +76,7 @@ $ tar -ztvf txt.gz
 ````
 ### Распаковка архива ###
 Распаковка архива в директорию logs (директория уже должны существовать):
-tar -xvf txt.gz -C ./logs 
+_tar -xvf txt.gz -C ./logs_ 
 ````
 nixx7@LAPTOP-M44LHQT2 MINGW64 /c/tmp/linux_playground
 $ tar -xvf txt.gz -C ./logs
@@ -87,7 +86,7 @@ new.1.txt
 ````
 ##Операции с содержимым файлов ###
 ### Создание файла touch ####
-
+_touch new_file.txt_
 #### Получение содержимого файла: cat ####
 Получить все строки с ошибками из файла, записать в отдельный файл и показать его содержимое
 ````
@@ -115,7 +114,58 @@ _tail -n 3 app.log_ - получение последних 3 строк из ф
 _tail -n +5 app.log_ - получение последних строчек из файла, начиная с 5 строки  
 _tail -n 5 app.log_ | grep -n "ERROR" - получение строк с ошибкой из последних 5 строк, в результат включается номер строки  
 _tail -f sample.log_ - чтение файла с обновлением данных на экране (ctrl + C выход)
-_tail -f sample.log  | grep "#ERROR"_ - получение данных из файла, применяя фильтр, при этом, данные обновляются  
+_tail -f sample.log  | grep "#ERROR"_ - получение данных из файла, применяя фильтр, при этом, данные обновляются (-f following)  
+_tail -f --pid=2223 sample.log  | grep "#ERROR"_ - получение данных из файла. При этом, если процесс с PID=2223 заканчивается, то tail заканчивает свою работу
+
+### Сравнение файлов: diff
+Файл f1.txt
+``` text
+
+line2 more
+line3
+line4
+```
+Файл f2.txt
+``` text
+line1
+line2 more 1
+line3
+line4
+```  
+
+_diff -s -q f1.txt f1.txt_ - сравнение только с кратким ответом
+````text
+nixx7@LAPTOP-M44LHQT2 MINGW64 /c/tmp/linux_playground/diff_sample
+$ diff -s -q f1.txt f1.txt
+Files f1.txt and f1.txt are identical
+
+nixx7@LAPTOP-M44LHQT2 MINGW64 /c/tmp/linux_playground/diff_sample
+$ diff -s -q f1.txt f2.txt
+Files f1.txt and f2.txt differ
+ ````
+
+_diff f1.txt f2.txt --color_ - показать разницу с подсветкой
+```
+nixx7@LAPTOP-M44LHQT2 MINGW64 /c/tmp/linux_playground/diff_sample
+$ diff f1.txt f2.txt --color
+1,2c1,2
+<
+< line2 more
+---
+> line1
+> line2 more 123
+```
+_diff -y  f1.txt f2.txt --color | cat -n_ - показать разницу в колонку, c номерами строк 
+```
+nixx7@LAPTOP-M44LHQT2 MINGW64 /c/tmp/linux_playground/diff_sample
+$ diff -y  f1.txt f2.txt --color | cat -n
+     1                                                                | line1
+     2  line2 more                                                    | line2 more 123
+     3  line3                                                           line3
+     4  line4                                                           line4
+     5                                                                > line5
+```
+
 
 ##_Вызовы REST_
 
@@ -155,6 +205,7 @@ Date: Fri, 25 Nov 2022 07:38:13 GMT
 
 ["MessageResponse:message.value","HeaderResponse:headerValue"]
 ```
+
 
 ### Отправка данных на сервер POST
 **Отправка POST запроса и получение подробного ответа**  
@@ -201,3 +252,18 @@ Dload  Upload   Total   Spent    Left  Speed
 HTTP/1.1 400
 {"dateOfBirth":["Minimal age must be: 18 current age is: 0 years, current value is: Fri Nov 25 09:49:47 EET 2022"]}
 ```
+
+##_Прочие операции_
+
+### Получение информации о системе и пользователе: uname & whoami
+``` text
+nixx7@LAPTOP-M44LHQT2 MINGW64 /bin
+$ uname -a
+MINGW64_NT-10.0-19044 LAPTOP-M44LHQT2 3.3.6-341.x86_64 2022-09-05 20:28 UTC x86_64 Msys
+
+nixx7@LAPTOP-M44LHQT2 MINGW64 /bin
+$ whoami
+nixx7
+```
+### Получение информации о процессах: ps
+
