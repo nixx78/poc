@@ -166,6 +166,54 @@ $ diff -y  f1.txt f2.txt --color | cat -n
      5                                                                > line5
 ```
 
+### Сравнение файлов и вывод общих строк: comm
+_comm f1.txt f2.txt_ - запуск команды без параметров, результат,3 колонки:
+строки уникальные для первого файла, строки уникальные для второго файла, строки общие для обоих файлов
+```
+nixx7@LAPTOP-M44LHQT2 MINGW64 /c/tmp/linux_playground/diff_sample
+$ comm f1.txt f2.txt
+
+        line1
+line2 more
+        line2 more 123
+                line3
+                line4
+        line5
+```
+_comm -1 -2 f1.txt f2.txt_ - исключение из вывода первых двух колонок, в результате только общие колонки
+```
+nixx7@LAPTOP-M44LHQT2 MINGW64 /c/tmp/linux_playground/diff_sample
+$ comm -1 -2 f1.txt f2.txt
+line3
+line4
+```
+### Сортировка содержимого файла: sort
+#### Простые операции
+_sort -o sorted.txt unsorted.txt_ - сортировка файла с записью результата в другой файл  
+_sort -nro sorted.txt unsorted.txt_ - сортировка файла в обратной порядка (-r), строки сортируются как числа (-n), результат записывается в другой файл
+_sort -nrc sorted.txt_ - проверка (-c), отсортированы ли строки в файле в обратном порядке (-r) как цифры (-n).
+_sort -un unsorted.txt_ - отсортировать строки файла как числа (-n) и убрать дубликаты (-u)
+
+#### Сортировка строк по значению в колонке
+_sort -k 2n unsorted_with_columns.txt_ - сортировка файла по значению во второй колонке (разделитель колонок TAB)
+```text
+nixx7@LAPTOP-M44LHQT2 MINGW64 /c/tmp/linux_playground/sort_sample
+$ cat unsorted_with_columns.txt
+name1   19
+name2   34
+name3   67
+name4   0
+name5   10
+
+nixx7@LAPTOP-M44LHQT2 MINGW64 /c/tmp/linux_playground/sort_sample
+$ sort -k 2n unsorted_with_columns.txt
+name4   0
+name5   10
+name1   19
+name2   34
+name3   67
+```
+
 
 ##_Вызовы REST_
 
