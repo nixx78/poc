@@ -314,4 +314,11 @@ $ whoami
 nixx7
 ```
 ### Получение информации о процессах: ps
-
+ps - список процессов
+```text
+nixx7@LAPTOP-M44LHQT2 MINGW64 /bin
+$ ps
+      PID    PPID    PGID     WINPID   TTY         UID    STIME COMMAND
+      128       1     128       6472  cons0     197609 16:31:58 /usr/bin/bash
+      137     128     137      31036  cons0     197609 16:32:01 /usr/bin/ps
+```
