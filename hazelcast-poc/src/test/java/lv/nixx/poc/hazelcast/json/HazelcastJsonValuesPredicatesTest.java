@@ -9,7 +9,6 @@ import com.hazelcast.map.IMap;
 import com.hazelcast.projection.Projections;
 import com.hazelcast.query.Predicates;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lv.nixx.poc.hazelcast.HazelcastTestInstance;
 import org.junit.Test;
@@ -25,6 +24,7 @@ import static com.hazelcast.query.Predicates.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class HazelcastJsonValuesPredicatesTest {
 
@@ -66,13 +66,13 @@ public class HazelcastJsonValuesPredicatesTest {
 
         String vKey = "v1";
         Long aggregate = m.aggregate(Aggregators.longMax("pos"),
-                Predicates.and(Predicates.equal("value", vKey), Predicates.lessThan("pos", 5)));
+                and(equal("value", vKey), lessThan("pos", 5)));
 
         assertEquals(Long.valueOf(2), aggregate);
 
         Collection<HazelcastJsonValue> value =
                 m.values(
-                        Predicates.and(Predicates.equal("value", vKey), Predicates.equal("pos", 1))
+                        and(equal("value", vKey), equal("pos", 1))
                 );
 
         assertEquals("{ \"value\": \"v1\", \"pos\": 1 }", value.iterator().next().toString());
@@ -156,26 +156,26 @@ public class HazelcastJsonValuesPredicatesTest {
                 )
         );
 
-        assertEquals(2, m.values(between("amount", 101.00, 102.00)).size());
-        assertEquals(3, m.values(between("doubleAmount", 201.00, 203.00)).size());
-
-
-        assertThat(m.values(between("id", "id1", "id3"))
+        assertAll(
+                () -> assertEquals(2, m.values(between("amount", 101.00, 102.00)).size()),
+                () -> assertEquals(3, m.values(between("doubleAmount", 201.00, 203.00)).size()),
+                () -> assertThat(m.values(between("id", "id1", "id3"))
                         .stream()
                         .map(HazelcastJsonValue::toString)
                         .map(t -> {
                             try {
                                 return mapper.readValue(t, DataHolder.class);
                             } catch (JsonProcessingException e) {
-                                System.out.println(e);
+                                System.err.println(e);
                                 return null;
                             }
                         })
                         .map(DataHolder::getId)
                         .collect(Collectors.toList()), containsInAnyOrder("id1", "id2", "id21", "id3")
-                );
+                ),
+                () -> assertEquals(2, m.values(in("type", "T1", "T2")).size())
+        );
 
-        assertEquals(2, m.values(in("type", "T1", "T2")).size());
     }
 
 
