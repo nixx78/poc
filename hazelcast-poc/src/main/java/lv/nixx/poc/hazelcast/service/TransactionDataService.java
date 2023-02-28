@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-// https://docs.hazelcast.org/docs/latest-dev/manual/html-single/index.html#entry-processor
-
 public class TransactionDataService {
 
     private IMap<String, Map<String, Transaction>> remoteMap;
@@ -38,34 +36,30 @@ public class TransactionDataService {
 
     public Transaction changeState(String accountId, String txnId, State state) {
 
-        return remoteMap.executeOnKey(accountId, new EntryProcessor<String, Map<String, Transaction>, Transaction>() {
+        return remoteMap.executeOnKey(accountId, (EntryProcessor<String, Map<String, Transaction>, Transaction>) entry -> {
 
-            @Override
-            public Transaction process(Map.Entry<String, Map<String, Transaction>> entry) {
-
-                if (entry == null) {
-                    return null;
-                }
-
-                Map<String, Transaction> value = entry.getValue();
-                if (value == null) {
-                    return null;
-                }
-
-                Transaction updatedTransaction = value.computeIfPresent(txnId, (k, v) -> {
-                    v.setState(state);
-                    return v;
-                });
-
-                entry.setValue(value);
-
-                return updatedTransaction;
+            if (entry == null) {
+                return null;
             }
+
+            Map<String, Transaction> value = entry.getValue();
+            if (value == null) {
+                return null;
+            }
+
+            Transaction updatedTransaction = value.computeIfPresent(txnId, (k, v) -> {
+                v.setState(state);
+                return v;
+            });
+
+            entry.setValue(value);
+
+            return updatedTransaction;
         });
 
     }
 
-    public Map<String, Map<String, Transaction>> recalculateInterests() {
+    public void recalculateInterests() {
 
         Map<String, Map<String, Transaction>> globalMap = new HashMap<>();
 
@@ -91,7 +85,6 @@ public class TransactionDataService {
             return null;
         });
 
-        return globalMap;
     }
 
     public Transaction getTransaction(String accountId, String txnId) {
