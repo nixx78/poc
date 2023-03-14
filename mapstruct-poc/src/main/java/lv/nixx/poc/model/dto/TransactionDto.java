@@ -10,4 +10,7 @@ import java.math.BigDecimal;
 public class TransactionDto {
     private long id;
     private BigDecimal amount;
+
+    private Long date;
+
 }
