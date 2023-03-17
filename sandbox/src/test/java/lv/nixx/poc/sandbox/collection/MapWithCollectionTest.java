@@ -11,6 +11,8 @@ class MapWithCollectionTest {
 
     @Test
     void operations() {
+        // Comment 1
+
         Map<String, Collection<String>> map = new HashMap<>();
 
         map.computeIfAbsent("k1", k -> new ArrayList<>()).add("v1");
