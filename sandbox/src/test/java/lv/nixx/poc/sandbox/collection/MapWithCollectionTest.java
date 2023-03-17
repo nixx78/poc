@@ -16,6 +16,7 @@ class MapWithCollectionTest {
         // Comment 3
         // Comment 4
         // Comment 5
+        // Comment from 'master'
 
         Map<String, Collection<String>> map = new HashMap<>();
 
