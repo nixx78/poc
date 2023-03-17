@@ -11,7 +11,8 @@ class MapWithCollectionTest {
 
     @Test
     void operations() {
-        // Comment 1
+        // Comment 1.Changed
+        // Comment 2
 
         Map<String, Collection<String>> map = new HashMap<>();
 
