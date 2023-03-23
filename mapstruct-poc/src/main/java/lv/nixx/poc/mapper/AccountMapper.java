@@ -19,16 +19,20 @@ public interface AccountMapper {
     AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
 
     @Mapping(target = "transactionCount", expression = "java(accountEntity.getTransactions().size())")
+    @Mapping(target = "accountTypeMapped", source = "accountType", qualifiedByName = "accountTypeMapper", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
     AccountDto accountToDto(AccountEntity accountEntity);
 
     Collection<TransactionDto> transactionToDto(Collection<TransactionEntity> c);
 
-    @Mapping(target = "date", source = "date", qualifiedByName = "dateFormatter")
     TransactionDto transactionToDto(TransactionEntity c);
 
-    @Named("dateFormatter")
-    default Long dateFormatter(Date date) {
+    default Long dateToLongMapper(Date date) {
         return date.getTime();
+    }
+
+    @Named("accountTypeMapper")
+    default String accountTypeMapper(String accountType) {
+        return accountType + ".mapped";
     }
 
 

@@ -11,4 +11,7 @@ public class AccountDto {
     private String id;
     private int transactionCount;
     private Collection<TransactionDto> transactions;
+
+    private String accountTypeMapped;
+
 }

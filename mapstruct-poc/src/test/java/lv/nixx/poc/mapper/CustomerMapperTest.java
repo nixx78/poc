@@ -1,9 +1,8 @@
 package lv.nixx.poc.mapper;
 
-import lv.nixx.poc.mapper.CustomerMapper;
 import lv.nixx.poc.model.dto.CustomerDto;
-import lv.nixx.poc.model.entity.CustomerEntity;
 import lv.nixx.poc.model.dto.CustomerType;
+import lv.nixx.poc.model.entity.CustomerEntity;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -13,9 +12,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
-class CustomerMappingTest {
+class CustomerMapperTest {
 
-    // TODO https://mapstruct.org/
     @Test
     void entityToDtoMappingTest() {
 

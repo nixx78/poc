@@ -10,4 +10,7 @@ import java.util.Collection;
 public class AccountEntity {
     private long id;
     private Collection<TransactionEntity> transactions;
+
+    private String accountType;
+
 }

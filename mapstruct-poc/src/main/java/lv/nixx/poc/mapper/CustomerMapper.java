@@ -29,5 +29,4 @@ public interface CustomerMapper {
     @Mapping(source = "secondName", target = "surname")
     List<CustomerDto> customerToDto(Collection<CustomerEntity> c);
 
-    //TODO https://mapstruct.org/documentation/stable/reference/html/#adding-custom-methods
 }
