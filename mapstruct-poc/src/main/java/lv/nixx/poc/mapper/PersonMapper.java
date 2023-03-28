@@ -3,14 +3,11 @@ package lv.nixx.poc.mapper;
 import lv.nixx.poc.model.dto.PersonDto;
 import lv.nixx.poc.model.entity.PersonEntity;
 import org.mapstruct.*;
-import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDateTime;
 
 @Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface PersonMapper {
-
-    PersonMapper INSTANCE = Mappers.getMapper(PersonMapper.class);
 
     PersonDto map(PersonEntity entity);
 

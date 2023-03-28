@@ -13,4 +13,5 @@ public class TransactionDto {
 
     private Long date;
 
+    private String dateTime;
 }

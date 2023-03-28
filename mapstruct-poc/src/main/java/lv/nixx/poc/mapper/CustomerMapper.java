@@ -16,9 +16,10 @@ public interface CustomerMapper {
 
     CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
 
+    @Mapping(target = "uuid", constant = "UUID.CONST")
     @Mapping(source = "firstName", target = "name")
     @Mapping(source = "secondName", target = "surname")
-    @Mapping(source = "type", target = "customerType")
+    @Mapping(source = "type", target = "customerType", defaultValue = "UNKNOWN")
     CustomerDto customerToDto(CustomerEntity c);
 
     @Mapping(source = "f1", target = "name")

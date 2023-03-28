@@ -24,6 +24,7 @@ public interface AccountMapper {
 
     Collection<TransactionDto> transactionToDto(Collection<TransactionEntity> c);
 
+    @Mapping(target = "dateTime", source = "txnDateTime", dateFormat = "dd.MM.yyyy HH:mm:ss")
     TransactionDto transactionToDto(TransactionEntity c);
 
     default Long dateToLongMapper(Date date) {

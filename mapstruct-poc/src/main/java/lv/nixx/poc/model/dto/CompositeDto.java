@@ -5,12 +5,8 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class CustomerDto {
-
-    private String uuid;
-
-    private long id;
+public class CompositeDto {
     private String name;
     private String surname;
-    private CustomerType customerType;
+    private String accountId;
 }

@@ -3,12 +3,13 @@ package lv.nixx.poc.mapper;
 import lv.nixx.poc.model.dto.PersonDto;
 import lv.nixx.poc.model.entity.PersonEntity;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PersonMapperTest {
 
-    final PersonMapper personMapper = PersonMapper.INSTANCE;
+    final PersonMapper personMapper = Mappers.getMapper(PersonMapper.class);
 
     @Test
     void entityToDtoMappingTest() {

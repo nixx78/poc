@@ -3,6 +3,7 @@ package lv.nixx.poc.model.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -11,5 +12,7 @@ public class TransactionEntity {
     private final long id;
     private final Double amount;
     private Date date;
+
+    private LocalDateTime txnDateTime;
 
 }

@@ -4,33 +4,51 @@ import lv.nixx.poc.model.dto.CustomerDto;
 import lv.nixx.poc.model.dto.CustomerType;
 import lv.nixx.poc.model.entity.CustomerEntity;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerMapperTest {
 
+    private final CustomerMapper customerMapper = Mappers.getMapper(CustomerMapper.class);
+
     @Test
     void entityToDtoMappingTest() {
 
-        CustomerDto customerDto = CustomerMapper.INSTANCE.customerToDto(new CustomerEntity()
+        CustomerDto expectedDto = new CustomerDto()
+                .setId(100L)
+                .setName("FirstName")
+                .setSurname("SecondName")
+                .setCustomerType(CustomerType.VIP)
+                .setUuid("UUID.CONST");
+
+        assertThat(customerMapper.customerToDto(new CustomerEntity()
                 .setId(100L)
                 .setFirstName("FirstName")
                 .setSecondName("SecondName")
                 .setType("VIP")
-        );
+        )).usingRecursiveComparison().isEqualTo(expectedDto);
+    }
 
-        assertAll(
-                () -> assertNotNull(customerDto),
-                () -> assertEquals(100L, customerDto.getId()),
-                () -> assertEquals("FirstName", customerDto.getName()),
-                () -> assertEquals("SecondName", customerDto.getSurname()),
-                () -> assertEquals(CustomerType.VIP, customerDto.getCustomerType())
-        );
+    @Test
+    void entityToDtoWithDefaultTypeMappingTest() {
+
+        CustomerDto expectedDto = new CustomerDto()
+                .setId(100L)
+                .setName("FirstName")
+                .setSurname("SecondName")
+                .setCustomerType(CustomerType.UNKNOWN)
+                .setUuid("UUID.CONST");
+
+        assertThat(customerMapper.customerToDto(new CustomerEntity()
+                .setId(100L)
+                .setFirstName("FirstName")
+                .setSecondName("SecondName")
+        )).usingRecursiveComparison().isEqualTo(expectedDto);
     }
 
     @Test
@@ -66,7 +84,7 @@ class CustomerMapperTest {
                 )
         );
 
-        assertThat(2, equalTo(customerDtos.size()));
+        assertEquals(2, customerDtos.size());
 
         CustomerDto customerDto = customerDtos.get(0);
 

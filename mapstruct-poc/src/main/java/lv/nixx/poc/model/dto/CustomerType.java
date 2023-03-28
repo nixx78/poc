@@ -1,5 +1,5 @@
 package lv.nixx.poc.model.dto;
 
 public enum CustomerType {
-    SIMPLE, VIP, STUDENT
+    SIMPLE, VIP, STUDENT, UNKNOWN
 }
