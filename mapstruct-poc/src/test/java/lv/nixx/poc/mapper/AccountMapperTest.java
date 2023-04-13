@@ -38,6 +38,8 @@ class AccountMapperTest {
                 .setId("1000")
                 .setTransactionCount(3)
                 .setAccountTypeMapped("Type1.mapped")
+                .setAverageAmount(BigDecimal.valueOf(200))
+                .setDescription("1000 - Type1")
                 .setTransactions(List.of(
                         new TransactionDto()
                                 .setId(1)

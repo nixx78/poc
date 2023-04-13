@@ -10,6 +10,7 @@ import org.mapstruct.Named;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.factory.Mappers;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 
@@ -19,7 +20,9 @@ public interface AccountMapper {
     AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
 
     @Mapping(target = "transactionCount", expression = "java(accountEntity.getTransactions().size())")
+    @Mapping(target = "averageAmount", expression = "java(calculateAverage(accountEntity))")
     @Mapping(target = "accountTypeMapped", source = "accountType", qualifiedByName = "accountTypeMapper", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+    @Mapping(target = "description", source = "accountEntity", qualifiedByName = "descriptionCreator")
     AccountDto accountToDto(AccountEntity accountEntity);
 
     Collection<TransactionDto> transactionToDto(Collection<TransactionEntity> c);
@@ -34,6 +37,22 @@ public interface AccountMapper {
     @Named("accountTypeMapper")
     default String accountTypeMapper(String accountType) {
         return accountType + ".mapped";
+    }
+
+    @Named("descriptionCreator")
+    default String descriptionCreator(AccountEntity accountEntity) {
+        return accountEntity.getId() + " - " + accountEntity.getAccountType();
+    }
+
+    default BigDecimal calculateAverage(AccountEntity accountEntity) {
+        Collection<TransactionEntity> txns = accountEntity.getTransactions();
+        if (txns != null && !txns.isEmpty()) {
+            return BigDecimal.valueOf(txns.stream()
+                    .mapToDouble(TransactionEntity::getAmount)
+                    .average()
+                    .orElse(0.0));
+        }
+        return null;
     }
 
 
