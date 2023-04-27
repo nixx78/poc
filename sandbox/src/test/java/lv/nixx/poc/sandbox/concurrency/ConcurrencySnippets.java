@@ -1,13 +1,15 @@
 package lv.nixx.poc.sandbox.concurrency;
 
-import static java.util.concurrent.TimeUnit.*;
-import static org.junit.Assert.*;
+import org.junit.Test;
 
-import java.util.*;
+import java.util.List;
 import java.util.concurrent.*;
 import java.util.stream.IntStream;
 
-import org.junit.Test;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ConcurrencySnippets {
 
@@ -18,18 +20,18 @@ public class ConcurrencySnippets {
         final CyclicBarrier cyclicBarrier = new CyclicBarrier(2, () -> System.out.println("Barrier done!"));
 
         IntStream.of(1000, 100, 200, 300, 500).mapToObj(t -> (Runnable) () -> {
-                    final String tn = Thread.currentThread().getName();
-                    try {
-                        cyclicBarrier.await();
-                        System.out.println("Thread [" + tn + "] will sleep [" + t + "]");
-                        Thread.sleep(t);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                            final String tn = Thread.currentThread().getName();
+                            try {
+                                cyclicBarrier.await();
+                                System.out.println("Thread [" + tn + "] will sleep [" + t + "]");
+                                Thread.sleep(t);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
-                    System.out.println("Thread [" + tn + "] done");
-                }
-        ).map(Thread::new)
+                            System.out.println("Thread [" + tn + "] done");
+                        }
+                ).map(Thread::new)
                 .forEach(Thread::start);
     }
 
@@ -40,17 +42,17 @@ public class ConcurrencySnippets {
         CountDownLatch cd = new CountDownLatch(3);
 
         IntStream.of(1000, 100, 200).mapToObj(t -> (Runnable) () -> {
-                    final String tn = Thread.currentThread().getName();
-                    try {
-                        System.out.println("Thread [" + tn + "] will sleep [" + t + "]");
-                        Thread.sleep(t);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    cd.countDown();
-                    System.out.println("Thread [" + tn + "] done");
-                }
-        ).map(Thread::new)
+                            final String tn = Thread.currentThread().getName();
+                            try {
+                                System.out.println("Thread [" + tn + "] will sleep [" + t + "]");
+                                Thread.sleep(t);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            cd.countDown();
+                            System.out.println("Thread [" + tn + "] done");
+                        }
+                ).map(Thread::new)
                 .forEach(Thread::start);
 
         System.out.println("Waiting for all treads..");
@@ -73,7 +75,8 @@ public class ConcurrencySnippets {
             }
             System.out.println("Hello " + threadName);
         });
-        executor.awaitTermination(6, SECONDS);
+        boolean b = executor.awaitTermination(6, SECONDS);
+        System.out.println("Await termination:" + b);
     }
 
     @Test
@@ -81,7 +84,7 @@ public class ConcurrencySnippets {
 
         ExecutorService exec = Executors.newFixedThreadPool(10);
 
-        List<Callable<String>> lst = Arrays.asList(
+        List<Callable<String>> lst = List.of(
                 new Printer(1),
                 new Printer(2),
                 new Printer(3),
@@ -135,7 +138,7 @@ public class ConcurrencySnippets {
         @Override
         public String call() {
             String s = Thread.currentThread().getName() + ":" + new String(new char[seqLength]).replace("\0", "*");
-            System.out.println(s);
+            System.out.println("Call:" + s);
             return s;
         }
     }

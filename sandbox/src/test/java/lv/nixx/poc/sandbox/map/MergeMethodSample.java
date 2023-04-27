@@ -31,6 +31,10 @@ class MergeMethodSample {
                 () -> assertEquals(LocalDateTime.parse("2023-04-23T12:00:01"), v1.timestamp)
         );
 
+        Wrapper notExistingKey = map.merge("notExistingKey", updatedValue, (existing, newValue) -> new Wrapper(newValue.body, existing.timestamp));
+        System.out.println(notExistingKey);
+
+        System.out.println(map);
     }
 
     @RequiredArgsConstructor

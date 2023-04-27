@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 import static java.lang.System.out;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CalendarSandbox {
 
@@ -35,9 +36,32 @@ class CalendarSandbox {
         out.println(startOfDay + "  - " + endOfDay);
 
         out.println("Start of day +1 hour:" + startOfDay.plusHours(1));
-        out.println("Start of day +15 seconds:" + startOfDay.plus(15, ChronoUnit.SECONDS) );
-        out.println("Start of day -20 minutes:" + startOfDay.minus(20, ChronoUnit.MINUTES) );
+        out.println("Start of day +15 seconds:" + startOfDay.plus(15, ChronoUnit.SECONDS));
+        out.println("Start of day -20 minutes:" + startOfDay.minus(20, ChronoUnit.MINUTES));
     }
 
+    @Test
+    void differenceBetweenTwoDatesCalculation() {
+        assertEquals(5000L, ChronoUnit.MILLIS.between(
+                LocalDateTime.parse("2023-04-12T12:12:12"),
+                LocalDateTime.parse("2023-04-12T12:12:17"))
+        );
+
+        assertEquals(6, ChronoUnit.DAYS.between(
+                LocalDateTime.parse("2023-04-14T12:12:12"),
+                LocalDateTime.parse("2023-04-20T15:12:17"))
+        );
+
+        assertEquals(2, ChronoUnit.MONTHS.between(
+                LocalDateTime.parse("2023-04-14T12:12:12"),
+                LocalDateTime.parse("2023-06-20T15:12:17"))
+        );
+
+        assertEquals(1, ChronoUnit.YEARS.between(
+                LocalDateTime.parse("2023-04-14T12:12:12"),
+                LocalDateTime.parse("2024-05-20T15:12:17"))
+        );
+
+    }
 
 }
