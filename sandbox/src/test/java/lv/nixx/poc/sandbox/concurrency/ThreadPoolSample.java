@@ -8,10 +8,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
 
+//TODO https://engineering.zalando.com/posts/2019/04/how-to-set-an-ideal-thread-pool-size.html
+
 class ThreadPoolSample {
 
     @Test
     void runBatchInThreadPool() {
+
+        int numOfCores = Runtime.getRuntime().availableProcessors();
+        System.out.println("Number of cores: " + numOfCores);
 
         Collection<Request> requestsToExecute = List.of(
                 new Request("request1", 0L),
@@ -31,7 +36,7 @@ class ThreadPoolSample {
         futures.forEach(
                 f -> {
                     try {
-                        responses.add(f.get(500L, TimeUnit.MILLISECONDS));
+                        responses.add(f.get(1000L, TimeUnit.MILLISECONDS));
                     } catch (InterruptedException | RuntimeException | ExecutionException | TimeoutException e) {
                         throw new RuntimeException(e);
                     }

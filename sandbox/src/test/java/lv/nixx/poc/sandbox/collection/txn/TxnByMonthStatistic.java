@@ -26,12 +26,12 @@ public class TxnByMonthStatistic {
     public void createTxnByMonthStatistic() throws ParseException {
 
         Collection<Transaction> txns = new ArrayList<>();
-        txns.add(new Transaction("id", BigDecimal.valueOf(10.10), "ACC1", "GBP", getDate("01.03.2016")));
-        txns.add(new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD", getDate("01.08.2016")));
-        txns.add(new Transaction("id3", BigDecimal.valueOf(1.25), "ACC2", "EUR", getDate("01.10.2016")));
-        txns.add(new Transaction("id3", BigDecimal.valueOf(3.75), "ACC2", "EUR", getDate("03.10.2016")));
-        txns.add(new Transaction("id31", BigDecimal.valueOf(5.8), "ACC2", "USD", getDate("02.10.2016")));
-        txns.add(new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR", getDate("01.12.2016")));
+        txns.add(new Transaction("id", BigDecimal.valueOf(10.10), "ACC1", "GBP", "01.03.2016"));
+        txns.add(new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD", "01.08.2016"));
+        txns.add(new Transaction("id3", BigDecimal.valueOf(1.25), "ACC2", "EUR", "01.10.2016"));
+        txns.add(new Transaction("id3", BigDecimal.valueOf(3.75), "ACC2", "EUR", "03.10.2016"));
+        txns.add(new Transaction("id31", BigDecimal.valueOf(5.8), "ACC2", "USD", "02.10.2016"));
+        txns.add(new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR", "01.12.2016"));
 
         Comparator<String> monthComparator = (d1, d2) -> {
             Integer x1 = Month.valueOf(d1).getValue();

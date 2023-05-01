@@ -13,25 +13,27 @@ public class Transaction implements Comparable<Transaction> {
     private final String currency;
     private final Date lastUpdateDate;
 
-    public Transaction(String id, BigDecimal amount, String account, String currency, Date lastUpdateDate) {
+    public Transaction(String id, BigDecimal amount, String account, String currency, String lastUpdateDate) {
         this.id = id;
         this.amount = amount;
         this.account = account;
         this.currency = currency;
-        this.lastUpdateDate = lastUpdateDate;
-    }
 
-    public Transaction(String id, BigDecimal amount, String account, String currency, String lastUpdateDate) throws ParseException {
-        this.id = id;
-        this.amount = amount;
-        this.account = account;
-        this.currency = currency;
-        this.lastUpdateDate = new SimpleDateFormat("dd.MM.yyyy").parse(lastUpdateDate);
+        if (lastUpdateDate == null) {
+            this.lastUpdateDate = null;
+        } else {
+            try {
+                this.lastUpdateDate = new SimpleDateFormat("dd.MM.yyyy").parse(lastUpdateDate);
+            } catch (ParseException ex) {
+                throw new IllegalArgumentException(ex);
+            }
+        }
     }
 
     public Transaction(String id, BigDecimal amount, String account, String currency) {
-        this(id, amount, account, currency, (Date) null);
+        this(id, amount, account, currency, null);
     }
+
 
     public String getId() {
         return id;
