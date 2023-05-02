@@ -14,6 +14,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.function.Function.identity;
@@ -117,6 +118,22 @@ public class TxnLambdaModification {
 
         assertEquals(4, transactionListByAccount.size());
 
+    }
+
+    @Test
+    public void groupAndSortResult() {
+
+        Map<String, List<Transaction>> collect = sourceTransactions.stream()
+                .collect(groupingBy(Transaction::getAccount,
+                                mapping(Function.identity(),
+                                        collectingAndThen(toList(),
+                                                e -> e.stream().sorted(Comparator.comparing(Transaction::getAmount).reversed())
+                                                        .collect(toList()))
+                                )
+                        )
+                );
+
+        collect.entrySet().forEach(System.out::println);
     }
 
     @Test
