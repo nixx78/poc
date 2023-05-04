@@ -3,7 +3,6 @@ package lv.nixx.poc.sandbox.collection;
 import lv.nixx.poc.domain.Transaction;
 import org.junit.Test;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -404,10 +403,10 @@ public class CollectionPlayground {
         positions.put("id4", 2);
 
         Collection<Transaction> txnSet = new HashSet<>();
-        txnSet.add(new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD"));
-        txnSet.add(new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD"));
-        txnSet.add(new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR"));
-        txnSet.add(new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR"));
+        txnSet.add(new Transaction("id1", 10.10, "ACC1", "USD"));
+        txnSet.add(new Transaction("id2", 20.12, "ACC2", "USD"));
+        txnSet.add(new Transaction("id3", 30.13, "ACC2", "EUR"));
+        txnSet.add(new Transaction("id4", 40.14, "ACC3", "EUR"));
 
         Transaction[] result = new Transaction[txnSet.size()];
 

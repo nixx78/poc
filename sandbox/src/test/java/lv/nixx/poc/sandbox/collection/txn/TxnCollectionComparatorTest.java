@@ -6,11 +6,8 @@ import lv.nixx.poc.domain.TxnHolder;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
@@ -30,16 +27,16 @@ public class TxnCollectionComparatorTest {
         long stime = System.currentTimeMillis();
 
         for (int i = 0; i < updatedCount; i++) {
-            existingTxn.add(new Transaction("id" + i, BigDecimal.valueOf(10.10), "ACC1", "USD", "01.09.2016"));
-            newTxn.add(new Transaction("id" + i, BigDecimal.valueOf(10.10), "ACC2", "USD", "01.09.2016"));
+            existingTxn.add(new Transaction("id" + i, 10.10, "ACC1", "USD", "2016-09-01"));
+            newTxn.add(new Transaction("id" + i, 10.10, "ACC2", "USD", "2016-09-01"));
         }
 
         for (int i = 0; i < newCount; i++) {
-            newTxn.add(new Transaction("nid" + i, BigDecimal.valueOf(10.10), "ACC2", "USD", "01.09.2016"));
+            newTxn.add(new Transaction("nid" + i, 10.10, "ACC2", "USD", "2016-09-01"));
         }
 
         for (int i = 0; i < deletedCount; i++) {
-            existingTxn.add(new Transaction("did" + i, BigDecimal.valueOf(10.10), "ACC2", "USD", "01.09.2016"));
+            existingTxn.add(new Transaction("did" + i, 10.10, "ACC2", "USD", "2016-09-01"));
         }
 
         System.out.println("Existing txn element count: " + existingTxn.size());
@@ -62,15 +59,15 @@ public class TxnCollectionComparatorTest {
     @Test
     public void getChangedRecords() throws ParseException {
         TxnHolder existingTxn = new TxnHolder();
-        existingTxn.add(new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD", "01.09.2016"));
-        existingTxn.add(new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD", "01.09.2016"));
-        existingTxn.add(new Transaction("id4", BigDecimal.valueOf(20.12), "ACC2.DELETED", "USD", "01.09.2016"));
+        existingTxn.add(new Transaction("id1", 10.10, "ACC1", "USD", "2016-09-01"));
+        existingTxn.add(new Transaction("id2", 20.12, "ACC2", "USD", "2016-09-01"));
+        existingTxn.add(new Transaction("id4", 20.12, "ACC2.DELETED", "USD", "2016-09-01"));
 
         TxnHolder newTxn = new TxnHolder();
-        newTxn.add(new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1.CHANGED", "USD", "01.09.2016"));
-        newTxn.add(new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD", "01.08.2016"));
-        newTxn.add(new Transaction("id3", BigDecimal.valueOf(20.12), "ACC3", "USD", "03.09.2016"));
-        newTxn.add(new Transaction("id6", BigDecimal.valueOf(20.12), "ACC3.NEW", "USD", "03.09.2016"));
+        newTxn.add(new Transaction("id1", 10.10, "ACC1.CHANGED", "USD", "2016-09-01"));
+        newTxn.add(new Transaction("id2", 20.12, "ACC2", "USD", "2016-08-01"));
+        newTxn.add(new Transaction("id3", 20.12, "ACC3", "USD", "2016-09-03"));
+        newTxn.add(new Transaction("id6", 20.12, "ACC3.NEW", "USD", "2016-09-03"));
 
         TxnCollectionComparator comparator = new TxnCollectionComparator();
         comparator.compareCollections(existingTxn, newTxn);
@@ -99,9 +96,4 @@ public class TxnCollectionComparatorTest {
         assertEquals(1, deletedRecordsKeys.size());
 
     }
-
-    private Date getDate(String date) throws ParseException {
-        return new SimpleDateFormat("dd.MM.yyyy").parse(date);
-    }
-
 }

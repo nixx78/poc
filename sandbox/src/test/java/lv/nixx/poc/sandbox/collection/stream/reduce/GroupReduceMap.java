@@ -2,20 +2,23 @@ package lv.nixx.poc.sandbox.collection.stream.reduce;
 
 import lombok.ToString;
 import lv.nixx.poc.domain.User;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.reducing;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GroupReduceMap {
+class GroupReduceMap {
 
     @Test
-    public void groupSample() {
+    void groupSample() {
 
         Collection<User> users = List.of(
                 new User(10, "name", "user1"),

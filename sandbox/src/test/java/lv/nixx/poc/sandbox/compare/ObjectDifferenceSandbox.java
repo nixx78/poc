@@ -4,24 +4,22 @@ import lv.nixx.poc.domain.Transaction;
 import org.apache.commons.lang3.builder.DiffBuilder;
 import org.apache.commons.lang3.builder.DiffResult;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.Comparator;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ObjectDifferenceSandbox {
+class ObjectDifferenceSandbox {
 
     @Test
-    public void findDifferenceTest() throws ParseException {
+    void findDifferenceTest() {
 
-        Transaction t1 = new Transaction("id1", BigDecimal.valueOf(10.0), "acc1",
-                "USD", "12.06.2022");
+        Transaction t1 = new Transaction("id1", 10.0, "acc1",
+                "USD", "2022-12-06");
 
-        Transaction t2 = new Transaction("id1", BigDecimal.valueOf(10.1), "acc1",
-                "USD", "13.06.2022");
+        Transaction t2 = new Transaction("id1", 10.1, "acc1",
+                "USD", "2022-12-07");
 
         DiffBuilder<Transaction> db = new DiffBuilder<>(t1, t2, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("id", t1.getId(), t2.getId())
@@ -39,13 +37,13 @@ public class ObjectDifferenceSandbox {
     }
 
     @Test
-    public void compareTest() throws ParseException {
+    void compareTest() {
 
-        Transaction t1 = new Transaction("id1", BigDecimal.valueOf(10.0), "acc1",
-                "USD", "12.06.2022");
+        Transaction t1 = new Transaction("id1", 10.0, "acc1",
+                "USD", "2022-12-06");
 
-        Transaction t2 = new Transaction("id1", BigDecimal.valueOf(10.0), "acc1",
-                "USD", "12.06.2022");
+        Transaction t2 = new Transaction("id1", 10.0, "acc1",
+                "USD", "2022-12-06");
 
         Comparator<Transaction> txnComparator = Comparator.comparing(Transaction::getId)
                 .thenComparing(Transaction::getAmount)
@@ -55,8 +53,8 @@ public class ObjectDifferenceSandbox {
 
         assertEquals(0, txnComparator.compare(t1, t2));
 
-        Transaction t3 = new Transaction("id1", BigDecimal.valueOf(10.1), "acc1",
-                "USD", "12.06.2022");
+        Transaction t3 = new Transaction("id1", 10.1, "acc1",
+                "USD", "2022-12-06");
 
         assertEquals(-1, txnComparator.compare(t1, t3));
     }

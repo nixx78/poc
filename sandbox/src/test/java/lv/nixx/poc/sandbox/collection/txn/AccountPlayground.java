@@ -141,24 +141,24 @@ public class AccountPlayground {
 
     private List<Account> createAccountsWithTransactions() {
         Account acc1 = new Account("AccountID1", List.of(
-                new Transaction("_1txn1", BigDecimal.valueOf(40.00), "AccountID1", "USD"),
-                new Transaction("_1txn2", BigDecimal.valueOf(10.00), "AccountID1", "USD"),
-                new Transaction("_1txn3", BigDecimal.valueOf(34.00), "AccountID1", "USD"),
-                new Transaction("_1txn4", BigDecimal.valueOf(5.00), "AccountID1", "USD")
+                new Transaction("_1txn1", 40.00, "AccountID1", "USD"),
+                new Transaction("_1txn2", 10.00, "AccountID1", "USD"),
+                new Transaction("_1txn3", 34.00, "AccountID1", "USD"),
+                new Transaction("_1txn4", 5.00, "AccountID1", "USD")
         ));
 
 
         Account acc2 = new Account("AccountID2", List.of(
-                new Transaction("_2txn1", BigDecimal.valueOf(100.00), "AccountID2", "EUR"),
-                new Transaction("_2txn2", BigDecimal.valueOf(20.00), "AccountID2", "EUR"),
-                new Transaction("_2txn2", BigDecimal.valueOf(30.00), "AccountID2", "EUR"),
-                new Transaction("_2txn2", BigDecimal.valueOf(10.00), "AccountID2", "EUR")
+                new Transaction("_2txn1", 100.00, "AccountID2", "EUR"),
+                new Transaction("_2txn2", 20.00, "AccountID2", "EUR"),
+                new Transaction("_2txn2", 30.00, "AccountID2", "EUR"),
+                new Transaction("_2txn2", 10.00, "AccountID2", "EUR")
 
         ));
 
 
         Account acc3 = new Account("AccountID3", Collections.singletonList(
-                new Transaction("_3txn1", BigDecimal.valueOf(10.00), "AccountID3", "RUB")
+                new Transaction("_3txn1", 10.00, "AccountID3", "RUB")
         ));
 
         Account acc4 = new Account("AccountID3", (List<Transaction>) null);

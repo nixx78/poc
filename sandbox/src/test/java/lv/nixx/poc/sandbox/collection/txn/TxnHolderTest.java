@@ -4,11 +4,8 @@ import lv.nixx.poc.domain.Transaction;
 import lv.nixx.poc.domain.TxnHolder;
 import org.junit.Test;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,12 +15,12 @@ public class TxnHolderTest {
     public void onlyLatestTxnShouldBeStored() throws ParseException {
 
         TxnHolder th = new TxnHolder();
-        th.add(new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1.CHANGED", "USD", "01.09.2016"));
-        th.add(new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD", "01.08.2016"));
-        th.add(new Transaction("id3", BigDecimal.valueOf(20.12), "ACC3", "USD", "03.09.2016"));
-        th.add(new Transaction("id6", BigDecimal.valueOf(20.12), "ACC3.NEW", "USD", "03.09.2016"));
-        th.add(new Transaction("id3", BigDecimal.valueOf(20.12), "ACC3.CHANGED", "USD", "03.09.2016"));
-        th.add(new Transaction("id3", BigDecimal.valueOf(20.12), "ACC3.CHANGED1", "USD", "03.08.2016"));
+        th.add(new Transaction("id1", 10.10, "ACC1.CHANGED", "USD", "2016-09-01"));
+        th.add(new Transaction("id2", 20.12, "ACC2", "USD", "2016-08-01"));
+        th.add(new Transaction("id3", 20.12, "ACC3", "USD", "2016-09-03"));
+        th.add(new Transaction("id6", 20.12, "ACC3.NEW", "USD", "2016-09-03"));
+        th.add(new Transaction("id3", 20.12, "ACC3.CHANGED", "USD", "2016-09-03"));
+        th.add(new Transaction("id3", 20.12, "ACC3.CHANGED1", "USD", "2016-08-03"));
 
         System.out.println("--- Unique values ---");
         final Collection<Transaction> values = th.getValues();
@@ -40,10 +37,6 @@ public class TxnHolderTest {
             System.out.println(t);
         }
 
-    }
-
-    private Date getDate(String date) throws ParseException {
-        return new SimpleDateFormat("dd.MM.yyyy").parse(date);
     }
 
 }

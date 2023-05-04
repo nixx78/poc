@@ -2,12 +2,14 @@ package lv.nixx.poc.sandbox.calendar;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.math.BigDecimal;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.out;
+import static java.math.BigDecimal.valueOf;
+import static java.math.RoundingMode.HALF_UP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CalendarSandbox {
@@ -62,6 +64,41 @@ class CalendarSandbox {
                 LocalDateTime.parse("2024-05-20T15:12:17"))
         );
 
+    }
+
+    @Test
+    void localDatePeriodSandbox() {
+        LocalDate d1 = LocalDate.parse("2023-05-21");
+        LocalDate d2 = LocalDate.parse("2024-07-20");
+
+        Period p = Period.between(d1, d2);
+
+        out.println("Period:" + p);
+        int years = p.getYears();
+        int days = p.getDays();
+        int months = p.getMonths();
+
+        out.println("Years: " + years);
+        out.println("Months: " + months);
+        out.println("Days: " + days);
+
+        BigDecimal d = valueOf(years).add(valueOf(months).divide(valueOf(12), 3, HALF_UP)).add(valueOf(days).divide(valueOf(365), 3, HALF_UP));
+
+        out.println("Period in decimals:" + d);
+    }
+
+    @Test
+    void durationSandbox() {
+
+        LocalDateTime startLocalDateTime = LocalDateTime.parse("2023-04-12T12:12:12");
+        LocalDateTime endLocalDateTime = LocalDateTime.parse("2025-06-12T14:10:01");
+
+        long millis = Duration.between(startLocalDateTime, endLocalDateTime).toMillis();
+
+        out.println("Days:" + TimeUnit.MILLISECONDS.toDays(millis));
+        out.println("Hours:" + TimeUnit.MILLISECONDS.toHours(millis));
+        out.println("Minutes:" + TimeUnit.MILLISECONDS.toMinutes(millis));
+        out.println("Seconds:" + TimeUnit.MILLISECONDS.toSeconds(millis));
     }
 
 }

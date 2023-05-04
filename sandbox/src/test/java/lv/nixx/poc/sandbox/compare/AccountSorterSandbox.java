@@ -1,10 +1,14 @@
 package lv.nixx.poc.sandbox.compare;
 
-import lv.nixx.poc.domain.*;
+import lv.nixx.poc.domain.Account;
+import lv.nixx.poc.domain.AccountType;
+import lv.nixx.poc.domain.AccountTypeComparator;
+import lv.nixx.poc.domain.Transaction;
 import org.junit.Test;
 
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static lv.nixx.poc.domain.AccountType.*;
@@ -54,27 +58,27 @@ public class AccountSorterSandbox {
     }
 
     private Collection<Account> createAccounts() {
-        Account acc1 = new Account("AccountID1", Collections.singletonList(
-                new Transaction("_1txn1", BigDecimal.valueOf(40.00), "AccountID1", "USD")
+        Account acc1 = new Account("AccountID1", List.of(
+                new Transaction("_1txn1", 40.00, "AccountID1", "USD")
         ), CURRENT);
 
-        Account acc2 = new Account("AccountID2", Arrays.asList(
-                new Transaction("_2txn4", BigDecimal.valueOf(5.00), "AccountID2", "USD"),
-                new Transaction("2txn2", BigDecimal.valueOf(10.00), "AccountID2", "USD"),
-                new Transaction("_2txn4", BigDecimal.valueOf(5.00), "AccountID2", "USD")
+        Account acc2 = new Account("AccountID2", List.of(
+                new Transaction("_2txn4", 5.0, "AccountID2", "USD"),
+                new Transaction("2txn2", 10.0, "AccountID2", "USD"),
+                new Transaction("_2txn4", 5.0, "AccountID2", "USD")
         ), CARD);
 
-        Account acc3 = new Account("AccountID3", Collections.singletonList(
-                new Transaction("_3txn4", BigDecimal.valueOf(5.00), "AccountID2", "USD")
+        Account acc3 = new Account("AccountID3", List.of(
+                new Transaction("_3txn4", 5.0, "AccountID2", "USD")
         ), CARD);
 
-        Account acc4 = new Account("AccountID4", Arrays.asList(
-                new Transaction("_4txn1", BigDecimal.valueOf(40.00), "AccountID4", "USD"),
-                new Transaction("_4txn2", BigDecimal.valueOf(10.00), "AccountID4", "USD"),
-                new Transaction("_4txn4", BigDecimal.valueOf(5.00), "AccountID4", "USD")
+        Account acc4 = new Account("AccountID4", List.of(
+                new Transaction("_4txn1", 40.00, "AccountID4", "USD"),
+                new Transaction("_4txn2", 10.00, "AccountID4", "USD"),
+                new Transaction("_4txn4", 5.00, "AccountID4", "USD")
         ), DEPOSIT);
 
-        return Arrays.asList(acc1, acc2, acc3, acc4);
+        return List.of(acc1, acc2, acc3, acc4);
     }
 
 }

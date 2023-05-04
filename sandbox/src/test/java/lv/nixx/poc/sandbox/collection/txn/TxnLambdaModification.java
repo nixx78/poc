@@ -2,14 +2,14 @@ package lv.nixx.poc.sandbox.collection.txn;
 
 import lombok.AllArgsConstructor;
 import lv.nixx.poc.domain.Transaction;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BinaryOperator;
@@ -19,25 +19,26 @@ import java.util.stream.Collectors;
 
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.*;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TxnLambdaModification {
+class TxnLambdaModification {
 
     Collection<Transaction> sourceTransactions = List.of(
-            new Transaction("id1", BigDecimal.valueOf(10.10), "ACC1", "USD", "21.04.2020"),
-            new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD", "01.05.2020"),
-            new Transaction("id3", BigDecimal.valueOf(30.13), "ACC2", "EUR", "02.05.2020"),
-            new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR", "03.05.2020"),
-            new Transaction("id5", BigDecimal.valueOf(50.14), "ACC3", "EUR", "01.06.2020"),
-            new Transaction("id6", BigDecimal.valueOf(60.14), "ACC3", "USD", "01.06.2020"),
-            new Transaction("id6", BigDecimal.valueOf(70.14), "ACC3", "USD", "01.06.2020"),
-            new Transaction("id7", BigDecimal.valueOf(100.00), "ACC4", "GBP", "01.06.2020"),
-            new Transaction("id8", BigDecimal.valueOf(1.27), "ACC4", "GBP", "01.06.2020")
+            new Transaction("id1", 10.10, "ACC1", "USD", "2020-04-21"),
+            new Transaction("id2", 20.12, "ACC2", "USD", "2020-05-01"),
+            new Transaction("id3", 30.13, "ACC2", "EUR", "2020-05-02"),
+            new Transaction("id4", 40.14, "ACC3", "EUR", "2020-05-03"),
+            new Transaction("id5", 50.14, "ACC3", "EUR", "2020-06-01"),
+            new Transaction("id6", 60.14, "ACC3", "USD", "2020-06-01"),
+            new Transaction("id6", 70.14, "ACC3", "USD", "2020-06-01"),
+            new Transaction("id7", 100.00, "ACC4", "GBP", "2020-06-01"),
+            new Transaction("id8", 1.27, "ACC4", "GBP", "2020-06-01")
     );
 
-    @Test
 
-    public void functionCall() {
+    @Test
+    void functionCall() {
         TxnProcessor myProcessor = new TxnProcessor();
         // ссылка на метод, у конкретного экземпляра класса
         sourceTransactions.forEach(myProcessor::simpleMethod);
@@ -49,14 +50,14 @@ public class TxnLambdaModification {
         sourceTransactions.forEach(mp);
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void transformCollectionToMapDuplicateKey() {
-        sourceTransactions.stream().collect(toMap(Transaction::getId, identity()));
+    @Test
+    void transformCollectionToMapDuplicateKey() {
+        assertThrows(IllegalStateException.class, () -> sourceTransactions.stream().collect(toMap(Transaction::getId, identity())));
     }
 
 
     @Test
-    public void createAccountHolder() {
+    void createAccountHolder() {
         AccountHolder ah = new AccountHolder();
         sourceTransactions.forEach(ah::process);
 
@@ -64,7 +65,7 @@ public class TxnLambdaModification {
     }
 
     @Test
-    public void getUniqueAccounts() {
+    void getUniqueAccounts() {
 
         final Set<String> accounts = sourceTransactions.stream()
                 .map(Transaction::getAccount)
@@ -75,7 +76,7 @@ public class TxnLambdaModification {
     }
 
     @Test
-    public void stringWithUniqueCurrencies() {
+    void stringWithUniqueCurrencies() {
         String c = sourceTransactions.stream()
                 .map(Transaction::getCurrency)
                 .distinct()
@@ -85,7 +86,7 @@ public class TxnLambdaModification {
     }
 
     @Test
-    public void transformCollectionToIdList() {
+    void transformCollectionToIdList() {
         List<String> array = sourceTransactions.stream()
                 .filter(t -> t.getCurrency().equalsIgnoreCase("USD"))
                 .map(Transaction::getId).toList();
@@ -137,7 +138,7 @@ public class TxnLambdaModification {
     }
 
     @Test
-    public void groupByAccountAmountList() {
+    void groupByAccountAmountList() {
         Map<String, List<Amount>> c =
                 sourceTransactions.stream()
                         .collect(groupingBy(Transaction::getAccount,
@@ -150,7 +151,7 @@ public class TxnLambdaModification {
     }
 
     @Test
-    public void groupByCurrencyAccountStatistic() {
+    void groupByCurrencyAccountStatistic() {
         Map<String, Map<String, Long>> m1 = sourceTransactions.stream()
                 .collect(groupingBy(Transaction::getCurrency,
                                 groupingBy(Transaction::getAccount, Collectors.counting())
@@ -184,7 +185,7 @@ public class TxnLambdaModification {
     }
 
     @Test
-    public void mapCollection() {
+    void mapCollection() {
 
         Collection<Amount> c =
                 sourceTransactions.stream()
@@ -197,7 +198,7 @@ public class TxnLambdaModification {
     }
 
     @Test
-    public void totalAmountByCurrency() {
+    void totalAmountByCurrency() {
 
         // Двойная групировка и сумма для каждой из груп
         Map<String, Map<String, BigDecimal>> amountByAccount = sourceTransactions.stream()
@@ -213,7 +214,7 @@ public class TxnLambdaModification {
     }
 
     @Test
-    public void txnCountByCurrency() {
+    void txnCountByCurrency() {
 
         Map<String, Long> r = sourceTransactions.stream()
                 .collect(
@@ -228,7 +229,7 @@ public class TxnLambdaModification {
 
 
     @Test
-    public void partitioningBySample() {
+    void partitioningBySample() {
         final Map<Boolean, List<Transaction>> c = sourceTransactions.stream()
                 .collect(partitioningBy(t -> t.getCurrency().equals("USD")));
 
@@ -236,7 +237,7 @@ public class TxnLambdaModification {
     }
 
     @Test
-    public void groupByAccountWithCondition() {
+    void groupByAccountWithCondition() {
         Map<String, List<Transaction>> collect =
                 sourceTransactions.stream()
                         .collect(
@@ -249,7 +250,7 @@ public class TxnLambdaModification {
     }
 
     @Test
-    public void txnCreateFromString() throws Exception {
+    void txnCreateFromString() throws Exception {
         String txnString =
                 """
                             id1, 10.30, ACC1, USD
@@ -272,8 +273,7 @@ public class TxnLambdaModification {
     }
 
     @Test
-
-    public void sortTxnBySeveralParams() {
+    void sortTxnBySeveralParams() {
         final Comparator<Transaction> c =
                 Comparator.comparing(Transaction::getAccount).reversed()
                         .thenComparing(Transaction::getCurrency)
@@ -288,7 +288,7 @@ public class TxnLambdaModification {
     }
 
     @Test
-    public void mapWithIncrementTest() {
+    void mapWithIncrementTest() {
         final AtomicInteger i = new AtomicInteger(0);
         Map<Integer, Transaction> map = sourceTransactions.stream()
                 .collect(Collectors.toMap(t -> i.incrementAndGet(), identity()));
@@ -297,7 +297,7 @@ public class TxnLambdaModification {
     }
 
     @Test
-    public void top3TransactionTest() {
+    void top3TransactionTest() {
 
         List<Transaction> top3Txns =
                 sourceTransactions.stream()
@@ -311,7 +311,7 @@ public class TxnLambdaModification {
     }
 
     @Test
-    public void topTransactionByAccountTest() {
+    void topTransactionByAccountTest() {
 
         Map<String, Transaction> maxBy = sourceTransactions.stream()
                 .collect(
@@ -324,9 +324,9 @@ public class TxnLambdaModification {
     }
 
     @Test
-    public void getTransactionsByPeriod() {
+    void getTransactionsByPeriod() {
 
-        DateFilter df = new DateFilter(getDate("01.05.2020"), getDate("20.05.2020"));
+        DateFilter df = new DateFilter(LocalDate.parse("2020-06-01"), LocalDate.parse("2023-05-20"));
 
         final List<Transaction> datesInRange = sourceTransactions.stream()
                 .filter(t -> df.isInRange(t.getLastUpdateDate()))
@@ -334,12 +334,11 @@ public class TxnLambdaModification {
 
         System.out.println(datesInRange);
 
-        assertEquals(3, datesInRange.size());
-
+        assertEquals(5, datesInRange.size());
     }
 
     @Test
-    public void peekTest() {
+    void peekTest() {
 
         List<String> lst = sourceTransactions.stream()
                 .map(Transaction::getId).peek(t -> System.out.println(t + "V"))
@@ -355,25 +354,16 @@ public class TxnLambdaModification {
         return source;
     }
 
-    private BigDecimal parse(String amount) {
+    private Double parse(String amount) {
         DecimalFormat df = new DecimalFormat();
         df.setParseBigDecimal(true);
         try {
-            return (BigDecimal) df.parse(amount.trim());
+            return df.parse(amount.trim()).doubleValue();
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return BigDecimal.ZERO;
-    }
-
-
-    private Date getDate(String date) {
-        try {
-            return new SimpleDateFormat("dd.MM.yyyy").parse(date);
-        } catch (ParseException e) {
-            throw new IllegalArgumentException(e);
-        }
+        return 0.0;
     }
 
     static class AccountHolder {
@@ -473,11 +463,11 @@ public class TxnLambdaModification {
 
     @AllArgsConstructor
     static class DateFilter {
-        final Date dateFrom;
-        final Date dateTo;
+        final LocalDate dateFrom;
+        final LocalDate dateTo;
 
-        boolean isInRange(Date date) {
-            return (date.compareTo(dateFrom) >= 0 && date.compareTo(dateTo) <= 0);
+        boolean isInRange(LocalDate date) {
+            return (!date.isBefore(dateFrom) && !date.isAfter(dateTo));
         }
 
     }

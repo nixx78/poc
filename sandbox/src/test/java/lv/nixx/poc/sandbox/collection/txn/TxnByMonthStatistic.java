@@ -6,11 +6,7 @@ import lv.nixx.poc.domain.Transaction;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.Month;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
@@ -23,15 +19,16 @@ import static java.util.stream.Collectors.groupingBy;
 public class TxnByMonthStatistic {
 
     @Test
-    public void createTxnByMonthStatistic() throws ParseException {
+    public void createTxnByMonthStatistic() {
 
-        Collection<Transaction> txns = new ArrayList<>();
-        txns.add(new Transaction("id", BigDecimal.valueOf(10.10), "ACC1", "GBP", "01.03.2016"));
-        txns.add(new Transaction("id2", BigDecimal.valueOf(20.12), "ACC2", "USD", "01.08.2016"));
-        txns.add(new Transaction("id3", BigDecimal.valueOf(1.25), "ACC2", "EUR", "01.10.2016"));
-        txns.add(new Transaction("id3", BigDecimal.valueOf(3.75), "ACC2", "EUR", "03.10.2016"));
-        txns.add(new Transaction("id31", BigDecimal.valueOf(5.8), "ACC2", "USD", "02.10.2016"));
-        txns.add(new Transaction("id4", BigDecimal.valueOf(40.14), "ACC3", "EUR", "01.12.2016"));
+        Collection<Transaction> txns = List.of(
+                new Transaction("id", 10.10, "ACC1", "GBP", "2016-03-01"),
+                new Transaction("id2", 20.12, "ACC2", "USD", "2016-08-01"),
+                new Transaction("id3", 1.25, "ACC2", "EUR", "2016-10-01"),
+                new Transaction("id3", 3.75, "ACC2", "EUR", "2016-10-03"),
+                new Transaction("id31", 5.8, "ACC2", "USD", "2016-02-10"),
+                new Transaction("id4", 40.14, "ACC3", "EUR", "2016-12-01")
+        );
 
         Comparator<String> monthComparator = (d1, d2) -> {
             Integer x1 = Month.valueOf(d1).getValue();
@@ -39,16 +36,16 @@ public class TxnByMonthStatistic {
             return x1.compareTo(x2);
         };
 
-        Map<String, Map<String, StatisticAccamullator>> res = txns.stream()
+        Map<String, Map<String, StatisticAccumulator>> res = txns.stream()
                 .collect(
-                        groupingBy(t -> getMonthFromDate(t.getLastUpdateDate()), () -> new TreeMap<>(monthComparator),
+                        groupingBy(t -> t.getLastUpdateDate().getMonth().toString(), () -> new TreeMap<>(monthComparator),
                                 groupingBy(Transaction::getCurrency, new StaticsticCollector()))
                 );
 
-        for (Map.Entry<String, Map<String, StatisticAccamullator>> e : res.entrySet()) {
+        for (Map.Entry<String, Map<String, StatisticAccumulator>> e : res.entrySet()) {
             String month = e.getKey();
             System.out.println(month);
-            for (Map.Entry<String, StatisticAccamullator> monthStats : e.getValue().entrySet()) {
+            for (Map.Entry<String, StatisticAccumulator> monthStats : e.getValue().entrySet()) {
                 String currency = monthStats.getKey();
                 System.out.println("\t" + currency + "\n \t\t" + monthStats.getValue());
             }
@@ -57,34 +54,25 @@ public class TxnByMonthStatistic {
 
     }
 
-    private String getMonthFromDate(Date date) {
-        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        return localDate.getMonth().toString();
-    }
-
-    private Date getDate(String date) throws ParseException {
-        return new SimpleDateFormat("dd.MM.yyyy").parse(date);
-    }
-
-    static class StaticsticCollector implements Collector<Transaction, StatisticAccamullator, StatisticAccamullator> {
+    static class StaticsticCollector implements Collector<Transaction, StatisticAccumulator, StatisticAccumulator> {
 
         @Override
-        public Supplier<StatisticAccamullator> supplier() {
-            return StatisticAccamullator::new;
+        public Supplier<StatisticAccumulator> supplier() {
+            return StatisticAccumulator::new;
         }
 
         @Override
-        public BiConsumer<StatisticAccamullator, Transaction> accumulator() {
-            return StatisticAccamullator::increaseByTransaction;
+        public BiConsumer<StatisticAccumulator, Transaction> accumulator() {
+            return StatisticAccumulator::increaseByTransaction;
         }
 
         @Override
-        public BinaryOperator<StatisticAccamullator> combiner() {
+        public BinaryOperator<StatisticAccumulator> combiner() {
             return (s1, s2) -> s1;
         }
 
         @Override
-        public Function<StatisticAccamullator, StatisticAccamullator> finisher() {
+        public Function<StatisticAccumulator, StatisticAccumulator> finisher() {
             return Function.identity();
         }
 
@@ -97,7 +85,7 @@ public class TxnByMonthStatistic {
 
     @NoArgsConstructor
     @ToString
-    static class StatisticAccamullator {
+    static class StatisticAccumulator {
         private String currency;
         private int txnCount = 0;
         private BigDecimal amount = BigDecimal.ZERO;

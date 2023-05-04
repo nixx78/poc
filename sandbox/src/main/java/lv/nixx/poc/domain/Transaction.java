@@ -1,9 +1,7 @@
 package lv.nixx.poc.domain;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Transaction implements Comparable<Transaction> {
 
@@ -11,26 +9,22 @@ public class Transaction implements Comparable<Transaction> {
     private final BigDecimal amount;
     private final String account;
     private final String currency;
-    private final Date lastUpdateDate;
+    private final LocalDate lastUpdateDate;
 
-    public Transaction(String id, BigDecimal amount, String account, String currency, String lastUpdateDate) {
+    public Transaction(String id, Double amount, String account, String currency, String lastUpdateDate) {
         this.id = id;
-        this.amount = amount;
+        this.amount = BigDecimal.valueOf(amount);
         this.account = account;
         this.currency = currency;
 
         if (lastUpdateDate == null) {
             this.lastUpdateDate = null;
         } else {
-            try {
-                this.lastUpdateDate = new SimpleDateFormat("dd.MM.yyyy").parse(lastUpdateDate);
-            } catch (ParseException ex) {
-                throw new IllegalArgumentException(ex);
-            }
+            this.lastUpdateDate = LocalDate.parse(lastUpdateDate);
         }
     }
 
-    public Transaction(String id, BigDecimal amount, String account, String currency) {
+    public Transaction(String id, Double amount, String account, String currency) {
         this(id, amount, account, currency, null);
     }
 
@@ -51,7 +45,7 @@ public class Transaction implements Comparable<Transaction> {
         return currency;
     }
 
-    public Date getLastUpdateDate() {
+    public LocalDate getLastUpdateDate() {
         return lastUpdateDate;
     }
 

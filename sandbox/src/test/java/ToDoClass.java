@@ -6,4 +6,10 @@
 //TODO Примеры curl запросов, примеры с автоматизацией цепочки вызовов (sh - скрипт).
 
 public class ToDoClass {
+
+//    void test() {
+//        synchronized () {
+//
+//        }
+//    }
 }
