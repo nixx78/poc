@@ -1,4 +1,4 @@
-package lv.nixx.poc.sandbox.optional;
+package lv.nixx.poc.sandbox.core.optional;
 
 import lombok.Getter;
 import org.junit.Test;

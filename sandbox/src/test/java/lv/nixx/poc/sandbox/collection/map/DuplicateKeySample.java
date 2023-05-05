@@ -1,4 +1,4 @@
-package lv.nixx.poc.sandbox.map;
+package lv.nixx.poc.sandbox.collection.map;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package lv.nixx.poc.sandbox.sorting.range;
+package lv.nixx.poc.sandbox.collection.sorting.range;
 
 import lombok.Getter;
 import org.apache.commons.lang3.Range;

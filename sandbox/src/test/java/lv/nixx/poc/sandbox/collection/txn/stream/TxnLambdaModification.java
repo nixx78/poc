@@ -1,4 +1,4 @@
-package lv.nixx.poc.sandbox.collection.txn;
+package lv.nixx.poc.sandbox.collection.txn.stream;
 
 import lombok.AllArgsConstructor;
 import lv.nixx.poc.domain.Transaction;

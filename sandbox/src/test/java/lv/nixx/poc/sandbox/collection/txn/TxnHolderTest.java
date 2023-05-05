@@ -4,7 +4,6 @@ import lv.nixx.poc.domain.Transaction;
 import lv.nixx.poc.domain.TxnHolder;
 import org.junit.Test;
 
-import java.text.ParseException;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
@@ -12,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 public class TxnHolderTest {
 
     @Test
-    public void onlyLatestTxnShouldBeStored() throws ParseException {
+    public void onlyLatestTxnShouldBeStored() {
 
         TxnHolder th = new TxnHolder();
         th.add(new Transaction("id1", 10.10, "ACC1.CHANGED", "USD", "2016-09-01"));

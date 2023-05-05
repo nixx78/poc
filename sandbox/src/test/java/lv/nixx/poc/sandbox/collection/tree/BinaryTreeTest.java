@@ -1,4 +1,4 @@
-package lv.nixx.poc.sandbox.tree;
+package lv.nixx.poc.sandbox.collection.tree;
 
 import lv.nixx.poc.tree.BinaryTree;
 import lv.nixx.poc.tree.TreePrinter;

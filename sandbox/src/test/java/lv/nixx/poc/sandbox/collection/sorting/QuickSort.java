@@ -1,4 +1,4 @@
-package lv.nixx.poc.sandbox.sorting;
+package lv.nixx.poc.sandbox.collection.sorting;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package lv.nixx.poc.sandbox.singleton;
+package lv.nixx.poc.domain;
 
 public class Person {
 	

@@ -1,4 +1,4 @@
-package lv.nixx.poc.sandbox.collection.txn.statistic;
+package lv.nixx.poc.sandbox.collection.txn.stream.statistic;
 
 import lombok.Getter;
 import lv.nixx.poc.domain.Transaction;

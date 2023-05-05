@@ -1,4 +1,4 @@
-package lv.nixx.poc.sandbox.collection.txn;
+package lv.nixx.poc.sandbox.collection.txn.stream.statistic;
 
 import lombok.NoArgsConstructor;
 import lombok.ToString;

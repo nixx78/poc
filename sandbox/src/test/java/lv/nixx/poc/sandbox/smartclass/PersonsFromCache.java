@@ -1,6 +1,6 @@
 package lv.nixx.poc.sandbox.smartclass;
 
-import lv.nixx.poc.sandbox.singleton.Person;
+import lv.nixx.poc.domain.Person;
 
 import java.util.Collection;
 import java.util.Collections;

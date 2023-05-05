@@ -1,15 +1,15 @@
-package lv.nixx.poc.sandbox.sorting.range;
+package lv.nixx.poc.sandbox.collection.sorting.range;
 
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-import static lv.nixx.poc.sandbox.sorting.range.BelongsToRange.RangeLabel.*;
+import static lv.nixx.poc.sandbox.collection.sorting.range.BelongsToRange.RangeLabel.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BelongsToRange {
 
@@ -23,11 +23,11 @@ class BelongsToRange {
         rangeMap.put(3000, ExtraHigh);
 
         assertAll(
-                () -> assertEquals(Low, rangeMap.floorEntry(2).getValue()),
-                () -> assertEquals(Low, rangeMap.floorEntry(500).getValue()),
-                () -> assertEquals(Low, rangeMap.floorEntry(999).getValue()),
-                () -> assertEquals(Medium, rangeMap.floorEntry(1000).getValue()),
-                () -> assertEquals(ExtraHigh, rangeMap.floorEntry(7777).getValue())
+                () -> Assertions.assertEquals(Low, rangeMap.floorEntry(2).getValue()),
+                () -> Assertions.assertEquals(Low, rangeMap.floorEntry(500).getValue()),
+                () -> Assertions.assertEquals(Low, rangeMap.floorEntry(999).getValue()),
+                () -> Assertions.assertEquals(Medium, rangeMap.floorEntry(1000).getValue()),
+                () -> Assertions.assertEquals(ExtraHigh, rangeMap.floorEntry(7777).getValue())
         );
 
     }
@@ -42,12 +42,12 @@ class BelongsToRange {
         rangeMap.put(4000, new Range(5000, High));
 
         assertAll(
-                () -> assertEquals(OutOfRange, getLabel(rangeMap, 0)),
-                () -> assertEquals(Low, getLabel(rangeMap, 500)),
-                () -> assertEquals(OutOfRange, getLabel(rangeMap, 1200)),
-                () -> assertEquals(Medium, getLabel(rangeMap, 1500)),
-                () -> assertEquals(High, getLabel(rangeMap, 4500)),
-                () -> assertEquals(OutOfRange, getLabel(rangeMap, 7777))
+                () -> Assertions.assertEquals(OutOfRange, getLabel(rangeMap, 0)),
+                () -> Assertions.assertEquals(Low, getLabel(rangeMap, 500)),
+                () -> Assertions.assertEquals(OutOfRange, getLabel(rangeMap, 1200)),
+                () -> Assertions.assertEquals(Medium, getLabel(rangeMap, 1500)),
+                () -> Assertions.assertEquals(High, getLabel(rangeMap, 4500)),
+                () -> Assertions.assertEquals(OutOfRange, getLabel(rangeMap, 7777))
         );
     }
 

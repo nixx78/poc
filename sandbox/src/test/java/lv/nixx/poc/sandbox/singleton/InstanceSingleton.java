@@ -1,9 +1,10 @@
 package lv.nixx.poc.sandbox.singleton;
 
+import lv.nixx.poc.domain.Person;
+import org.junit.Test;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.junit.Test;
 
 public class InstanceSingleton {
 

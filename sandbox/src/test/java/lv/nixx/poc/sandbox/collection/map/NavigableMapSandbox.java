@@ -1,4 +1,4 @@
-package lv.nixx.poc.sandbox.map;
+package lv.nixx.poc.sandbox.collection.map;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;

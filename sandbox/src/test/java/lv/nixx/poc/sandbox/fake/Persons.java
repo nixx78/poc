@@ -1,6 +1,6 @@
 package lv.nixx.poc.sandbox.fake;
 
-import lv.nixx.poc.sandbox.singleton.Person;
+import lv.nixx.poc.domain.Person;
 
 import java.util.Collection;
 import java.util.Collections;
