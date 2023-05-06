@@ -66,16 +66,17 @@ public class ConcurrencySnippets {
     public void executorSampleWithAwaitTermination() throws InterruptedException {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> {
-            System.out.println("HelloStarted");
             String threadName = Thread.currentThread().getName();
+            System.out.println("HelloStarted:" + threadName);
+
             try {
-                MILLISECONDS.sleep(2000);
+                MILLISECONDS.sleep(20000);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println("Hello " + threadName);
+            System.out.printf("Hello processed in thread %s", threadName);
         });
-        boolean b = executor.awaitTermination(6, SECONDS);
+        boolean b = executor.awaitTermination(1, SECONDS);
         System.out.println("Await termination:" + b);
     }
 
