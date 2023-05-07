@@ -1,9 +1,10 @@
 package lv.nixx.poc.sandbox.collection;
 
 import lv.nixx.poc.domain.Transaction;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -12,13 +13,12 @@ import java.util.stream.Stream;
 
 import static java.util.Collections.disjoint;
 import static java.util.Collections.emptyList;
-import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class CollectionPlayground {
+class CollectionPlayground {
 
     @Test
-    public void effectiveFinal() {
+    void effectiveFinal() {
         int[] numbers = {1, 2, 20, 40, 77};
         int threshold = 10;
 		/* If we try to set: threshold = 20; 
@@ -30,7 +30,7 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void putTest() {
+    void putTest() {
         Map<String, Object> map = new HashMap<>();
         String key = "key";
         String key1 = "key1";
@@ -54,7 +54,7 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void listTraverse() {
+    void listTraverse() {
         List<String> lst = new ArrayList<>(Arrays.asList("10", "20", null, "30", "40"));
 
         lst.removeIf(s -> s != null && s.equals("30"));
@@ -62,7 +62,7 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void linkedListVsArrayList() {
+    void linkedListVsArrayList() {
         long st = System.currentTimeMillis();
         final int iterationCount = 100000;
 
@@ -89,7 +89,7 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void mapTest() {
+    void mapTest() {
 
         ConcurrentHashMap<String, ReentrantReadWriteLock> m = new ConcurrentHashMap<>();
         ReentrantReadWriteLock lock = m.computeIfAbsent("cusip.settleDate", t -> new ReentrantReadWriteLock());
@@ -103,7 +103,7 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void linkedHashSet() {
+    void linkedHashSet() {
         Set<String> s1 = new LinkedHashSet<>();
         s1.add("1");
         s1.add("8");
@@ -113,15 +113,16 @@ public class CollectionPlayground {
         s1.forEach(System.out::println);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void nullToTreeSet() {
+    @Test
+    void nullToTreeSet() {
         Set<String> set = new TreeSet<>();
         set.add("s1");
-        set.add(null);
+
+        assertThrows(NullPointerException.class, () -> set.add(null));
     }
 
     @Test
-    public void nullToLinkedHashSet() {
+    void nullToLinkedHashSet() {
         // Тоже самое будет работать с HashSet
         Set<String> set = new LinkedHashSet<>();
         set.add("s1");
@@ -133,7 +134,7 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void linkedHashMap() {
+    void linkedHashMap() {
         Map<String, String> map = new LinkedHashMap<>();
         map.put("key1", "value1");
         map.put(null, null);
@@ -146,34 +147,35 @@ public class CollectionPlayground {
         map.entrySet().forEach(System.out::println);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void addNullToTreeMap() {
+    @Test
+    void addNullToTreeMap() {
         Map<String, String> map = new TreeMap<>();
         map.put("key1", "value1");
-        map.put(null, "nullValue");
+
+        assertThrows(NullPointerException.class, () -> map.put(null, "nullValue"));
     }
 
     @Test
-    public void sumOfElement() {
+    void sumOfElement() {
         Collection<Integer> c = Arrays.asList(1, 2, 3, 4, 5, 6, 7);
         final Optional<Integer> sum = c.stream().reduce(Integer::sum);
         assertEquals(Integer.valueOf(28), sum.get());
     }
 
     @Test
-    public void collectionDisjoint() {
+    void collectionDisjoint() {
         // Коллекции должны быть отсортированы
         // Возвращает true - если нет общих элементов
         assertAll(
-                () -> assertTrue("Collections not contains common elements", disjoint(List.of("1", "2", "3"), List.of("4", "5", "6"))),
-                () -> assertFalse("Collections contains common elements", disjoint(List.of("1", "2", "3"), List.of("1", "2", "4", "5", "6"))),
-                () -> assertTrue("Collections not contains common elements", disjoint(emptyList(), List.of("4", "5", "6"))),
-                () -> assertTrue("Collections not contains common elements", disjoint(List.of("1", "2", "3"), emptyList()))
+                () -> assertTrue(disjoint(List.of("1", "2", "3"), List.of("4", "5", "6")), "Collections not contains common elements"),
+                () -> assertFalse(disjoint(List.of("1", "2", "3"), List.of("1", "2", "4", "5", "6")), "Collections contains common elements"),
+                () -> assertTrue(disjoint(emptyList(), List.of("4", "5", "6")), "Collections not contains common elements"),
+                () -> assertTrue(disjoint(List.of("1", "2", "3"), emptyList()), "Collections not contains common elements")
         );
     }
 
     @Test
-    public void arrayStreamProcessing() {
+    void arrayStreamProcessing() {
         int[] intArray = new int[]{5, 99, 60, 12, 7, 5, 100, 777};
 
         final int[] res = Arrays.stream(intArray)
@@ -186,7 +188,7 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void remove() {
+    void remove() {
         Collection<String> old = List.of("1", "2", "3");
         Collection<String> changed = List.of("4", "2", "3");
 
@@ -197,7 +199,7 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void findCommonElementInCollection() {
+    void findCommonElementInCollection() {
 
         Collection<String> collectionOne = new ArrayList<>(List.of("1", "2", "3"));
         // common elements in two collections
@@ -211,7 +213,7 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void computeIfPresent() {
+    void computeIfPresent() {
 
         Map<Integer, String> map = new HashMap<>();
         map.put(1, "One");
@@ -225,7 +227,7 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void computeAtomicInteger() {
+    void computeAtomicInteger() {
 
         Map<String, AtomicInteger> map = new HashMap<>();
         map.put("One", new AtomicInteger(1));
@@ -238,7 +240,7 @@ public class CollectionPlayground {
 
 
     @Test
-    public void createCharacterStatistic() {
+    void createCharacterStatistic() {
         String text = "aaaBBbbCC11233546556";
 
         Collection<Character> collection = new ArrayList<>();
@@ -258,7 +260,7 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void createCharacterStatisticGroup() {
+    void createCharacterStatisticGroup() {
         String text = "aaaBBbbCC11233546556";
         Collection<Character> collection = new ArrayList<>();
         for (Character c : text.toCharArray()) {
@@ -274,7 +276,7 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void theLongestWord_CollectMethod() {
+    void theLongestWord_CollectMethod() {
         List<String> str = Arrays.asList("123", "1", "12", "12345");
 
         final Optional<String> collect = str.stream().max(Comparator.comparingInt(String::length));
@@ -284,7 +286,7 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void peekTest() {
+    void peekTest() {
 
         List<String> str = Arrays.asList("10", "1", "12", "22");
 
@@ -301,14 +303,14 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void listToString() {
+    void listToString() {
         Collection<String> lst = Arrays.asList("1", "2", "3");
         final String c = lst.stream().collect(Collectors.joining(",", "<e>", "</e>"));
         System.out.println(c);
     }
 
     @Test
-    public void computeIfAbsent() {
+    void computeIfAbsent() {
 
         Map<String, String> map = new HashMap<>();
 
@@ -322,7 +324,7 @@ public class CollectionPlayground {
 
 
     @Test
-    public void theLongestWord_ReduceMethod() {
+    void theLongestWord_ReduceMethod() {
         List<String> str = Arrays.asList("123", "1", "12", "12345");
 
         final Optional<String> collect = str.stream().reduce((t, u) -> t.length() > u.length() ? t : u);
@@ -332,7 +334,7 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void initArray() {
+    void initArray() {
         int[] a = new int[100];
         Arrays.parallelSetAll(a, i -> i);
 
@@ -343,7 +345,7 @@ public class CollectionPlayground {
 
 
     @Test
-    public void findMissing() {
+    void findMissing() {
         int[] a = new int[]{1, 2, 5, 3, 2, 1, 3};
 
         final int r = Arrays.stream(a).reduce(0, (x, y) -> x ^ y);
@@ -351,13 +353,13 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void sumOfObject() {
+    void sumOfObject() {
         final int sum = Stream.of(1, 2, 3, 4, 5).reduce(0, Integer::sum);
         assertEquals(15, sum);
     }
 
     @Test
-    public void hashedMapModification() {
+    void hashedMapModification() {
 
         Map<String, String> map = new ConcurrentHashMap<>();
         map.put("V1", "V1");
@@ -375,7 +377,7 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void listMapping() {
+    void listMapping() {
 
         Collection<String> origs = Arrays.asList("1", "2", "3");
         Map<String, String> map = new HashMap<>();
@@ -394,7 +396,20 @@ public class CollectionPlayground {
     }
 
     @Test
-    public void sortByList() {
+    void arrayBlockingQueueSample() {
+
+        Collection<String> abq = new ArrayBlockingQueue<>(3);
+        abq.add("1");
+        abq.add("2");
+        abq.add("3");
+
+        IllegalStateException e = assertThrows(IllegalStateException.class, () -> abq.add("1"));
+        assertEquals("Queue full", e.getMessage());
+    }
+
+
+    @Test
+    void sortByList() {
 
         Map<String, Integer> positions = new HashMap<>();
         positions.put("id1", 3);

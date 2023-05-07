@@ -3,6 +3,8 @@ package lv.nixx.poc.sandbox.concurrency;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,18 +18,18 @@ class ExecutorServiceSamples {
 
     // Лучше установить для пула потоков свое имя, это помогает при DEBUG / Support
     final ThreadFactory threadFactory = new ThreadFactoryBuilder()
-            .setNameFormat("MyRequestPool-%d")
+            .setNameFormat("MyRequestPool#%d")
             .setDaemon(true)
             .build();
 
     private final ExecutorService pool = Executors.newFixedThreadPool(3, threadFactory);
-    private final Collection<Request> requestsToExecute = List.of(
-            new Request("request1", 0L),
-            new Request("request2", 100L),
-            new Request("request3", 1000L),
-            new Request("request4", 10L),
-            new Request("request5", 30L),
-            new Request("request6", 50L)
+    private final List<Request> requestsToExecute = List.of(
+            new Request("req1", "request1", 0L),
+            new Request("req2", "request2", 100L),
+            new Request("req3", "request3", 1000L),
+            new Request("req4", "request4", 10L),
+            new Request("req5", "request5", 30L),
+            new Request("req6", "request6", 50L)
     );
 
     @Test
@@ -58,15 +60,21 @@ class ExecutorServiceSamples {
     @Test
     void invokeAllSample() throws InterruptedException {
 
-        List<Future<String>> futures = pool.invokeAll(requestsToExecute, 1000, TimeUnit.MILLISECONDS);
+        List<Future<String>> futures = pool.invokeAll(requestsToExecute, 500, TimeUnit.MILLISECONDS);
 
         Collection<String> responses = new ArrayList<>(requestsToExecute.size());
         futures.forEach(
                 f -> {
                     try {
-                        responses.add(f.get(10L, TimeUnit.MILLISECONDS));
-                    } catch (InterruptedException | RuntimeException | ExecutionException | TimeoutException e) {
-                        throw new RuntimeException(e);
+                        if (f.isDone()) {
+                            responses.add(f.get(10L, TimeUnit.MILLISECONDS));
+                        } else {
+                            System.err.println("Future: " + f + " not done");
+                        }
+
+                    } catch (InterruptedException | CancellationException | ExecutionException | TimeoutException e) {
+                        System.err.println("Exception during get:" + e);
+                        e.printStackTrace();
                     }
                 }
         );
@@ -85,19 +93,49 @@ class ExecutorServiceSamples {
         }
     }
 
+    @Test
+    void shutdownNowSample() {
+        requestsToExecute.forEach(pool::submit);
+        List<Runnable> notExecuted = pool.shutdownNow();
+
+        System.out.println("Not executed tasks:");
+        notExecuted.forEach(System.out::println);
+    }
+
+    @Test
+    public void completableFutureTest() {
+        //TODO Implement this sample
+        CompletableFuture<Request> requestCompletableFuture = CompletableFuture.supplyAsync(() -> requestsToExecute.get(0), pool);
+
+    }
+
+
     @RequiredArgsConstructor
     static class Request implements Callable<String> {
+
+        private static final Logger log = LoggerFactory.getLogger(ExecutorServiceSamples.class);
+
+        private final String id;
 
         private final String request;
         private final long delay;
 
         @Override
         public String call() throws Exception {
-            long stTime = System.currentTimeMillis();
-            TimeUnit.MILLISECONDS.sleep(delay);
-            String s = "[" + request + "] processed by:" + Thread.currentThread().getName() + " time:" + (System.currentTimeMillis() - stTime);
-            System.out.println("Call: " + s);
-            return s;
+            final Thread currentThread = Thread.currentThread();
+            final String oldName = currentThread.getName();
+
+            String prefix = oldName.substring(0, oldName.indexOf("#"));
+            currentThread.setName(prefix + "#Process-" + id);
+            try {
+                long stTime = System.currentTimeMillis();
+                TimeUnit.MILLISECONDS.sleep(delay);
+                String s = "[" + request + "] processed by Thread:" + Thread.currentThread().getName() + " time:" + (System.currentTimeMillis() - stTime);
+                log.info("Call: {}", s);
+                return s;
+            } finally {
+                currentThread.setName(oldName);
+            }
         }
     }
 
