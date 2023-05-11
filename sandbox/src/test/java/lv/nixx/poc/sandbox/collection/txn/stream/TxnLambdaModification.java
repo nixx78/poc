@@ -347,6 +347,17 @@ class TxnLambdaModification {
         System.out.println(lst);
     }
 
+    @Test
+    void groupWithoutEmptyCheck() {
+
+        Map<String, List<Transaction>> grouped = sourceTransactions.stream()
+                .filter(t -> t.getAmount().compareTo(BigDecimal.valueOf(100)) >= 0)
+                .collect(groupingBy(Transaction::getAccount));
+
+        // В этом случае, не создаются Entry c пустыми коллекциями
+        grouped.entrySet().forEach(System.out::println);
+    }
+
     private String[] removeSpaces(String[] source) {
         for (int i = 0; i < source.length; i++) {
             source[i] = source[i].trim();
