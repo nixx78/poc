@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.*;
 import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TxnLambdaModification {
@@ -356,6 +357,35 @@ class TxnLambdaModification {
 
         // В этом случае, не создаются Entry c пустыми коллекциями
         grouped.entrySet().forEach(System.out::println);
+
+        assertEquals(1, grouped.size());
+    }
+
+    @Test
+    void findAndMapResult() {
+
+        // В зависимости от того, найдена запись или нет, формируем разные строки ответа
+        Function<String, String> expressionToTest = acc -> sourceTransactions.stream()
+                .filter(t -> t.getAccount().equalsIgnoreCase(acc))
+                .min(Comparator.comparing(Transaction::getAmount))
+                .map(t -> "Found, id:" + t.getId() + " amount: " + t.getAmount())
+                .orElse("Not Found");
+
+        assertAll(
+                () -> assertEquals("Not Found", expressionToTest.apply("NOT_EXISTS")),
+                () -> assertEquals("Found, id:id4 amount: 40.14", expressionToTest.apply("ACC3"))
+        );
+
+        // Идея похожая, только если запись не найдена - кидаем Exception
+        Function<String, String> f1 = acc -> sourceTransactions.stream()
+                .filter(t -> t.getAccount().equalsIgnoreCase(acc))
+                .min(Comparator.comparing(Transaction::getAmount))
+                .map(t -> "Found, id:" + t.getId() + " amount: " + t.getAmount())
+                .orElseThrow(() -> new IllegalArgumentException("Account: " + acc + " not found"));
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> f1.apply("NOT_EXISTS"));
+        assertEquals("Account: NOT_EXISTS not found", e.getMessage());
+
     }
 
     private String[] removeSpaces(String[] source) {
