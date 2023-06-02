@@ -60,6 +60,23 @@ public class PredicateSandbox {
     }
 
     @Test
+    public void predicateForKeyWithLike() {
+
+        IMap<String, String> m = hazelcastInstance.getMap("mapForKeyPredicates");
+
+        m.putAll(
+                Map.of(
+                        "key1.XXX", "Value1",
+                        "key2.XXX", "Value2",
+                        "key3.YYY", "Value3"
+                )
+        );
+        Predicate<String, String> sql = Predicates.sql("__key LIKE '%XXX'");
+
+        assertThat(m.values(sql), containsInAnyOrder("Value1", "Value2"));
+    }
+
+    @Test
     public void sqlPredicateTest() {
         executeFilter("state[any]==null", 2, 1, 4, 3);
         executeFilter("state[any]==st1", 5);
@@ -136,7 +153,7 @@ public class PredicateSandbox {
     }
 
 
-    private void executeFilter(String sqlPredicate, Integer... ids) {
+    private void executeFilter(String sqlPredicate, Integer... expectedIds) {
 
         List<Integer> f = personMap.values(Predicates.sql(sqlPredicate))
                 .stream()
@@ -145,9 +162,9 @@ public class PredicateSandbox {
                         Collectors.toList()
                 );
 
-        System.out.println("Expected: " + Arrays.toString(ids) + " actual: " + f);
+        System.out.println("Expected: " + List.of(expectedIds) + " actual: " + f);
 
-        assertThat(f, containsInAnyOrder(ids));
+        assertThat(f, containsInAnyOrder(expectedIds));
     }
 
 }
