@@ -101,4 +101,33 @@ class CalendarSandbox {
         out.println("Seconds:" + TimeUnit.MILLISECONDS.toSeconds(millis));
     }
 
+    @Test
+    void zonedDateTimeSandbox() {
+        /*
+        User1 time zone UTC+3, user2 time zone UTC-5
+        In DB store date as UTC (toInstant)
+         */
+
+        String user1Time = "2023-07-04T12:00:00";
+
+        ZoneId user1Zone = ZoneId.of("Europe/Riga");
+        ZonedDateTime parsed = LocalDateTime.parse(user1Time).atZone(user1Zone);
+
+        System.out.println("1. 'User1' booked a meeting according to his time zone at: " + parsed);
+
+        Instant instant = parsed.toInstant();
+
+        // Invitation (instant) is stored in the database
+        System.out.println("2. 'User1' meeting time saved in database as UTC equivalent: " + instant);
+
+        ZoneId user2Zone = ZoneId.of("US/Central");
+
+        ZonedDateTime user2Time = ZonedDateTime.ofInstant(instant, user2Zone);
+
+        System.out.println("3. 'User2' meeting will be at: " + user2Time);
+
+        System.out.println("4. 'User1' is checking the meeting time: " + ZonedDateTime
+                .ofInstant(instant, user1Zone));
+    }
+
 }
