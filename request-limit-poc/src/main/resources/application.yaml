@@ -1,0 +1,29 @@
+server.servlet:
+  contextPath: /RateLimiterPoC
+
+management:
+  endpoint:
+    health:
+      show-details: ALWAYS
+  health:
+    ratelimiters:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+resilience4j.ratelimiter:
+  instances:
+    simpleRequest:
+      limitForPeriod: 2
+      limitRefreshPeriod: 60s
+      timeoutDuration: 100ms
+      registerHealthIndicator: true
+      eventConsumerBufferSize: 10
+    adminRequest:
+      limitForPeriod: 20
+      limitRefreshPeriod: 60s
+      timeoutDuration: 100ms
+      registerHealthIndicator: true
+      eventConsumerBufferSize: 10
