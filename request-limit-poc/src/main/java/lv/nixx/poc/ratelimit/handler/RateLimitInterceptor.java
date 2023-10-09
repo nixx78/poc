@@ -1,4 +1,4 @@
-package lv.nixx.poc.ratelimit;
+package lv.nixx.poc.ratelimit.handler;
 
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.ConsumptionProbe;

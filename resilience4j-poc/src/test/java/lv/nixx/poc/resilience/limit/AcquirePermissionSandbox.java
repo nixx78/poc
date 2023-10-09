@@ -19,15 +19,24 @@ public class AcquirePermissionSandbox {
             .limitForPeriod(2)
             .build();
 
-    private final RateLimiter rateLimiter = RateLimiterRegistry.of(config).rateLimiter("externalSystemLimiter");
+    private final RateLimiter rateLimiter;
+
+    {
+        RateLimiterRegistry rateLimiterRegistry = RateLimiterRegistry.of(config);
+        rateLimiter = rateLimiterRegistry.rateLimiter("externalSystemLimiter");
+    }
 
     @Test
     void acquirePermission() {
 
+        RateLimiter.EventPublisher eventPublisher = rateLimiter
+                .getEventPublisher();
+
+        eventPublisher.onEvent(System.out::println);
+
         process(10);
         process(20);
         process(30);
-
     }
 
     private void process(int data) {
