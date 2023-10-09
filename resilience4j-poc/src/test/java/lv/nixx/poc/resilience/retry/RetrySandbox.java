@@ -1,4 +1,4 @@
-package lv.nixx.poc.resilience;
+package lv.nixx.poc.resilience.retry;
 
 import io.github.resilience4j.retry.Retry;
 import io.github.resilience4j.retry.RetryConfig;
