@@ -1,0 +1,21 @@
+version: '3.3'
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    container_name: Common_Config_POC_DB
+    environment:
+      MYSQL_DATABASE: db-config-poc
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - common_proj_db:/var/lib/mysql
+
+volumes:
+  common_proj_db:
