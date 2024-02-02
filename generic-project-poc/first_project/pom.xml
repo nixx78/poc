@@ -22,11 +22,16 @@
 
     <dependencies>
 
-
         <dependency>
             <groupId>lv.nixx.poc</groupId>
             <artifactId>commons-proj</artifactId>
             <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast</artifactId>
+            <version>5.3.1</version>
         </dependency>
 
         <dependency>

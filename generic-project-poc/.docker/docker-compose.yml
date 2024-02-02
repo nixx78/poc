@@ -1,11 +1,12 @@
-version: '3.3'
+version: '3.8'
+name: generic-proj
 services:
-  db:
+  alpha_db:
     image: mysql:8.0
     restart: always
-    container_name: Common_Config_POC_DB
+    container_name: AlphaDB
     environment:
-      MYSQL_DATABASE: db-config-poc
+      MYSQL_DATABASE: alpha
       MYSQL_USER: user
       MYSQL_PASSWORD: password
       MYSQL_ROOT_PASSWORD: password
@@ -15,7 +16,37 @@ services:
     expose:
       - '3306'
     volumes:
-      - common_proj_db:/var/lib/mysql
+      - common_proj_db:/var/lib/mysql1
+
+  beta_db:
+    image: mysql:8.0
+    restart: always
+    container_name: BetaDB
+    environment:
+      MYSQL_DATABASE: beta
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3307:3306'
+    expose:
+      - '3307'
+    volumes:
+      - common_proj_db:/var/lib/mysql2
+
+  hazelcast:
+    image: hazelcast/hazelcast:5.3.0
+    ports:
+    - "5701:5701"
+
+  management-center:
+    image: hazelcast/management-center:5.3.0
+    ports:
+    - "7777:8080"
+    environment:
+    - MC_DEFAULT_CLUSTER=dev
+    - MC_DEFAULT_CLUSTER_MEMBERS=hazelcast
 
 volumes:
   common_proj_db:
