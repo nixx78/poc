@@ -1,9 +1,10 @@
 package lv.nixx.poc.first;
 
-import lv.nixx.poc.common.config.amq.AMQConfig;
+import lv.nixx.poc.common.config.amq.AMQ;
 import lv.nixx.poc.common.config.db.AlphaDB;
 import lv.nixx.poc.common.config.hazelcast.Hazelcast5;
-import lv.nixx.poc.common.config.ws.WebSocketWithAMQConfig;
+import lv.nixx.poc.common.config.ldap.LDAP;
+import lv.nixx.poc.common.config.ws.WebSocketWithAMQ;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -11,8 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @AlphaDB
 @Hazelcast5
-@WebSocketWithAMQConfig
-@AMQConfig
+@WebSocketWithAMQ
+@AMQ
+@LDAP
 public class AppRunner {
 
     public static void main(String[] args) {
