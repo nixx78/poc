@@ -11,4 +11,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Import({AlphaConfigImporter.class})
 public @interface AlphaDB {
+
+    String prefix = "alpha";
+
+    boolean jpaSupport() default true;
+
+    String dataSource = prefix + "DataSource";
+    String entityManagerFactory = prefix + "EntityManagerFactory";
+    String transactionManager = prefix + "TransactionManager";
+
 }

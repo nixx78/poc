@@ -1,4 +1,4 @@
-package lv.nixx.poc.common.config.security;
+package lv.nixx.poc.common.security;
 
 import org.springframework.context.annotation.Import;
 

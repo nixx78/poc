@@ -8,7 +8,7 @@ class AlphaConfigImporter implements ImportSelector {
     @Override
     public String[] selectImports(@NonNull AnnotationMetadata metadata) {
         return new String[]{
-                "lv.nixx.poc.common.config.db.AlphaDBConfig"
+                AlphaDBConfig.class.getCanonicalName()
         };
     }
 

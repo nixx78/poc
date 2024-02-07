@@ -10,7 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 
-@AlphaDB
+@AlphaDB(jpaSupport = false)
+
 @Hazelcast5
 @WebSocketWithAMQ
 @AMQ

@@ -11,4 +11,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Import({BetaConfigImporter.class})
 public @interface BetaDB {
+
+    String prefix = "beta";
+
+    boolean jpaSupport() default true;
+
+    String dataSource = prefix + "DataSource";
+    String entityManagerFactory = prefix + "EntityManagerFactory";
+
+    String transactionManager = prefix + "TransactionManager";
+
 }

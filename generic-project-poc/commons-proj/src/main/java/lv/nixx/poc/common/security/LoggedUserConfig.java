@@ -1,4 +1,4 @@
-package lv.nixx.poc.common.config.security;
+package lv.nixx.poc.common.security;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.core.annotations.RouterOperation;
