@@ -1,6 +1,8 @@
 package lv.nixx.poc.common.config.db;
 
 import jakarta.persistence.EntityManagerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
@@ -13,6 +15,8 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 
 abstract class AbstractDBConfig {
+
+    private static final Logger log = LoggerFactory.getLogger(AbstractDBConfig.class);
 
     private final String initFileName;
     private final String ddlAuto;
@@ -60,6 +64,8 @@ abstract class AbstractDBConfig {
         properties.put("hibernate.hbm2ddl.auto", ddlAuto);
 
         em.setJpaPropertyMap(properties);
+
+        log.info("Entity manager factory for [{}] created", prefix);
 
         return em;
     }
