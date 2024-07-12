@@ -5,8 +5,11 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toMap;
 import static lv.nixx.poc.sandbox.events.PositionSandbox.Tier.*;
 
 public class PositionSandbox {
@@ -28,6 +31,21 @@ public class PositionSandbox {
         postingModels.processEvent(new PostingEvent("Pos2", BigDecimal.valueOf(05.01)));
         System.out.println("====================");
         postingModels.processEvent(new PostingEvent("Pos3", BigDecimal.valueOf(100.00)));
+    }
+
+    @Test
+    public void groupAndMap() {
+
+        Map<String, Map<Tier, Posting>> collect = List.of(
+                        new Posting("Pos1", BigDecimal.valueOf(10.00), Tier1),
+                        new Posting("Pos1", BigDecimal.valueOf(11.00), Tier2),
+                        new Posting("Pos2", BigDecimal.valueOf(20.00), Tier2),
+                        new Posting("Pos3", BigDecimal.valueOf(30.00), Tier2),
+                        new Posting("Pos4", BigDecimal.valueOf(40.00), Tier3)
+                ).stream()
+                .collect(groupingBy(Posting::getPos, toMap(Posting::getTier, Function.identity())));
+
+        System.out.println(collect);
     }
 
     @Setter
@@ -70,7 +88,7 @@ public class PositionSandbox {
             Map<Tier, BigDecimal> balanceByTier = postings.values()
                     .stream()
                     .collect(
-                            Collectors.groupingBy(Posting::getTier,
+                            groupingBy(Posting::getTier,
                                     Collectors.reducing(BigDecimal.ZERO, Posting::getBalance, BigDecimal::add)
                             )
                     );
