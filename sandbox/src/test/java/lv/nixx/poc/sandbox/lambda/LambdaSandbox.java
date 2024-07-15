@@ -2,9 +2,16 @@ package lv.nixx.poc.sandbox.lambda;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LambdaSandbox {
@@ -53,9 +60,23 @@ class LambdaSandbox {
     }
 
     @Test
+    void supplierSample() {
+        assertThat(addToCollection(ArrayList::new, "V1", "V2", "V3")).isEqualTo(List.of("V1", "V2", "V3"));
+        assertThat(addToCollection(ArrayList::new, 1, 2, 3)).isEqualTo(List.of(1, 2, 3));
+    }
+
+    @SafeVarargs
+    private <T> Collection<T> addToCollection(Supplier<Collection<T>> c, T... value) {
+        Collection<T> ts = c.get();
+        ts.addAll(Stream.of(value).toList());
+
+        return ts;
+    }
+
+    @Test
     void biFunctionSample() {
-        BiFunction<String, Integer, String> bi = (s, i) -> s + ":" + i;
-        assertEquals("Text:777", bi.apply("Text", 777));
+        BiFunction<BigDecimal, Integer, String> bi = (b, i) -> b + ":" + i;
+        assertEquals("100:777", bi.apply(BigDecimal.valueOf(100), 777));
     }
 
     private String send(String v) {
