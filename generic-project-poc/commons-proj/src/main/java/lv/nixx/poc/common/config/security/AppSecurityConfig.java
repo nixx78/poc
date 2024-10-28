@@ -1,4 +1,4 @@
-package lv.nixx.poc.common.config.properties;
+package lv.nixx.poc.common.config.security;
 
 import org.springframework.context.annotation.Import;
 
@@ -9,6 +9,9 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import({GenericPropertyConfig.class})
-public @interface EnableGenericProperties {
+@Import({AppSecurityConfigImporter.class})
+public @interface AppSecurityConfig {
+
+    boolean loadUserInfoController() default true;
+
 }
