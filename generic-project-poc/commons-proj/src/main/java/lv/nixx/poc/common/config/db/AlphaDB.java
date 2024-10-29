@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import({AlphaConfigImporter.class})
+@Import({AlphaDBConfig.class})
 public @interface AlphaDB {
 
     String prefix = "alpha";

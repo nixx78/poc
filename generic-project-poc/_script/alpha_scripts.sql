@@ -1,12 +1,24 @@
-insert into ALPHA_TABLE (ALPHA_ID, ALPHA_STRING) Values
-(1, 'A1'),
-(2, 'A2'),
-(3, 'A3');
+create table if not exists ALPHA_TABLE_ONE(
+    ID int auto_increment primary key,
+    MESSAGE  varchar(20) not null,
+    CREATED_AT timestamp default current_timestamp
+);
 
-insert into SIGMA_TABLE (SIGMA_ID, SIGMA_STRING) Values
-(1, 'S1'),
-(2, 'S2'),
-(3, 'S3');
+create table if not exists ALPHA_TABLE_TWO(
+    ID int auto_increment primary key,
+    MESSAGE  varchar(20) not null,
+    CREATED_AT timestamp default current_timestamp
+);
 
-select * from ALPHA_TABLE;
-select * from SIGMA_TABLE;
+insert into ALPHA_TABLE_ONE (MESSAGE) Values
+('A1_ONE'),
+('A2_ONE'),
+('A3_ONE');
+
+insert into ALPHA_TABLE_TWO (MESSAGE) Values
+('A1_TWO'),
+('A2_TWO'),
+('A3_TWO');
+
+select * from ALPHA_TABLE_ONE;
+select * from ALPHA_TABLE_TWO;

@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import({BetaConfigImporter.class})
+@Import({BetaDBConfig.class})
 public @interface BetaDB {
 
     String prefix = "beta";
