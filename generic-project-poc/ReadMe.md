@@ -15,10 +15,12 @@
 
 
 ## Docker
+При помощи docker создаются следующие артефакты
 
 ### Database
-* alpha_db
-* beta_db
+Пользователь и таблицы с данными инициализируются скриптами
+* AlphaDB
+* BetaDb
  
 ### Hazelcast
 Hazelcast Management-center: http://localhost:7777/

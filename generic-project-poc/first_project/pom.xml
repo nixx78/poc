@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>lv.nixx.poc</groupId>
-    <artifactId>fist_project</artifactId>
+    <artifactId>FistProject</artifactId>
     <version>1.0.0</version>
     <packaging>war</packaging>
 
