@@ -17,7 +17,6 @@ services:
     volumes:
       - common_proj_db:/var/lib/mysql1
       - ./mysql-init-alpha:/docker-entrypoint-initdb.d
-      -
   beta_db:
     image: mysql:8.0
     restart: always
