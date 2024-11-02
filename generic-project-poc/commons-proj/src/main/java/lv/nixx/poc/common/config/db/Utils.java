@@ -10,6 +10,7 @@ import java.util.Map;
 public class Utils {
 
     public static boolean loadJPABeans(ListableBeanFactory beanFactory, Class<? extends Annotation> annotationType) {
+
         if (beanFactory != null) {
             Map<String, Object> beansWithAnnotation = beanFactory.getBeansWithAnnotation(annotationType);
 

@@ -1,5 +1,6 @@
-package lv.nixx.poc.common.config.db;
+package lv.nixx.poc.common.config.db.v1;
 
+import lv.nixx.poc.common.config.db.Utils;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
@@ -31,15 +32,15 @@ class BetaDBConfig extends AbstractDBConfig {
     @Bean(name = BetaDB.entityManagerFactory)
     @Override
     @Conditional(BetaDBCondition.class)
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        return super.entityManagerFactory();
+    public LocalContainerEntityManagerFactoryBean createEntityManagerFactory() {
+        return super.createEntityManagerFactory();
     }
 
     @Bean(name = BetaDB.transactionManager)
     @Override
     @Conditional(BetaDBCondition.class)
-    public PlatformTransactionManager transactionManager() {
-        return super.transactionManager();
+    public PlatformTransactionManager createTransactionManager() {
+        return super.createTransactionManager();
     }
 
     static class BetaDBCondition implements Condition {

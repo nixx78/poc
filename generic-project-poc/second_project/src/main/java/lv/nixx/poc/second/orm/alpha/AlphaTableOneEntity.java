@@ -1,12 +1,12 @@
-package lv.nixx.poc.second.orm.beta;
+package lv.nixx.poc.second.orm.alpha;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "BETA_TABLE", schema = "BETA")
+@Table(name = "ALPHA_TABLE_ONE", schema = "ALPHA")
 @Data
-public class BetaEntity {
+public class AlphaTableOneEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

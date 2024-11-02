@@ -1,6 +1,7 @@
-package lv.nixx.poc.common.config.db;
+package lv.nixx.poc.common.config.db.v1;
 
 import jakarta.persistence.EntityManagerFactory;
+import lv.nixx.poc.common.config.db.SQLScriptUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -32,6 +33,7 @@ abstract class AbstractDBConfig {
         this.prefix = prefix;
         this.applicationContext = applicationContext;
         this.initFileName = env.getProperty("db." + prefix + ".init-file");
+
         this.packagesToScan = env.getProperty("db." + prefix + ".packages.to.scan", String[].class);
 
         this.ddlAuto = env.getProperty("hibernate.hbm2ddl.auto", "validate");
@@ -47,7 +49,7 @@ abstract class AbstractDBConfig {
         return dataSource;
     }
 
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+    public LocalContainerEntityManagerFactoryBean createEntityManagerFactory(
     ) {
         DataSource dataSource = applicationContext.getBean(prefix + "DataSource", DataSource.class);
 
@@ -55,6 +57,7 @@ abstract class AbstractDBConfig {
         em.setDataSource(dataSource);
         if (packagesToScan != null) {
             em.setPackagesToScan(packagesToScan);
+            log.info("For data source [{}] scan packages {}", prefix, packagesToScan);
         }
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -70,7 +73,7 @@ abstract class AbstractDBConfig {
         return em;
     }
 
-    public PlatformTransactionManager transactionManager() {
+    public PlatformTransactionManager createTransactionManager() {
         EntityManagerFactory f = applicationContext.getBean(prefix + "EntityManagerFactory", EntityManagerFactory.class);
         return new JpaTransactionManager(f);
     }

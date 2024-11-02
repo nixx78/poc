@@ -1,6 +1,6 @@
 package lv.nixx.poc.first.service;
 
-import lv.nixx.poc.common.config.db.AlphaDB;
+import lv.nixx.poc.common.config.db.v1.AlphaDB;
 import lv.nixx.poc.first.model.AlphaDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;

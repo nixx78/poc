@@ -1,5 +1,6 @@
-package lv.nixx.poc.common.config.db;
+package lv.nixx.poc.common.config.db.v1;
 
+import lv.nixx.poc.common.config.db.Utils;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
@@ -29,19 +30,19 @@ class AlphaDBConfig extends AbstractDBConfig {
     }
 
     @Bean(name = AlphaDB.entityManagerFactory)
-    @Conditional(AlphaDBCondition.class)
+    @Conditional(AlphaDBJPACondition.class)
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        return super.entityManagerFactory();
+        return super.createEntityManagerFactory();
     }
 
     @Bean(name = AlphaDB.transactionManager)
-    @Conditional(AlphaDBCondition.class)
+    @Conditional(AlphaDBJPACondition.class)
     public PlatformTransactionManager transactionManager() {
-        return super.transactionManager();
+        return super.createTransactionManager();
     }
 
 
-    static class AlphaDBCondition implements Condition {
+    static class AlphaDBJPACondition implements Condition {
 
         @Override
         public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {

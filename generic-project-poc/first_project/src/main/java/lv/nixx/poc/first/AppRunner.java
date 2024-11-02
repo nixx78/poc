@@ -1,7 +1,7 @@
 package lv.nixx.poc.first;
 
 import lv.nixx.poc.common.config.amq.AMQ;
-import lv.nixx.poc.common.config.db.AlphaDB;
+import lv.nixx.poc.common.config.db.v1.AlphaDB;
 import lv.nixx.poc.common.config.hazelcast.Hazelcast5;
 import lv.nixx.poc.common.config.ldap.LDAP;
 import lv.nixx.poc.common.config.security.AppSecurityConfig;

@@ -1,4 +1,4 @@
-package lv.nixx.poc.common.config.db;
+package lv.nixx.poc.common.config.db.v1;
 
 import org.springframework.context.annotation.Import;
 

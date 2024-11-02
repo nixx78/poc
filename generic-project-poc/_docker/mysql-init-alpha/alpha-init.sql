@@ -1,11 +1,11 @@
-SELECT 'Alpha user creation';
+SELECT '"alpha_user" user creation';
 CREATE USER IF NOT EXISTS 'alpha_user'@'%' IDENTIFIED BY 'alpha';
 
-SELECT 'Set alpha user permission';
+SELECT 'Set "alpha_user" permission';
 GRANT ALL PRIVILEGES ON alpha.* TO 'alpha_user'@'%';
 
 FLUSH PRIVILEGES;
-SELECT 'User created';
+SELECT '"alpha_user" created';
 
 create table if not exists ALPHA_TABLE_ONE(
     ID int auto_increment primary key,
