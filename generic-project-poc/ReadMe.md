@@ -30,7 +30,6 @@ Hazelcast Management-center: http://localhost:7777/
 ## ToDo
 * commons-proj -> config-commons ?
 
-* packagesToScan -> move to Annotations or to Java code (specific to project)
 * createHealthIndicator -> Annotation property
 * @LoggedUserController -> добавить настройку для контроля списка полей, который будет возвращать /service/login, настройка URL
 * Аннотация, которая подключает настройки общие для всех проектов: @EnableCommonProperties -> загрузить из common.properties
