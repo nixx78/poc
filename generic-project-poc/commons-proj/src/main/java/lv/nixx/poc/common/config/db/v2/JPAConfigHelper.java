@@ -13,11 +13,11 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 import java.util.HashMap;
 
-class JPAConfigHelper {
+public class JPAConfigHelper {
 
     private final static Logger log = LoggerFactory.getLogger(JPAConfigHelper.class);
 
-    static LocalContainerEntityManagerFactoryBean createEntityManagerFactory(ApplicationContext applicationContext, String prefix, String[] packagesToScan) {
+    public static LocalContainerEntityManagerFactoryBean createEntityManagerFactory(ApplicationContext applicationContext, String prefix, String[] packagesToScan) {
         DataSource dataSource = applicationContext.getBean(prefix + "DataSource", DataSource.class);
 
         Environment environment = applicationContext.getEnvironment();
@@ -35,16 +35,20 @@ class JPAConfigHelper {
         em.setJpaVendorAdapter(vendorAdapter);
 
         HashMap<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", environment.getProperty("db.alpha.hbm2ddl.auto", "validate"));
+
+        String defaultHbmDll = environment.getProperty("hbm2ddl.auto.default", "XXX");
+        String hbm2ddl = environment.getProperty("db." + prefix + ".hbm2ddl.auto", defaultHbmDll);
+
+        properties.put("hibernate.hbm2ddl.auto", hbm2ddl);
 
         em.setJpaPropertyMap(properties);
 
-        log.info("Entity manager factory for [{}] created, persistence unit [{}]", prefix, em.getPersistenceUnitName());
+        log.info("Entity manager factory for [{}] created, persistence unit [{}] hbm2ddl [{}]", prefix, em.getPersistenceUnitName(), hbm2ddl);
 
         return em;
     }
 
-    static PlatformTransactionManager createTransactionManager(ApplicationContext applicationContext, String prefix) {
+    public static PlatformTransactionManager createTransactionManager(ApplicationContext applicationContext, String prefix) {
         EntityManagerFactory f = applicationContext.getBean(prefix + "EntityManagerFactory", EntityManagerFactory.class);
 
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager(f);
