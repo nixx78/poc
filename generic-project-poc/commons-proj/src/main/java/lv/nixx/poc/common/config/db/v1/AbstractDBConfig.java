@@ -32,7 +32,7 @@ abstract class AbstractDBConfig {
 
         this.prefix = prefix;
         this.applicationContext = applicationContext;
-        this.initFileName = env.getProperty("db." + prefix + ".init-file");
+        this.initFileName = env.getProperty("db." + prefix + ".init-script");
 
         this.packagesToScan = env.getProperty("db." + prefix + ".packages.to.scan", String[].class);
 

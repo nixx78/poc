@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Getter
-public class AlphaDTO {
+public class DataDTO {
     private Long id;
     private String value;
     private LocalDateTime timestamp;

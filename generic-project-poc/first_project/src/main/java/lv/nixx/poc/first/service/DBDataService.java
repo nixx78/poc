@@ -1,7 +1,7 @@
 package lv.nixx.poc.first.service;
 
 import lv.nixx.poc.common.config.db.v1.AlphaDB;
-import lv.nixx.poc.first.model.AlphaDTO;
+import lv.nixx.poc.first.model.DataDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -19,15 +19,15 @@ public class DBDataService {
         this.template = new JdbcTemplate(alphaDataSource);
     }
 
-    public Collection<AlphaDTO> getAllFromOne() {
+    public Collection<DataDTO> getAllFromOne() {
         return template.query("select * from ALPHA_TABLE_ONE",
-                (rs, rowNum) -> new AlphaDTO(rs.getLong("ID"), rs.getString("MESSAGE"), rs.getObject("CREATED_AT", LocalDateTime.class))
+                (rs, rowNum) -> new DataDTO(rs.getLong("ID"), rs.getString("MESSAGE"), rs.getObject("CREATED_AT", LocalDateTime.class))
         );
     }
 
-    public Collection<AlphaDTO> getAllFromTwo() {
+    public Collection<DataDTO> getAllFromTwo() {
         return template.query("select * from ALPHA_TABLE_TWO",
-                (rs, rowNum) -> new AlphaDTO(rs.getLong("ID"), rs.getString("MESSAGE"), rs.getObject("CREATED_AT", LocalDateTime.class))
+                (rs, rowNum) -> new DataDTO(rs.getLong("ID"), rs.getString("MESSAGE"), rs.getObject("CREATED_AT", LocalDateTime.class))
         );
     }
 

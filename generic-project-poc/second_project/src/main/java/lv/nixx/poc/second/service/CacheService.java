@@ -1,4 +1,4 @@
-package lv.nixx.poc.first.service;
+package lv.nixx.poc.second.service;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;

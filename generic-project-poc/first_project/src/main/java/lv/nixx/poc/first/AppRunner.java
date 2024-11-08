@@ -1,8 +1,7 @@
 package lv.nixx.poc.first;
 
 import lv.nixx.poc.common.config.amq.AMQ;
-import lv.nixx.poc.common.config.db.v1.AlphaDB;
-import lv.nixx.poc.common.config.hazelcast.Hazelcast5;
+import lv.nixx.poc.common.config.db.v2.alpha.AlphaDB_V2;
 import lv.nixx.poc.common.config.ldap.LDAP;
 import lv.nixx.poc.common.config.properties.EnableCommonProperties;
 import lv.nixx.poc.common.config.security.AppSecurityConfig;
@@ -11,10 +10,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
+@AlphaDB_V2(jpaSupport = false)
 
-@AlphaDB(jpaSupport = false)
-
-@Hazelcast5
 @WebSocketWithAMQ
 @AMQ
 @LDAP

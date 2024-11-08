@@ -1,6 +1,6 @@
 package lv.nixx.poc.first.rest;
 
-import lv.nixx.poc.first.model.AlphaDTO;
+import lv.nixx.poc.first.model.DataDTO;
 import lv.nixx.poc.first.service.DBDataService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,12 +17,12 @@ public class DBDataController {
     }
 
     @GetMapping("/allFromOne")
-    public Collection<AlphaDTO> getAllFromOne() {
+    public Collection<DataDTO> getAllFromOne() {
         return DBDataService.getAllFromOne();
     }
 
     @GetMapping("/allFromTwo")
-    public Collection<AlphaDTO> getAllFromTwo() {
+    public Collection<DataDTO> getAllFromTwo() {
         return DBDataService.getAllFromTwo();
     }
 

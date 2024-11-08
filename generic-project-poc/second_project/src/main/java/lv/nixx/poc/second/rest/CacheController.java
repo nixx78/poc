@@ -1,6 +1,6 @@
-package lv.nixx.poc.first.rest;
+package lv.nixx.poc.second.rest;
 
-import lv.nixx.poc.first.service.CacheService;
+import lv.nixx.poc.second.service.CacheService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;

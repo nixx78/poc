@@ -23,7 +23,7 @@ public abstract class AbstractDBConfig {
     protected AbstractDBConfig(Environment env, String prefix) {
         this.prefix = prefix;
 
-        this.initFileName = env.getProperty("db." + prefix + ".init-file");
+        this.initFileName = env.getProperty("db." + prefix + ".init-script");
         this.driverClassName = env.getProperty("driver-class-name.default");
     }
 

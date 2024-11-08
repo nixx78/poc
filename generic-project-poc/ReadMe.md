@@ -31,5 +31,5 @@ Hazelcast Management-center: http://localhost:7777/
 * commons-proj -> config-commons ?
 
 * @LoggedUserController -> добавить настройку для контроля списка полей, который будет возвращать /service/login, настройка URL
-
-* Аннотация, которая подключает настройки общие для всех проектов: @EnableCommonProperties -> загрузить из common.properties
+* @EnableCommonProperties - интегрировать с Controller для Demo
+* SecondProject -> сделать тестовое окружение для работы с JPA
