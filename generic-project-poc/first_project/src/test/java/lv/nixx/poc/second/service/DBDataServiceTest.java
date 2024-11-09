@@ -1,6 +1,7 @@
-package lv.nixx.poc.first.service;
+package lv.nixx.poc.second.service;
 
 import lv.nixx.poc.first.model.DataDTO;
+import lv.nixx.poc.first.service.DBDataService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -10,6 +10,8 @@
 
 ### first_project
 Проект, который использует общие конфигурации
+Также, проект является "песочницей" для Actuator
+ 
 * Swagger: http://localhost:8080/first-project/swagger-ui.html
 
 ### second_project
@@ -31,5 +33,5 @@ Hazelcast Management-center: http://localhost:7777/
 * commons-proj -> config-commons ?
 
 * @LoggedUserController -> добавить настройку для контроля списка полей, который будет возвращать /service/login, настройка URL
-* @EnableCommonProperties - интегрировать с Controller для Demo
-* SecondProject -> сделать тестовое окружение для работы с JPA
+* Посмотреть, как можно конфигурировать создание тестовых данных при помощи скриптов
+* Hazelcast Test Instance - создать аннотацию, которую можно вставлять в тестовое окружение

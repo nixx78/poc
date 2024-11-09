@@ -2,13 +2,12 @@ package lv.nixx.poc.second.service;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 public class CacheService {
 
     private final IMap<String, String> cache;
