@@ -10,14 +10,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
-@AlphaDB_V2(jpaSupport = false)
+@AlphaDB_V2()
 
 @WebSocketWithAMQ
 @AMQ
 @LDAP
 
 @AppSecurityConfig(loadUserInfoController = false)
-
 @EnableCommonProperties
 
 @SpringBootApplication

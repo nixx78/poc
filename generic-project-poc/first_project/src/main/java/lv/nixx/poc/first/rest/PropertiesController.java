@@ -7,19 +7,23 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-public class PropertiesService {
+public class PropertiesController {
 
-    @Value("${first.property}")
+    @Value("${first.security.property}")
     String firstProperty;
 
-    @Value("${second.property}")
+    @Value("${second.security.property}")
     String secondProperty;
+
+    @Value("${management.health.diskspace.enabled}")
+    boolean diskspaceEnnabled;
 
     @GetMapping("/applicationProperties")
     public Map<String, Object> showProperties() {
         return Map.of(
-                "firstProperty", firstProperty,
-                "secondProperty", secondProperty
+                "firstSecurityProperty", firstProperty,
+                "secondSecurityProperty", secondProperty,
+                "diskspaceEnnabled", diskspaceEnnabled
         );
     }
 
