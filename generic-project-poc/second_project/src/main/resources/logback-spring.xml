@@ -27,7 +27,7 @@
 		</rollingPolicy>
 	</appender>
 
-	<logger name="com.zaxxer.hikari" level="DEBUG"/>
+<!--	<logger name="com.zaxxer.hikari" level="DEBUG"/>-->
 
 	<root level="info">
 		<appender-ref ref="Console" />

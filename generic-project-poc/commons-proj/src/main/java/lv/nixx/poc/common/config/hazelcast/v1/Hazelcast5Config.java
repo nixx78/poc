@@ -1,4 +1,4 @@
-package lv.nixx.poc.common.config.hazelcast;
+package lv.nixx.poc.common.config.hazelcast.v1;
 
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
