@@ -8,7 +8,6 @@ import lv.nixx.poc.common.config.properties.EnableCommonProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
 @EnableCommonProperties
 
 @AlphaDB_V2(showActuatorEndpoint = true, jpaSupport = true, packagesToScan = "lv.nixx.poc.second.orm.alpha")
@@ -21,6 +20,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         }
 )
 
+@SpringBootApplication
 public class AppRunner {
 
     public static void main(String[] args) {

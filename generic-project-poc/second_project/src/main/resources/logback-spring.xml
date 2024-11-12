@@ -13,7 +13,7 @@
 	<!-- ============== Size and Time based Rolling file appenders section ============== -->
 	<appender name="FileMain"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOG_DIR}/second-proj</file>
+		<file>${LOG_DIR}/second-proj.log</file>
 		<encoder>
 			<pattern>${PATTERN}</pattern>
 		</encoder>

@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import({Hazelcast5ConfigImporter.class})
+@Import({Hazelcast5Config.class})
 public @interface Hazelcast5 {
 }
