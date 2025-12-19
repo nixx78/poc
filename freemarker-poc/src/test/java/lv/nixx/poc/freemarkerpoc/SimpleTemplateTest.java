@@ -19,16 +19,18 @@ public class SimpleTemplateTest {
 
     @Test
     void test() throws IOException, TemplateException {
+
         final Template template = configuration.getTemplate("simple_template.ftl");
 
-        Customer c = new Customer()
-                .setName("Name.value")
-                .setSurname("Surname.value");
+        Customer c = new Customer("Name.value", "Surname.value");
 
         final String s = FreeMarkerTemplateUtils.processTemplateIntoString(template, c);
 
         System.out.println(s);
 
+    }
+
+    record Customer(String name, String surname) {
     }
 
 }
