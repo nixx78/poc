@@ -1,10 +1,11 @@
 package lv.nixx.poc.sandbox.repeatableelems;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.junit.Test;
 
 public class RepeatableElements {
 	

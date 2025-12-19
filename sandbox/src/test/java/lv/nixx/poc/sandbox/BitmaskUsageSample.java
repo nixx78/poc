@@ -1,15 +1,14 @@
 package lv.nixx.poc.sandbox;
 
-import static lv.nixx.poc.sandbox.BitmaskUsageSample.Permissions.*;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
-
 import java.util.stream.Collectors;
 
-import org.junit.Test;
+import static lv.nixx.poc.sandbox.BitmaskUsageSample.Permissions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BitmaskUsageSample {
 	

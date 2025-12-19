@@ -4,8 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -56,10 +54,9 @@ public class VerificationSandbox {
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 
         verify(notificator, atLeast(1)).notify(captor.capture());
-        List<String> allValues = captor.getAllValues();
-        String lastMessage = allValues.get(allValues.size() - 1);
 
-        assertEquals(expectedNotification, lastMessage);
+        // In this case we always get last value
+        assertEquals(expectedNotification, captor.getValue());
     }
 
     static class Notificator {

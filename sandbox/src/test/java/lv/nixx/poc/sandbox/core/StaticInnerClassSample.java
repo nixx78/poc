@@ -1,6 +1,7 @@
 package lv.nixx.poc.sandbox.core;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 public class StaticInnerClassSample {
 

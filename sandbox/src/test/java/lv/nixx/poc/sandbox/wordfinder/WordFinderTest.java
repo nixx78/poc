@@ -1,8 +1,9 @@
 package lv.nixx.poc.sandbox.wordfinder;
 
-import static org.junit.Assert.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WordFinderTest {
 	
@@ -15,10 +16,11 @@ public class WordFinderTest {
 		assertEquals("saturn", longest);
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void checkMinWordLength() {
 		WordFinder wf = new WordFinder("./src/test/resources/short_list.txt");               
-		wf.longestWord("abcd");
+
+		assertThrows(IllegalArgumentException.class, () -> wf.longestWord("abcd"));
 	}
 	
 	@Test

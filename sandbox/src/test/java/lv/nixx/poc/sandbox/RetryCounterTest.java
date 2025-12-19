@@ -1,86 +1,91 @@
 package lv.nixx.poc.sandbox;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 public class RetryCounterTest {
 
-	@Test
-	public void tryCountSuccessTest() {
+    @Test
+    public void tryCountSuccessTest() {
 
-		Function<Integer, String> onError = t -> {
-			throw new IllegalArgumentException("Error during call");
-		};
+        Function<Integer, String> onError = t -> {
+            throw new IllegalArgumentException("Error during call");
+        };
 
-		RetryCounter<Integer, String> r = new RetryCounter<>(5, t -> t + "Result", onError);
-		assertEquals("10Result", r.call(10));
-	}
+        RetryCounter<Integer, String> r = new RetryCounter<>(5, t -> t + "Result", onError);
+        assertEquals("10Result", r.call(10));
+    }
 
-	@Test(expected = Exception.class)
-	public void tryCountExceptionTest() {
+    @Test
+    public void tryCountExceptionTest() {
 
-		Function<Integer, String> onError = t -> {
-			throw new IllegalArgumentException("Error during call");
-		};
+        Function<Integer, String> onError = t -> {
+            throw new IllegalArgumentException("Error during call");
+        };
 
-		Function<Integer, String> onTry = t -> {
-			throw new IllegalArgumentException("Error during call");
-		};
+        Function<Integer, String> onTry = t -> {
+            throw new IllegalArgumentException("Error during call");
+        };
 
-		RetryCounter<Integer, String> r = new RetryCounter<>(5, onTry, onError);
-		assertEquals("10Result", r.call(10));
-	}
-	
-	@Test
-	public void tryCountReturnValueOnFailTest() {
+        RetryCounter<Integer, String> integerStringRetryCounter = new RetryCounter<>(5, onTry, onError);
 
-		Function<Integer, String> onError = t -> {
-			throw new IllegalArgumentException("Error during call");
-		};
+        assertThrows(IllegalArgumentException.class, () -> {
+            integerStringRetryCounter.call(2);
+        });
+    }
 
-		Function<Integer, String> onTry = t -> "FailValue" + t;
+    @Test
+    public void tryCountReturnValueOnFailTest() {
 
-		RetryCounter<Integer, String> r = new RetryCounter<>(5, onTry, onError);
-		assertEquals("FailValue10", r.call(10));
-	}
+        Function<Integer, String> onError = t -> {
+            throw new IllegalArgumentException("Error during call");
+        };
 
-	static class RetryCounter<K, V> {
+        Function<Integer, String> onTry = t -> "FailValue" + t;
 
-		private final Logger LOG = LoggerFactory.getLogger("RetryCounter");
+        RetryCounter<Integer, String> r = new RetryCounter<>(5, onTry, onError);
+        assertEquals("FailValue10", r.call(10));
+    }
 
-		private final int tryCount;
-		private final Function<K, V> onTry;
-		private final Function<K, V> onError;
+    static class RetryCounter<K, V> {
 
-		RetryCounter(int tryCount, Function<K, V> onTry, Function<K, V> onError) {
-			this.tryCount = tryCount;
-			this.onTry = onTry;
-			this.onError = onError;
-		}
+        private final Logger LOG = LoggerFactory.getLogger("RetryCounter");
 
-		public V call(K input) {
-			int currentTry = 1;
+        private final int tryCount;
+        private final Function<K, V> onTry;
+        private final Function<K, V> onError;
 
-			while (currentTry <= tryCount) {
-				try {
-					LOG.debug("Try [{}] of [{}]", currentTry, tryCount);
-					return onTry.apply(input);
-				} catch (Exception ex) {
-					if (currentTry == tryCount) {
-						LOG.error("Error [{}]", ex.getMessage(), ex);
-						return onError.apply(input);
-					}
-					currentTry++;
-				}
-			}
-			return null;
-		}
+        RetryCounter(int tryCount, Function<K, V> onTry, Function<K, V> onError) {
+            this.tryCount = tryCount;
+            this.onTry = onTry;
+            this.onError = onError;
+        }
 
-	}
+        public V call(K input) {
+            int currentTry = 1;
+
+            while (currentTry <= tryCount) {
+                try {
+                    LOG.debug("Try [{}] of [{}]", currentTry, tryCount);
+                    return onTry.apply(input);
+                } catch (Exception ex) {
+                    if (currentTry == tryCount) {
+                        LOG.error("Error [{}]", ex.getMessage(), ex);
+                        return onError.apply(input);
+                    }
+                    currentTry++;
+                }
+            }
+            return null;
+        }
+
+    }
 
 }

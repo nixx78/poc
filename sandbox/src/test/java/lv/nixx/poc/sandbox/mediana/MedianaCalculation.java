@@ -1,9 +1,10 @@
 package lv.nixx.poc.sandbox.mediana;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
 
 //http://statanaliz.info/metody/opisanie-dannyx/58-mediana-v-statistike
 public class MedianaCalculation {
