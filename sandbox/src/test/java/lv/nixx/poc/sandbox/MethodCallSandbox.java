@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -15,14 +16,19 @@ public class MethodCallSandbox {
 
     @Test
     void methodCallUsingReflectionsTest() {
+
         assertAll(
                 () -> assertThat(invokeHelper(new ClassWithBigDecimal())).isEqualByComparingTo(BigDecimal.valueOf(100.00)),
                 () -> assertThat(invokeHelper(new ClassWithString())).isEqualByComparingTo(BigDecimal.valueOf(777.00)),
-                () -> assertThrows(IllegalStateException.class, () -> invokeHelper(new ClassWithDouble()))
+                () -> assertThrows(IllegalStateException.class, () -> invokeHelper(new ClassWithDouble())),
+                () -> assertThrows(NullPointerException.class, () -> invokeHelper(null), "Target object cannot be null")
         );
+
     }
 
     private static BigDecimal invokeHelper(Object target) {
+
+        Objects.requireNonNull(target, "Target object cannot be null");
 
         Class<?> returnType;
         try {
